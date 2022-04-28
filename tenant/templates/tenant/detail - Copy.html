@@ -1,0 +1,1761 @@
+{% extends 'base.html' %} {% load static %} {% load static %} {% block title %} {{tenant.name}} {% endblock title %}
+
+{% block modal %}
+<div aria-hidden="true" data-backdrop="static" data-tab="sub_modal"
+    class="onboarding-modal modal fade animated sub_modal" style='z-index:1060 !important' id="edit_document_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered " role="document">
+        <form method="POST" id='edit_document_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w sub_modal">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Document </h4>
+                            <hr>
+                            <input type="hidden" id="edit_photos_id" name="id">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Name</label>
+                                        <input class="form-control editable" type="text" placeholder="Example:Lease"
+                                            name="name" id="edit_phot_name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="div_upload_file mt-4">
+                                <label for="" style="font-size:15px"
+                                    class='text-center col-sm-12  fancy_text3 text-black '>
+                                    <span class='fancy_text4 text-primary font-w600'>Select a file to upload </span>
+                                </label>
+                                <input type="file" name='document'
+                                    class="form-control-file btn-rounded btn btn-outline-primary px-5 py-2"
+                                    id="document">
+                            </div>
+                        </div>
+                        <br><br><br>
+                    </div>
+
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+
+                            <input type="hidden" name="tenant" id="document_tenant">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary px-5 py-2" id="submit_doc" type="submit">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated"
+    id="open_single_tenant_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg1" role="document">
+        <form method="POST" id='create_tenant'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w tenant_slides">
+                    <div class="onboarding-slide normal_slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text5 lead text-left">
+                                <span class="tenant_name_title">Please wait</span></h4>
+                            <hr>
+                            <div class="row col-12 d-flex justify-content-center">
+                                {% include 'partials/_image.html' with name="image"  %}
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 ">
+                                    <div class=" form-group ">
+                                        <label for="" class="step-text">Tenant name</label>
+                                        <input class="form-control tenant_name required required-1"
+                                            placeholder="Example: Mariga Waithera" type="text" id='tenant_name'
+                                            name="name">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide normal_slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Contact info</h4>
+                            <hr>
+                            {% include 'partials/_calling_code.html' with name="calling_code" id="tenant_calling_code" class="tenant_calling_code" %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group"><label class='' for="">Enter the phone Number</label>
+                                        <div class="input-group mb-2 mb-sm-0">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text the_calling">1</div>
+                                            </div>
+                                            <input class="form-control tenant_phone required" maxlength="10"
+                                                placeholder="Example: 720425412" type="phone" id='tenant_phone'
+                                                name="phone_number">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group"> <label class='' for="">Enter the email address</label>
+                                        <div class="input-group mb-2 mb-sm-0">
+                                            <input class="form-control" placeholder="joseph@kakamkubwa.com" type="email"
+                                                name="email" id="tenant_email">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide normal_slide">
+                        <div class="onboarding-content with-gradient ">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Identification info</h4>
+                            <hr>
+                            {% include 'partials/_nationality.html' with name="nationality" id="tenant_nationality" class="tenant_nationality" %}
+                            <div class="row">
+                                <div class=" form-group col-12">
+                                    <label for="">How will you provide their identity</label>
+                                    <select class=" form-control tenant_national_type" id='tenant_national_type'
+                                        name="proof_by">
+                                        <option selected value="National id">Based on national ID</option>
+                                        {% comment %} <option value="Huduma number">Based on huduma number</option>
+                                        {% endcomment %}
+                                        <option value="Passport number">Based on passport number</option>
+                                        <option value="Drivers license">Based on drivers lincense</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="identification_type" for="">Enter the national ID</label>
+                                        <input class="form-control tenant_national"
+                                            placeholder="Kindly enter the national id " type="number"
+                                            id='tenant_national' name="proof_number">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide normal_slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Status info</h4>
+                            <hr>
+                            <div class="row mb-4">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Current status</label>
+                                        <select id='tenant_status' name="is_active"
+                                            class="form-control selectpicker form-control-sm tenant_status">
+                                            <option disabled>------------</option>
+                                            <option value="Active">Active</option>
+                                            <option value="Not active">Not active</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4 mb-4 alpha_active border" style="background-color: #FFFFE0;">
+                                <h5 class="alert-heading1 display-6 text-primar1y fancy_text3">Active tenants.</h5>
+                                <div class="text-secondary">
+                                    <div class="px-3 form-desc d-flex justify-content-between  display-8sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        <div class="1 col-12 bg-light1 p-1">
+                                            <div class="row">
+                                                <ul class="col-12 ">
+                                                    <li>They can receive automated invoices and receipts. </li>
+                                                    <li>If there's any automated invoices or receipts, a digital
+                                                        invoice/receipt will be sent to the tenant. </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4 mb-4 alpha_notactive border d-none" style="background-color: #FFFFE0;">
+                                <h5 class="alert-heading1 display-6 text-primar1y fancy_text3">Inactive tenants.</h5>
+                                <div class="text-secondary">
+                                    <div class="px-3 form-desc d-flex justify-content-between  display-8sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        <div class="1 col-12 bg-light1 p-1">
+                                            <div class="row">
+                                                <ul class="col-12 ">
+                                                    <li>They will not receive automated invoices and receipts. </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+                    <div class="onboarding-slide normal_slide">
+                        <div class="onboarding-media">
+
+                        </div>
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" id="action_type" name="action_type">
+                            <input type="hidden" name="id" id="tenant_id">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary py-2 px-5 submit" type="submit" id="submit_tenant">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" data-tab="sub_modal" class="onboarding-modal modal fade animated"
+    id="open_guarantor_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <form method="POST" id='tenant_guarantor_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w guarantor_slick_modal sub_modal">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text5 lead text-left">
+                                <span class="tenant_guarantor_title">Add guarantor</span></h4>
+                            <hr>
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="">What is their name?</label>
+                                        <input class="form-control" placeholder="Example: Elon musk" type="text"
+                                            id='g_name' name="name">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <hr>
+                            <div class="row">
+                                <div class=" form-group col-12">
+                                    <label for=""> Are they a family member?</label>
+                                    <select class=" form-control" id='g_relationship_type' name="relationship_type">
+                                        <option selected value="family">Yes</option>
+                                        <option value="non family">no</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class=" form-group col-12">
+                                    <label for="">Who are they?</label>
+                                    <select class=" form-control selectpicker" data-size="4" data-live-search="true"
+                                        id='g_relationship' name="relationship">
+                                        <optgroup class="family">
+                                            <option value="Husband">Husband</option>
+                                            <option value="Wife">Wife</option>
+                                            <option value="Son">Son</option>
+                                            <option value="Daughter">Daughter</option>
+                                        </optgroup>
+                                        <optgroup class="non_family">
+                                            <option value="Roomate">Roomate</option>
+                                            <option value="Friend">Friend</option>
+                                            <option value="Girlfriend">Girlfriend</option>
+                                            <option value="Boyfriend">Boyfriend</option>
+                                        </optgroup>
+                                        <optgroup class="non_family">
+                                            <option value="Employer">Employer</option>
+                                            <option value="Government">Government</option>
+                                            <option value="School">School</option>
+                                            <option value="Other">Other</option>
+                                        </optgroup>
+                                        <optgroup class="family">
+                                            <option value="Father">Father</option>
+                                            <option value="Mother">Mother</option>
+                                            <option value="Sister">Sister</option>
+                                            <option value="Brother">Brother</option>
+                                        </optgroup>
+                                        <optgroup class="family">
+                                            <option value="Uncle">Uncle</option>
+                                            <option value="Aunt">Aunt</option>
+                                            <option value="Cousin">Cousin</option>
+                                            <option value="Other">Other</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+                            {% include 'partials/_calling_code.html' with name="calling_code" id="g_calling_code" class="g_calling_code" %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group"><label class='' for="">What is their phone number?</label>
+                                        <div class="input-group mb-2 mb-sm-0">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text gur_calling">1</div>
+                                            </div>
+                                            <input class="form-control " maxlength="10" placeholder="Example: 720425412"
+                                                type="phone" id='g_phone' name="phone">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 ">
+                                    <div class=" form-group ">
+                                        <label for="" class="step-text">Email</label>
+                                        <input class="bg-white form-control "
+                                            placeholder="Example: Marigawaithera@gmail.com" type="text" id='g_email'
+                                            name="email">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <hr>
+                            <div class="row">
+                                <div class=" form-group col-12">
+                                    <label for=""> Have they accepted to be the guarantor?</label>
+                                    <select class=" form-control" id='g_status' name="has_accepted">
+                                        <option selected value="Not yet">Not yet</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Notes</label>
+                                        <textarea
+                                            placeholder="Example: They signed a contact that has been attached to the tenant documents"
+                                            class="form-control textarea" rows="4" name="notes" id="g_notes"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" name="id" id="g_id">
+                            <input type="hidden" name="guarantor_action" id="guarantor_action">
+                            <input type="hidden" name="tenant" id="tenant_id_guarantor">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary py-2 px-5 submit" type="submit"
+                                    id="submit_guarantor">Click to submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" data-tab="sub_modal" class="onboarding-modal modal fade animated"
+    id="open_person_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <form method="POST" id='tenant_person_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w person_slick_modal sub_modal">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text5 lead text-left">
+                                <span class="tenant_person_title">Add someone</span></h4>
+                            <hr>
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="">What is their name?</label>
+                                        <input class="form-control" placeholder="Example: Jeff Bezos" type="text"
+                                            id='p_name' name="name">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <hr>
+
+                            <div class="row">
+                                <div class=" form-group col-12">
+                                    <label for=""> Are they a family member?</label>
+                                    <select class=" form-control" id='p_relationship_type' name="relationship_type">
+                                        <option selected value="family">Yes</option>
+                                        <option value="non family">no</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class=" form-group col-12">
+                                    <label for="">Who are they?</label>
+                                    <select class=" form-control selectpicker" data-size="4" data-live-search="true"
+                                        id='p_relationship' name="relationship">
+                                        <optgroup class="family">
+                                            <option value="Husband">Husband</option>
+                                            <option value="Wife">Wife</option>
+                                            <option value="Son">Son</option>
+                                            <option value="Daughter">Daughter</option>
+                                        </optgroup>
+                                        <optgroup class="non_family">
+                                            <option value="Roomate">Roomate</option>
+                                            <option value="Friend">Friend</option>
+                                            <option value="Girlfriend">Girlfriend</option>
+                                            <option value="Boyfriend">Boyfriend</option>
+                                        </optgroup>
+                                        <optgroup class="family">
+                                            <option value="Father">Father</option>
+                                            <option value="Mother">Mother</option>
+                                            <option value="Sister">Sister</option>
+                                            <option value="Brother">Brother</option>
+                                        </optgroup>
+                                        <optgroup class="family">
+                                            <option value="Uncle">Uncle</option>
+                                            <option value="Aunt">Aunt</option>
+                                            <option value="Cousin">Cousin</option>
+                                            <option value="Other">Other</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+                            {% include 'partials/_calling_code.html' with name="calling_code" id="p_calling_code" class="p_calling_code" %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group"><label class='' for="">What is their phone number?</label>
+                                        <div class="input-group mb-2 mb-sm-0">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text per_calling">1</div>
+                                            </div>
+                                            <input class="form-control " maxlength="10" placeholder="Example: 720425412"
+                                                type="phone" id='p_phone' name="phone">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 ">
+                                    <div class=" form-group ">
+                                        <label for="" class="step-text">Email</label>
+                                        <input class="bg-white form-control "
+                                            placeholder="Example: Marigawaithera@gmail.com" type="text" id='p_email'
+                                            name="email">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" name="id" id="p_id">
+                            <input type="hidden" name="person_action" id="person_action">
+                            <input type="hidden" name="tenant" id="tenant_id_person">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary py-2 px-5 submit" type="submit" id="submit_person">Click
+                                    to submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock modal %}
+
+
+{% block content %}
+<style>
+    .form-control {
+        background-color: #f5f1f1 !important;
+    }
+</style>
+
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+
+
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card ">
+                    <div class="card-header d-block mx-3 text-center">
+                        <h5 class="card-titles display-4 custom-card-title ">About <span
+                                class="tenant_name_title">{{tenant.name}}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-xl-5 ">
+
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card overflow-hidden">
+
+                            <div class="card-body">
+                                <div
+                                    class="mb-5 card-header1 align-items-center border-011 pb-4 d-flex justify-content-end bor[der-bottom">
+                                    <a class="btn btn-warning light  btn-rounded  py-2 px-4 tenant_info"
+                                        id="{{tenant.id}}">Click
+                                        to edit</a>
+
+
+                                </div>
+                                {% comment %} <div class="position-relative mb-3 d-inline-block">
+                                    <img src="/media/profile/ana-cute_UvzHAHO.jpg" alt="" class="rounded" width="140">
+                                    <a href="app-profile.html" class="profile-icon"><i class="las la-cog"></i></a>
+                                </div> {% endcomment %}
+                                <div class="text-center">
+                                    <div class="profile-photo">
+                                        <img id="tenant_image_card" src="/media/profile/no_profile2.png" width="120"
+                                            height="120" style="border:6px solid
+                                            #ffedd1;border-right:none;border-top:none"
+                                            class="img-fluide rounded-circle bordder border-pridmary light"
+                                            alt="tenant photo">
+                                    </div>
+                                    {% comment %} <h3 class="mt-4 mb-1">A tenant</h3>
+                                    <p class="text-muted">{{tenant.name}}</p> {% endcomment %}
+
+                                </div>
+
+                                <div class=" text-left  border-top mt-4 py-3">
+                                    <p class="text-muted"><span class=" font-w600">Full Name :</span> <span class="ml-1"
+                                            id="tenant_name_card">---------</span></p>
+                                    <p class="text-muted"><span class=" font-w600">Mobile :</span><span class="ml-1">
+                                            (+<span id="tenant_calling_code_card">+1</span>) <span
+                                                id="tenant_phone_card">---------</span>
+                                        </span></p>
+                                    <p class="text-muted"><span class=" font-w600">Email :</span> <span class="mls-1"
+                                            id="tenant_email_card">----------</span></p>
+                                    <p class="text-muted"><span class=" font-w600">Nationality :</span> <span
+                                            class="ml-1" id="tenant_nationality_card">---------</span></p>
+                                    <p class="text-muted"><span class=" font-w600"
+                                            id="tenant_national_type_card">National id</span>: <span class="ml-1"
+                                            id="tenant_national_card">---------</span></p>
+                                    <div style="bordder: 1px solid #d1b808 !important;width: 100%;"
+                                        class="my-3 w-1d00 border"></div>
+
+                                    <p class="text-muted"><span class=" font-w600">Status:</span> <span class="ml-1"
+                                            id="tenant_status_card">Active</span></p>
+
+
+                                    <p class="text-muted">
+                                        {% if lease %}
+                                        <a href="{% url 'tenant:lease_details' lease.id %}"
+                                            class=" font-w600 text-primary">Lease:</a>
+                                        <span class="ml-1">{{lease.lease_type}}, {{lease.unit.unit_name}} </span>
+                                        {% else %}
+                                        <a href="{% url 'tenant:lease'%}" class=" font-w600 text-primary">Lease:</a>
+                                        <span class="ml-1">No lease</span>
+                                        {% endif %}
+                                    </p>
+
+
+                                    <p class="text-muted"><a href="{% url 'customAuth:tenant' %}"
+                                            class=" font-w600 text-primary">Credentials:</a>
+
+                                        {% if account %}
+
+                                        {% if account.is_active %}
+                                        <span class="badge light badge-success rounded">Can login</span>
+                                        {% else %}
+                                        <span class="badge light badge-danger rounded">Account not active</span>
+                                        {% endif %}
+                                        {% else %}
+                                        <span class="badge light badge-secondary rounded">Account not created</span>
+                                        {% endif %}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            {% comment %} if row.user:
+                            crede='<span class="badge light badge-danger rounded">Account not active</span>'
+                            if row.user.is_active:
+                            crede='<span class="badge light badge-success rounded">Can login</span>'
+                            else:
+                            crede='<span class="badge light badge-secondary rounded">Account not created</span>'
+                            {% endcomment %}
+
+
+
+
+
+                            {% comment %} <div class="card-footer pt-0 pb-0 text-center">
+                                <div class="row py-3 d-flex justify-content-center">
+                                    <a class="btn btn-outline-primary btn-rounded mt-3 px-5">Click to edit</a>
+                                </div>
+                            </div> {% endcomment %}
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="col-xl-7">
+                <div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="profile-tab">
+                                <div class="custom-tab-1">
+
+                                    <ul class="nav nav-tabs d-flex justify-content-between mb-3 ">
+                                        <li class="nav-items  "><a href="#emergency-settings" data-toggle="tab"
+                                                class="nav-link  show active">Emergency contacts</a>
+                                        </li>
+                                        <li class="nav-items"><a href="#guarantor-settings" data-toggle="tab"
+                                                class="nav-link ">Guarantors</a>
+                                        </li>
+                                        <li class="nav-items"><a href="#documents-settings" data-toggle="tab"
+                                                class="nav-link  ">Documents</a>
+                                        </li>
+
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div id="emergency-settings" class="tab-pane fade active show">
+                                            <div class="my-post-content pt-3">
+                                                {% comment %} <div
+                                                    class="row1 mb-3 mx-3 mt-5 d-flex justify-content-end">
+                                                    <button class="btn btn-primary btn-rounded  py-2 px-5 tenant_person"
+                                                        type="button"><span>Click to add</span></button>
+
+                                                </div> {% endcomment %}
+
+                                                <div class="table-extra my-2">
+
+                                                    <div class="row my-3 mx-4 pt-47 d-flex justify-content-around">
+
+                                                        <h4 class="card-title  display-8"
+                                                            style="letter-spacing:1.2px;color: #7e7e7e!important;"><span
+                                                                class="display-41 running_balance fancy_text3">
+                                                                Running balance <br> </span><span class="fancy_text4">
+                                                            </span></h4>
+                                                        <h4 class="card-title  display-8"
+                                                            style="letter-spacing:1.2px;color: #7e7e7e!important;"><span
+                                                                class="display-41 running_balance fancy_text3">
+                                                                12,000<br> </span><span class="fancy_text4">
+                                                            </span></h4>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="table-responsive" style="cursor: pointer">
+                                                    <table id="finance_history"
+                                                        class="table table-borderd table-heading display responsive"
+                                                        width="100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-left ">Date</th>
+                                                                <th class="text-left">Transaction</th>
+                                                                <th class="text-left">Debit</th>
+                                                                <th class="text-left">Credit</th>
+                                                                <th class="text-left">Running balance</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="text-left"></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="guarantor-settings" class="tab-pane fade">
+                                            <div class="my-post-content pt-3">
+                                                <div class="row mb-4 mx-3 mt-5 d-flex justify-content-end">
+                                                    <button class="btn btn-primary  py-2 px-5 tenant_guarantor"
+                                                        type="button"><span>Click to add</span></button>
+                                                </div>
+                                                {% comment %} <div
+                                                    class="row my-3 mx-4 pt-47 d-flex justify-content-start">
+                                                    <h4 class="card-title"><span
+                                                            class="display-10 font-w300 total_guarantor">0</span>
+                                                        records
+                                                    </h4>
+                                                </div> {% endcomment %}
+                                                <div class="table-responsive" style="cursor: pointer">
+                                                    <table id="guarantor_table"
+                                                        class="table table-lightborder table-heading display responsive"
+                                                        width="100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-left">Name</th>
+                                                                <th class="text-left">Relationship</th>
+                                                                <th class="text-left">Accepted to be guarantor</th>
+                                                                <th class="text-left"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="text-left"></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="documents-settings" class="tab-pane fade">
+                                            <div class="my-post-content pt-3">
+
+                                                <div class="row mb-3 mx-3 mt-5 d-flex justify-content-end">
+                                                    <button class="btn btn-primary  py-2 px-5  add_doc_button"
+                                                        type="button"><span>Click to
+                                                            add</span></button>
+                                                </div>
+                                                {% comment %} <div
+                                                    class="row my-3 mx-4 pt-47 d-flex justify-content-start">
+                                                    <h4 class="card-title"><span
+                                                            class="font-w300 display-10 total_documents">0</span>
+                                                        records
+                                                    </h4>
+                                                </div> {% endcomment %}
+
+
+                                                <div class="table-responsive" style="cursor: pointer;">
+                                                    <table id='tenant_document_table'
+                                                        class="table display responsive table-heading dataTable"
+                                                        style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-left">Image</th>
+                                                                <th class="text-left">Name</th>
+                                                                <th class="text-left"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="text-left">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row ">
+            <div class="col-xl-12">
+                <ul class="nav nav-pills justify-content-around review-tab mb-4">
+                    <li class="nav-item">
+                        <a href="#navpills-2" class="nav-link active" data-toggle="tab" aria-expanded="false">Maintenace
+                            records
+                        </a>
+                    </li>
+                    {% comment %} <li class="nav-item">
+                        <a href="#navpills-3" class="nav-link" data-toggle="tab" aria-expanded="false">Notification
+                            records </a>
+                    </li> {% endcomment %}
+                    <li class="nav-item">
+                        <a href="#navpills-4111" class="nav-link" data-toggle="tab" aria-expanded="false">Finance
+                            history
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content pt-4 bg-white">
+
+                    <div id="navpills-2" class="tab-pane active">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Maintenace records</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive recentOrderTable">
+                                    <div class="table-responsive" style="cursor: pointer">
+                                        {% if maintenance %}
+                                        <table id="guarantor_table" class="table table-lightborder display responsive"
+                                            width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left">#</th>
+                                                    <th class="text-left">Maintenace</th>
+                                                    <th class="text-left">Reported</th>
+                                                    <th class="text-left">Status</th>
+                                                    <th class="text-left">priority</th>
+                                                    <th class="text-left"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-left">
+
+                                                {% for row in maintenance %}
+                                                <tr>
+                                                    {% comment %} <td>
+                                                        {% if row.status == "in progress" %}
+                                                        <div class="widget-media">
+                                                            <ul class="timeline">
+                                                                <li>
+                                                                    <div class="timeline-panel">
+                                                                        <div class="media mr-2 media-primary ">
+                                                                            <i class="fa fa-wrench"></i>
+                                                                        </div>
+                                                                        <a>
+                                                                            <div class="media-body">
+                                                                                <h6 class="mb-1"> {{row.message}} </h6>
+                                                                                <div class="d-block">
+                                                                                    {{row.name}}</div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        {% elif  row.status == "not started" %}
+
+                                                        <div class="widget-media">
+                                                            <ul class="timeline">
+                                                                <li>
+                                                                    <div class="timeline-panel">
+                                                                        <div class="media mr-2 media-danger ">
+                                                                            <i class="fa fa-wrench"></i>
+                                                                        </div>
+                                                                        <a>
+                                                                            <div class="media-body">
+                                                                                <h6 class="mb-1"> {{row.message}} </h6>
+                                                                                <div class="d-block">
+                                                                                    {{row.name}}</div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+
+
+                                                        {% else %}
+                                                        <div class="widget-media">
+                                                            <ul class="timeline">
+                                                                <li>
+                                                                    <div class="timeline-panel">
+                                                                        <div class="media mr-2 media-success ">
+                                                                            <i class="fa fa-wrench"></i>
+                                                                        </div>
+                                                                        <a>
+                                                                            <div class="media-body">
+                                                                                <h6 class="mb-1"> {{row.message}} </h6>
+                                                                                <div class="d-block">
+                                                                                    {{row.name}}</div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+
+                                                        {% endif %}
+                                                    </td> {% endcomment %}
+                                                    <td>
+                                                        <strong class="text-primary"> {{ forloop.counter }}.</strong>
+                                                    </td>
+                                                    <td>
+                                                        <strong>{{row.name}}</strong>
+                                                    </td>
+                                                    <td>
+                                                        {{row.reported_on|timesince}} ago
+                                                    </td>
+                                                    <td>
+                                                        {{row.status}}
+                                                    </td>
+                                                    <td>
+                                                        {{row.priority}}
+                                                    </td>
+                                                    <td>
+
+                                                        <a href="{% url 'maintenance:details' row.id %}"
+                                                            class="btn-primary px-5 py-1 btn-rounded border">Open</a>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+
+                                            </tbody>
+                                        </table>
+                                        {% else %}
+                                        <div class="m-3 my-3 text-center">No Maintenace issue has been created
+                                            for this tenant
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="navpills-4" class="tab-pane">
+
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %} {% include 'partials/_select_options.html' %} {% include 'partials/_date.html' %}
+<script>
+    $(document).ready(function () {
+        tenant_details();
+        id = "{{tenant.id}}";
+        f_person();
+        $('#tenant_main_person').val(id);
+        f_guarantor();
+        finance_history();
+        $('#tenant_main_guarantor').val(id);
+        $('#document_tenant').val(id);
+        tenant_document_table();
+        unit = "{{unit}}";
+
+        if (unit != "None") {
+            fetch_unit(unit);
+        }
+
+    });
+
+
+
+    function fetch_unit(unit) {
+        var unit = unit;
+        $.ajax({
+            url: "{% url 'property:units-rud' id=123456 %}".replace(/123456/, unit).toString(),
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                $('#unit_name_id').val(data.unit_name);
+                $('#unit_category_id').val(data.unit_category);
+                $('#unit_type_id').val(data.unit_type);
+                $('#size_id').val(data.size);
+                $('#is_furnished_id').val(data.is_furnished);
+                $('#baths_id').val(data.baths);
+                $('#description_id').val(data.description);
+            }
+        })
+    }
+    $(document).on('click', '.lease-link', function () {
+        link_name = $(this).text();
+        $('#link_name').text(link_name);
+    });
+
+    function tenant_details() {
+        var tenant = {
+            {
+                tenant.id
+            }
+        };
+        $.ajax({
+            url: "{% url 'tenant:tenant-rud' id=12345 %}".replace(/12345/, tenant).toString(),
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                $('#tenant_id').val(data.id);
+
+                $('.tenant_name_title').text(data.name);
+                $('#tenant_name_card').text(data.name);
+
+                if (data.image) {
+                    $('#tenant_image_card').attr("src", data.image).change();
+                }
+
+
+                $('#tenant_status_card').text(data.is_active);
+
+                $('#tenant_status_card').text(data.is_active);
+                $('#tenant_phone_card').text(data.phone_number);
+                $('#tenant_calling_code_card').text(data.calling_code);
+                $('#tenant_email_card').text(data.email);
+                $('#tenant_nationality_card').text(data.nationality);
+                $('.tenant_national_type_card').text(data.proof_by);
+                $('#tenant_national_card').text(data.proof_number);
+
+                $("#action_type").val("edit");
+            }
+        })
+    }
+    $(document).on('change', '#allocate_credentials', function () {
+        var data = $(this).val();
+        var email = $("#tenant_email").val();
+        if (data == "is_active") {
+            if (email) {
+                $("#email_credential").val(email);
+                $('.yes_active').removeClass("d-none");
+
+            } else {
+                $("#allocate_credentials").val("not_active").change();
+                alert("Kindly enter the tenant's email before we continue");
+
+            }
+
+        } else {
+            $('.yes_active').addClass("d-none");
+        }
+        $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+    });
+    $(document).on('change', '#tenant_status', function () {
+        var status = $(this).val();
+        if (status == 'Active') {
+            $('.alpha_active').removeClass("d-none");
+            $('.alpha_notactive').addClass("d-none");
+        }
+        if (status == 'Not active') {
+            $('.alpha_active').addClass("d-none");
+            $('.alpha_notactive').removeClass("d-none");
+        }
+    });
+    $(document).on('change', '#tenant_national_type', function () {
+        var the_data = $('#tenant_national_type').val();
+        if (the_data == 'National id') {
+            $('.identification_type').text("Enter the national ID");
+            $("#tenant_national").attr("placeholder", "Enter the national id");
+        }
+        if (the_data == 'Huduma number') {
+            $('.identification_type').text("Enter the huduma number");
+            $("#tenant_national").attr("placeholder", "Enter the huduma number");
+        }
+        if (the_data == 'Passport number') {
+            $('.identification_type').text("Enter the passport number");
+            $("#tenant_national").attr("placeholder", "Enter the passport number");
+        }
+        if (the_data == 'Drivers license') {
+            $('.identification_type').text("Enter the drivers license");
+            $("#tenant_national").attr("placeholder", "Enter the drivers license");
+        }
+        $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+        $("#tenant_national").val("");
+    });
+    $(document).on('change', '#p_calling_code', function () {
+        var the_data = $('#p_calling_code').val();
+        $('.per_calling').text(the_data);
+    });
+    $(document).on('change', '#g_calling_code', function () {
+        var the_data = $('#g_calling_code').val();
+        $('.gur_calling').text(the_data);
+    });
+    $(document).on('change', '#tenant_calling_code', function () {
+        var the_data = $('#tenant_calling_code').val();
+        $('.the_calling').text(the_data);
+    });
+
+    //Tenant----------------------------------------------------------
+
+
+    $(document).on('click', '.tenant_delete', function () {
+        var data = $(this).attr("id");
+        var data_split = data.split(",");
+        var tenant = data_split[0];
+        var tenant_name = data_split[1];
+        $('#confirm_title').text("Just confirming...");
+        $('#confirm_text').text("Confirming the removal of " + tenant_name + " as a tenant");
+        $('#confirm_extra').text("Do you really want to remove " + tenant_name + "?");
+        $('#confirm_button').text("Confirm removal");
+        $('#confirm_alert').modal('show');
+        $('#confirmYes').one('click', function () {
+
+            // var res_id = null;
+
+            $.ajax({
+                url: "{% url 'tenant:tenant-rud' id=12345 %}".replace(/12345/, tenant)
+                    .toString(),
+                method: "DELETE",
+                success: function (data) {
+                    tenant_details();
+                    $('#success_text').text("Tenant removed.");
+                    $('#confirm_alert').modal('hide');
+                    $('#success_alert').modal('show');
+                }
+            });
+
+        });
+        $("#confirmNo").click(function () {
+            $('#confirm_alert').modal('hide');
+        });
+
+    });
+
+    $(document).on('click', '.tenant_info', function () {
+        var data = $(this).attr("id");
+        var data_split = data.split(",");
+        var tenant = data_split[0];
+        var step = data_split[1];
+        //$('.onboarding-modal .onboarding-slider-w').slick('slickGoTo', step);
+        $('#create_tenant')[0].reset();
+
+        $.ajax({
+            url: "{% url 'tenant:tenant-rud' id=12345 %}".replace(/12345/, tenant).toString(),
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                $('#tenant_id').val(data.id);
+                $('.tenant_name_title').text(data.name);
+                $('#tenant_name').val(data.name);
+                $('.tenant_status').val(data.is_active).change();
+                $('#tenant_phone').val(data.phone_number);
+                $('#tenant_calling_code').val(data.calling_code).change();
+                $('.the_calling').text(data.calling_code);;
+                $('#tenant_email').val(data.email);
+                $('#tenant_nationality').val(data.nationality).change();
+                $('#tenant_national_type').val(data.proof_by).change();
+                $('#tenant_national').val(data.proof_number);
+                if (data.image) {
+
+                    $('#imageUpload').attr("src", data.image).change();
+                    $('#imagePreview').css('background-image', 'url(' + data.image + ')');
+                } else {
+                    $('#imageUpload').attr("src", "/media/profile/no_profile2.png").change();
+                    $('#imagePreview').css('background-image',
+                        'url(/media/profile/no_profile2.png)');
+                }
+
+                $("#action_type").val("edit");
+                $('#open_single_tenant_modal').modal('show');
+                $('.open_single_tenant_title').text("You can edit");
+
+            }
+        })
+    });
+    $(document).on('submit', '#create_tenant', function (event) {
+        var action_type = $('#action_type').val();
+        var tenant = $('#tenant_id').val();
+        if (action_type == 'add') {
+            var method = 'POST';
+            var url = '{% url "tenant:tenant-listcreate" %}';
+        }
+        if (action_type == 'edit') {
+            var method = 'PUT';
+            var url = "{% url 'tenant:tenant-rud' id=12345 %}".replace(/12345/, tenant).toString();
+        }
+
+        var form_data = new FormData(this);
+
+        event.preventDefault();
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#submit_tenant').attr('disabled', 'disabled');
+                $("#submit_tenant").html("Please wait");
+            },
+            success: function (data) {
+
+                $('#submit_tenant').attr('disabled', false);
+                $("#submit_tenant").html("Upload records");
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+                if (data.success) {
+
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+
+                    tenant_details();
+                    $('#open_single_tenant_modal').modal('hide');
+                }
+            },
+            error: function (error) {
+
+                $('#submit_tenant').attr('disabled', false);
+                $("#submit_tenant").html("Upload records");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+            }
+        });
+    });
+
+    // Emergency contact----------------------------------------------------------------------------------------
+
+
+    $(document).on('click', '#finish_everything', function () {
+        $('#main_people_modal').modal('hide');
+        $('#success_added_text').text("The tenant's records have been added successfully. ");
+        $('#success_added_text_sub').text("Do you want to allocate a vacant?");
+        $('#success_added_modal').modal('show');
+    });
+    $(document).on('click', '.tenant_person', function () {
+        id = "{{tenant.id}}";
+        $('.tenant_person_title').text("Add emergency contact");
+        //$('.onboarding-modal .person_slick_modal').slick('slickGoTo', 0);
+        $('#tenant_person_form')[0].reset();
+        $('#tenant_id_person').val(id);
+        $('#person_action').val("add");
+        $('#open_person_modal').modal('show');
+    });
+    $(document).on('change', '#p_relationship_type', function () {
+        var the_data = $('#p_relationship_type').val();
+        if (the_data == 'family') {
+            $('.family').removeClass("d-none");
+            $('.non_family').addClass("d-none");
+        }
+        if (the_data == 'non family') {
+            $('.family').addClass("d-none");
+            $('.non_family').removeClass("d-none");
+        }
+        $('#p_relationship').val("");
+        $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+    });
+    $(document).on('submit', '#tenant_person_form', function (event) {
+        var action_type = $('#person_action').val();
+        var primaryKey = $('#p_id').val();
+        if (action_type == 'add') {
+            var method = 'POST';
+            var url = '{% url "tenant:emergency-listcreate" %}';
+        }
+        if (action_type == 'edit') {
+            var method = 'PUT';
+            var url = "{% url 'tenant:emergency-rud' id=12345 %}".replace(/12345/, primaryKey).toString();
+        }
+        var form_data = new FormData(this);
+        event.preventDefault();
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#submit_person').attr('disabled', 'disabled');
+                $("#submit_person").html("Please wait");
+            },
+            success: function (data) {
+                $('#submit_person').attr('disabled', false);
+                $("#submit_person").html("Click to submit");
+                if (data.success) {
+                    f_person();
+                    $('#open_person_modal').modal('hide');
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#submit_person').attr('disabled', false);
+                $("#submit_person").html("Click to submit");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#open_person_modal').modal('hide');
+            }
+        });
+
+    });
+    $(document).on('click', '.edit_person', function () {
+        var data = $(this).attr("id");
+        $('#tenant_person_form')[0].reset();
+        $('#person_action').val("edit");
+        //$('.onboarding-modal .person_slick_modal').slick('slickGoTo', 0);
+        $.ajax({
+            url: "{% url 'tenant:emergency-rud' id=12345 %}".replace(/12345/, data).toString(),
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                $('.tenant_person_title').text(data.relationship);
+                $('#p_name').val(data.name);
+                $('#tenant_id_person').val(data.tenant);
+                $('#p_phone').val(data.phone);
+                $('#p_email').val(data.email);
+                $('#p_calling_code').val(data.calling_code).change();
+                $('#p_relationship').val(data.relationship).change();
+                $('#p_relationship_type').val(data.relationship_type).change();
+
+                $('#p_id').val(data.id);
+                $('#open_person_modal').modal('show');
+
+            }
+        })
+    });
+    $(document).on('click', '.remove_person', function () {
+        var data = $(this).attr("id");
+        var data_split = data.split(",");
+        var id = data_split[0];
+        var name = data_split[1];
+        var tenant = data_split[2];
+        $('#confirm_title').text("Are you sure?");
+        $('#confirm_extra').text("Confirming the removal of " + name + " as one of the emergency contacts");
+        $('#confirm_button').text("Confirm removal");
+        $('#confirm_alert').modal('show');
+
+        $('#confirmYes').off().on('click', function () {
+            $.ajax({
+                url: "{% url 'tenant:emergency-rud' id=12345 %}".replace(/12345/, id)
+                    .toString(),
+                method: "DELETE",
+                dataType: "json",
+                beforeSend: function () {
+                    $('#confirmYes').attr('disabled', 'disabled');
+                    $("#confirm_button").html("Please wait");
+                },
+                success: function (data) {
+                    $('#confirmYes').attr('disabled', false);
+                    $("#confirm_button").html("Confirm removal");
+                    if (data.success) {
+                        f_person();
+                        $('#success_text').text(data.success);
+                        $('#confirm_alert').modal('hide');
+                        $('#success_alert').modal('show');
+                    }
+                    if (data.error) {
+                        $('#oops_text').text(data.error);
+                        $('#oops_alert').modal('show');
+                    }
+                },
+                error: function (jqXhr) {
+                    $('#confirmYes').attr('disabled', false);
+                    $("#confirm_button").html("Confirm removal");
+                    $('#oops_text').text("Something went wrong, try again later");
+                    $('#oops_alert').modal('show');
+                    $('#confirm_alert').modal('hide');
+                }
+            });
+        });
+        $('#confirmNo').off().on('click', function () {
+            $('#confirm_alert').modal('hide');
+        });
+    });
+
+
+    $('#people_table').css('min-height', '200px');
+    $('#people_table').css('wdith', '100%');
+
+    function f_person() {
+        tenant = "{{tenant.id}}";
+        $('#people_table').DataTable({
+            "destroy": true,
+            "bAutoWidth": false,
+            "ordering": false,
+            "scrollCollapse": true,
+            "bLengthChange": false,
+            "fixedColumns": true,
+            "bFilter": false,
+            "bInfo": false,
+            "bLengthChange": false,
+
+
+            "oLanguage": {
+                "sEmptyTable": "No emergency contact added",
+                "sStripClasses": "",
+                "sSearch": "",
+                "sSearchPlaceholder": "search...",
+
+            },
+            "ajax": {
+                "url": '{% url "tenant:emergency-listcreate" %}',
+                "data": {
+                    "tenant": tenant,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                }
+            },
+            "order": [
+                [0, 'asc']
+            ],
+
+            "bPaginate": true,
+            "bProcessing": true,
+            "pageLength": 3,
+            "fnDrawCallback": function () {
+                //console.log(this.fnSettings().json.total_sum);
+
+                $('.total_person').text(this.fnSettings().fnRecordsTotal());
+            }
+        });
+        jQuery('#people_table').wrap('<div class="dataTables_scroll" />');
+
+    }
+
+
+    //Gurantors ------------------------------------------------------------------------------------------
+
+
+    $('#people_table').css('min-height', '200px');
+    $('#people_table').css('wdith', '100%');
+    $(document).on('click', '.tenant_guarantor', function () {
+        id = "{{tenant.id}}";
+
+        $('.tenant_guarantor_title').text("Add guarantor");
+        //$('.onboarding-modal .guarantor_slick_modal').slick('slickGoTo', 0);
+        $('#tenant_guarantor_form')[0].reset();
+        $('#tenant_id_guarantor').val(id);
+        $('#guarantor_action').val("add");
+        $('#open_guarantor_modal').modal('show');
+    });
+
+    $(document).on('change', '#g_relationship_type', function () {
+        var the_data = $('#g_relationship_type').val();
+        if (the_data == 'family') {
+            $('.family').removeClass("d-none");
+            $('.non_family').addClass("d-none");
+        }
+        if (the_data == 'non family') {
+            $('.family').addClass("d-none");
+            $('.non_family').removeClass("d-none");
+        }
+        $('#g_relationship').val("");
+        $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+    });
+    $(document).on('submit', '#tenant_guarantor_form', function (event) {
+        event.preventDefault();
+        var action_type = $('#guarantor_action').val();
+        var primaryKey = $('#g_id').val();
+        if (action_type == 'add') {
+            var method = 'POST';
+            var url = '{% url "tenant:guarantor-listcreate" %}';
+        }
+        if (action_type == 'edit') {
+            var method = 'PUT';
+            var url = "{% url 'tenant:guarantor-rud' id=12345 %}".replace(/12345/, primaryKey).toString();
+        }
+        var form_data = new FormData(this);
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#submit_guarantor').attr('disabled', 'disabled');
+                $("#submit_guarantor").html("Please wait");
+            },
+            success: function (data) {
+                $('#submit_guarantor').attr('disabled', false);
+                $("#submit_guarantor").html("Click to submit");
+                if (data.success) {
+                    f_guarantor();
+                    $('#open_guarantor_modal').modal('hide');
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#submit_guarantor').attr('disabled', false);
+                $("#submit_guarantor").html("Click to submit");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#open_guarantor_modal').modal('hide');
+            }
+        });
+
+    });
+    $(document).on('click', '.edit_guarantor', function () {
+        var data = $(this).attr("id");
+        $('#tenant_guarantor_form')[0].reset();
+        $('#guarantor_action').val("edit");
+        //$('.onboarding-modal .guarantor_slick_modal').slick('slickGoTo', 0);
+        $.ajax({
+            url: "{% url 'tenant:guarantor-rud' id=12345 %}".replace(/12345/, data).toString(),
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                $('.tenant_guarantor_title').text(data.relationship_type);
+                $('#g_name').val(data.name);
+                $('#g_relationship_type').val(data.relationship_type).change();
+                $('#g_relationship').val(data.relationship).change();
+                $('#g_calling_code').val(data.calling_code).change();
+                $('#g_status').val(data.has_accepted).change();
+                $('#tenant_id_guarantor').val(data.tenant);
+                $('#g_phone').val(data.phone);
+                $('#g_email').val(data.email);
+                $('#g_notes').val(data.notes);
+                $('#g_id').val(data.id);
+                $('#open_guarantor_modal').modal('show');
+            }
+        })
+    });
+    $(document).on('click', '.remove_guarantor', function () {
+        var data = $(this).attr("id");
+        var data_split = data.split(",");
+        var id = data_split[0];
+        var name = data_split[1];
+        var tenant = data_split[2];
+        $('#confirm_title').text("Are you sure?");
+        $('#confirm_extra').text("Confirming the removal of " + name + " as one of the guarantors");
+        $('#confirm_button').text("Confirm removal");
+        $('#confirm_alert').modal('show');
+
+        $('#confirmYes').off().on('click', function () {
+            $.ajax({
+                url: "{% url 'tenant:guarantor-rud' id=12345 %}".replace(/12345/, id)
+                    .toString(),
+                method: "DELETE",
+                dataType: "json",
+                beforeSend: function () {
+                    $('#confirmYes').attr('disabled', 'disabled');
+                    $("#confirm_button").html("Please wait");
+                },
+                success: function (data) {
+                    $('#confirmYes').attr('disabled', false);
+                    $("#confirm_button").html("Confirm removal");
+                    if (data.success) {
+                        f_guarantor();
+                        $('#success_text').text(data.success);
+                        $('#confirm_alert').modal('hide');
+                        $('#success_alert').modal('show');
+                    }
+                    if (data.error) {
+                        $('#oops_text').text(data.error);
+                        $('#oops_alert').modal('show');
+                    }
+                },
+                error: function (jqXhr) {
+                    $('#confirmYes').attr('disabled', false);
+                    $("#confirm_button").html("Confirm removal");
+                    $('#oops_text').text("Something went wrong, try again later");
+                    $('#oops_alert').modal('show');
+                    $('#confirm_alert').modal('hide');
+                }
+            });
+        });
+        $('#confirmNo').off().on('click', function () {
+            $('#confirm_alert').modal('hide');
+        });
+    });
+
+
+    $('#guarantor_table').css('min-height', '200px');
+    $('#guarantor_table').css('wdith', '100%');
+
+    function f_guarantor() {
+        tenant = "{{tenant.id}}";
+        $('#guarantor_table').DataTable({
+            "destroy": true,
+            "bAutoWidth": false,
+            "ordering": false,
+            "bFilter": false,
+            "bInfo": false,
+            "bLengthChange": false,
+
+            // "bPaginate": false,
+            "scrollCollapse": true,
+            "fixedColumns": true,
+            "oLanguage": {
+                "sEmptyTable": "No gurantor contact added",
+                "sStripClasses": "",
+                "sSearch": "",
+                "sSearchPlaceholder": "search...",
+
+            },
+            "ajax": {
+                'url': '{% url "tenant:guarantor-listcreate" %}',
+                "data": {
+                    "tenant": tenant,
+                }
+            },
+            "order": [
+                [0, 'asc']
+            ],
+            "pageLength": 3,
+            "fnDrawCallback": function () {
+                //console.log(this.fnSettings().json.total_sum);
+
+                $('.total_guarantor').text(this.fnSettings().fnRecordsTotal());
+            }
+        });
+
+    }
+    //Docuemnts-----------------------------------------------------------
+    $(document).on('click', '.add_doc_button', function () {
+        $('#edit_document_modal').modal('show');
+
+    });
+
+    $('#tenant_document_table').css('min-height', '200px');
+    $('#tenant_document_table').css('wdith', '100%');
+
+    function tenant_document_table() {
+        url_data = '{% url "tenant:documents-listcreate" %}';
+        tenant = $('#document_tenant').val();
+        $('#tenant_document_table').DataTable({
+            //processing: true,
+            //serverSide: true,
+            "destroy": true,
+            "bAutoWidth": false,
+            "bFilter": false,
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false,
+            "oLanguage": {
+                "sEmptyTable": "No document added",
+                "sStripClasses": "",
+                "sSearch": "",
+                "sSearchPlaceholder": "search...",
+                "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+                    '<option value="10">10</option>' +
+                    '<option value="20">20</option>' +
+                    '<option value="30">30</option>' +
+                    '<option value="40">40</option>' +
+                    '<option value="50">50</option>' +
+                    '<option value="50">100</option>' +
+
+                    '</select></div>'
+            },
+
+            "ajax": {
+                "url": url_data,
+                "data": {
+                    "tenant": tenant,
+
+                }
+            },
+
+            "bPaginate": false,
+            "pageLength": 10,
+            "fnDrawCallback": function () {
+                //console.log(this.fnSettings().json.total_sum);
+
+                $('.total_documents').text(this.fnSettings().fnRecordsTotal());
+            }
+        });
+        jQuery('#tenant_document_table').wrap('<div class="dataTables_scroll" />');
+
+    }
+    $(document).on('submit', '#edit_document_form', function (event) {
+        var method = 'POST';
+        var url = '{% url "tenant:documents-listcreate" %}';
+        var form_data = new FormData(this);
+        event.preventDefault();
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#submit_doc').attr('disabled', 'disabled');
+                $("#submit_doc").html("Please wait");
+            },
+            success: function (data) {
+                $('#submit_doc').attr('disabled', false);
+                $("#submit_doc").html("Upload records");
+                if (data.success) {
+
+                    tenant_document_table();
+                    $('#edit_document_modal').modal('hide');
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+                    // $('.onboarding-modal .edit_the_photos').slick('slickGoTo', 0);
+                    $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#submit_doc').attr('disabled', false);
+                $("#submit_doc").html("Upload records");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#edit_document_modal').modal('hide');
+            }
+
+        });
+    });
+    $(document).on('click', '.delete_doc_button', function () {
+        var id = $(this).attr("id");
+
+
+        $('#confirm_title').text("Just confirming...");
+
+        $('#confirm_text').text("Do you really want to delete this document?");
+        $('#confirm_button').text("Confirm delete");
+        $('#confirm_alert').modal('show');
+        $('#confirmYes').one('click', function () {
+            $.ajax({
+                url: "{% url 'tenant:documents-rud' id=12345 %}".replace(/12345/, id)
+                    .toString(),
+                method: "DELETE",
+                dataType: "json",
+
+                success: function (data) {
+                    tenant_document_table();
+
+                    $('#success_text').text("Docuemnt removed.");
+                    $('#confirm_alert').modal('hide');
+                    $('#success_alert').modal('show');
+                }
+            });
+
+        });
+        $("#confirmNo").click(function () {
+            $('#confirm_alert').modal('hide');
+        });
+
+    });
+
+
+
+    $('#finance_history').css('min-height', '200px');
+    $('#finance_history').css('wdith', '100%');
+
+    function finance_history() {
+        tenant = "{{tenant.id}}";
+        $('#finance_history').DataTable({
+            "destroy": true,
+            "bAutoWidth": false,
+            "ordering": false,
+            "bFilter": false,
+            "bInfo": false,
+            "bLengthChange": false,
+
+            // "bPaginate": false,
+            "scrollCollapse": true,
+            "fixedColumns": true,
+            "oLanguage": {
+                "sEmptyTable": "No finance history",
+                "sStripClasses": "",
+                "sSearch": "",
+                "sSearchPlaceholder": "search...",
+
+            },
+            "ajax": {
+                'url': '{% url "finance:finance_history" %}',
+                "data": {
+                    "id": tenant,
+                    "type": 'tenant',
+                }
+            },
+            "order": [
+                [0, 'asc']
+            ],
+            "pageLength": 3,
+
+        });
+
+    }
+</script>
+{% endblock scripts %} {% endblock content %}

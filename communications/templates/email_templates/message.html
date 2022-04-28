@@ -1,0 +1,48 @@
+
+
+
+
+
+
+          <div
+              style="background-color: #fff; max-width: 550px; margin: auto; border-radius: 8px; padding: 6% 2%; border: thin solid #dadce0;">
+              <div
+                  style="font-family: Avenir Next W01,Roboto,RobotoDraft,Helvetica,Arial,sans-serif; color: rgba(0,0,0,0.87); line-height: 32px; padding-bottom: 24px;">
+                  <div
+                      style="margin: 0px auto; border-bottom: thin solid #dadce0; color: rgba(0,0,0,0.87); box-shadow: 0px 20px 50px rgba(0,0,0,0.05);">
+            
+                      <div style="padding: 60px 10% 0px; border-top: 1px solid rgba(0,0,0,0.05);">
+                          <h1 style="margin-top: 0px; color: #000;">
+                              <span style="font-family: verdana, geneva, sans-serif; font-size: 18pt;">Hi
+                                  {{name}},</span>
+                          </h1>
+                          <div style="color: #636363; font-size: 14px;">
+                              <p>
+                                  <span style="font-family: verdana, geneva, sans-serif; font-size: 11pt;">
+                                     {{body}}
+                                     {% if document %}
+                                     <br> <strong>(This email has an attachment)<strong>
+                                     {% endif %}
+                                 
+                                  </span>
+                              </p>
+                              <div style="border: 1px dotted #111; margin: 10px 0px; padding: 10px 15px;">
+                                  <table style="border-collapse: collapse1; width: 100%;padding:2%">
+                                      <tbody>
+                                          <tr style="background-color:#FEF9E7 ">
+                                              <td
+                                                  style="padding: 10px 0px; padding-left:4%; color: #4b72fa; letter-spacing: 1px; font-size: 15px; font-weight: bold; width: 47%;">
+                                                  From:</td>
+                                              <td
+                                                  style="padding: 10px 0px;padding-right:4%; color: #111; letter-spacing: 1px; text-align: right; font-weight: bold; font-size: 15px; width: 50%;">
+                                                    {{from}}<br><span style="color:#4b72fa">(
+                                                      {{property}})</span></td>
+                                          </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>

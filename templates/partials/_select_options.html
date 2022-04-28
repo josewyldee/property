@@ -1,0 +1,298 @@
+<script>
+    select_option = {
+        tenants: function (variable) {
+            $.ajax({
+                url: "{% url 'searchdata:tenants' %}",
+                method: "GET",
+                "data": {
+                    "status": 'owner',
+                },
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+        },
+        tenants_lease: function (variable) {
+            $.ajax({
+                url: "{% url 'searchdata:tenants_lease' %}",
+                method: "GET",
+                "data": {
+                    "status": 'owner',
+                },
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+        },
+        buyers: function (variable) {
+            $.ajax({
+                url: "{% url 'searchdata:buyers' %}",
+                method: "GET",
+                "data": {
+                    "status": 'owner',
+                },
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+        },
+        tenant_account: function (variable) {
+            $.ajax({
+                url: "{% url 'searchdata:tenants-account' %}",
+                method: "GET",
+
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+        },
+        units: function (variable) {
+            $.ajax({
+                url: "{% url 'searchdata:units' %}",
+                method: "GET",
+                "data": {
+                    "role": 'manager',
+                },
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+        },
+        vacant_units: function (variable, unit) {
+            if (unit == "none") {
+                $.ajax({
+                    url: "{% url 'searchdata:units' %}",
+                    method: "GET",
+                    "data": {
+                        "status": 'vacant',
+                    },
+                    success: function (data) {
+                        $(variable).html(data).selectpicker('refresh');
+
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: "{% url 'searchdata:units' %}",
+                    method: "GET",
+                    "data": {
+                        "status": 'vacant',
+                        "unit": unit,
+                    },
+                    success: function (data) {
+                        $(variable).html(data).selectpicker('refresh');
+                        $(variable).val(unit).change();
+                    }
+                });
+            }
+        },
+        sale_units: function (variable, unit) {
+            if (unit == "none") {
+                $.ajax({
+                    url: "{% url 'searchdata:units' %}",
+                    method: "GET",
+                    "data": {
+                        "status": 'not sold',
+                    },
+                    success: function (data) {
+                        $(variable).html(data).selectpicker('refresh');
+
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: "{% url 'searchdata:units' %}",
+                    method: "GET",
+                    "data": {
+                        "status": 'not sold',
+                        "unit": unit,
+                    },
+                    success: function (data) {
+                        $(variable).html(data).selectpicker('refresh');
+                        $(variable).val(unit).change();
+                    }
+                });
+            }
+        },
+        unit_maintenance: function (variable) {
+            $.ajax({
+                url: "{% url 'searchdata:unit_maintenance' %}",
+                method: "GET",
+
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+        },
+        lease: function (variable) {
+            $.ajax({
+                url: "{% url 'searchdata:lease' %}",
+                method: "GET",
+
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+        },
+        admin: function () {
+            $.ajax({
+                url: "{% url 'searchdata:admin' %}",
+                method: "GET",
+
+                success: function (data) {
+                    $('#search_managed_by').html(data).selectpicker('refresh');
+                    $('#search_owned_by').html(data).selectpicker('refresh');
+
+                }
+            });
+        },
+        property_units: function (variable, property) {
+
+            if (property == "all") {
+                $.ajax({
+                    url: "{% url 'searchdata:property_units' %}",
+                    method: "GET",
+                    success: function (data) {
+                        $(variable).html(data).selectpicker('refresh');
+
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: "{% url 'searchdata:property_units' %}",
+                    method: "GET",
+                    "data": {
+                        "property": property,
+                    },
+                    success: function (data) {
+                        $(variable).html(data).selectpicker('refresh');
+
+                    }
+                });
+            }
+
+        },
+        create_invoice_unit: function (variable, property) {
+
+
+            $.ajax({
+                url: "{% url 'searchdata:invoice-unit' %}",
+                method: "GET",
+                "data": {
+                   "property": JSON.stringify(property),
+                },
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+
+
+        },
+
+        select_invoice: function (variable) {
+            $.ajax({
+                url: "{% url 'searchdata:select_invoice' %}",
+                method: "GET",
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+        },
+        select_payment: function (variable) {
+            $.ajax({
+                url: "{% url 'searchdata:select_payment' %}",
+                method: "GET",
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+        },
+
+        select_property: function (variable) {
+            $.ajax({
+                url: "{% url 'searchdata:select_property' %}",
+                method: "GET",
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+        },
+        select_units: function (variable, property) {
+
+
+            $.ajax({
+                url: "{% url 'searchdata:select_units' %}",
+                method: "GET",
+                "data": {
+                   "property": JSON.stringify(property),
+                },
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+
+
+        },
+
+        create_invoice_property: function (variable) {
+            $.ajax({
+                url: "{% url 'searchdata:invoice-property' %}",
+                method: "GET",
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+        },
+        payees: function (variable) {
+            $.ajax({
+                url: "{% url 'searchdata:payees' %}",
+                method: "GET",
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+        },
+       select_tenants_email: function (variable, property) {
+          
+
+            $.ajax({
+                url: "{% url 'searchdata:communications-emails' %}",
+                //method: "GET",
+                data: {
+                    "property": JSON.stringify(property),
+                },
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+
+
+        },
+        late_fee_types: function (variable) {
+            $.ajax({
+                url: "{% url 'searchdata:invoice-late_fee_types' %}",
+                method: "GET",
+                success: function (data) {
+                    $(variable).html(data).selectpicker('refresh');
+
+                }
+            });
+        },
+
+    }
+</script>

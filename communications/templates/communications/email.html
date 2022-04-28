@@ -1,0 +1,669 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{request.path}} {% endblock title %}
+
+{% block modal %}
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" data-tab="sub_modal"
+    id="general_charges_modal" role="dialog" tabindex="-1" style="z-index:2800">
+    <div class="modal-dialog modal-centered" role="document">
+        <form method="POST" id='general_charges_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w sub_modal">
+
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Add a charge</h4>
+                            <hr>
+                            <input type="hidden" id="payments_id" name="payments_id">
+                            <div class="row">
+                                <div class="col-sm-12 ">
+                                    <div class="form-group ">
+                                        <label class="control-label">What is the name of this charge?</label>
+                                        <input class="form-control editable general_name" type="text"
+                                            placeholder="Example:Rent" name="payments_name" id="payments_name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">Amount
+                                            (USD)</label>
+                                        <input class="form-control editable" type="text" placeholder="Example: 7000"
+                                            name="payments_amount" id="payments_amount">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-7 fancy_text4 lead text-left">Late Fees</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">Does this invoice have a late fee?</label>
+                                        <select class="form-control " required="required" name="deadline"
+                                            id="payments_deadline">
+                                            <option value="yes">Yes</option>
+                                            <option selected value="no">No</option>
+                                        </select> </div>
+                                </div>
+                            </div><br>
+                            <div class="row p_d_d d-none">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Select the type of late Fee</label>
+                                        <select class="form-control general_fees selectpicker dropup"
+                                            data-dropup-auto="false" data-size="5" data1-live-search="true"
+                                            required="required" name="late_fee_type" id="late_fee_type">
+                                            <option disabled class="disabled_latefee" selected>Select type</option>
+                                            <optgroup label="One time late fee">
+                                                <option value="one_time_fixed">A fixed amount (Once)</option>
+                                                <option value="one_time_percent_unpaid">A percentage of only the
+                                                    outstanding invoice (Once)
+                                                </option>
+                                                <option value="one_time_percent_entire">A percentage of only the total
+                                                    invoice (Once)
+                                                </option>
+                                            </optgroup>
+                                            <optgroup label="Daily late fee">
+                                                <option value="daily_time_fixed">A fixed amount (Daily)</option>
+                                                <option value="daily_time_percent_unpaid">A percentage of only the
+                                                    outstanding invoice
+                                                    (Daily)</option>
+                                                <option value="daily_time_percent_entire">A percentage of only the total
+                                                    invoice (Daily)
+                                                </option>
+                                            </optgroup>
+                                            <!-- <optgroup label="Custom late fee">
+                                                <option value="daily_time_fixed">A fixed amount</option>
+                                            </optgroup> -->
+                                        </select> </div>
+                                </div>
+                            </div>
+                            <div class="row class_late d-none">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label class_late_amount_desc">How much is the late
+                                            fee?</label>
+                                        <input class="form-control editable general_fees" type="text"
+                                            placeholder="Example:" name="late_fee_amount" id="late_fee_amount">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row class_late d-none class_late_grace">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">How many days does the tenant have to make full
+                                            payments before we
+                                            start invoicing the late fees? (Grace period)</label>
+                                        <input class="form-control editable general_fees" type="text"
+                                            placeholder="Example: 9" name="late_fee_grace" id="late_fee_grace">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row class_late d-none">
+                                <div class="col-sm-12 class_late_max">
+                                    <div class="form-group ">
+                                        <label class="control-label">What is the maximum amount of late fees that can be
+                                            charged for this
+                                            invoice?</label>
+                                        <input class="form-control editable general_fees" type="text"
+                                            placeholder="Example: 9500" name="late_fee_max" id="late_fee_max">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-7 fancy_text4 lead text-left">Late fee description</h4>
+                            <hr>
+                            <div class="p-4 mb-4 border" style="background-color: #FFFFE0;">
+                                <div class="text-secondary">
+                                    <div class="no_late_fee px-3 form-desc  display-7sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        This charge has no late fee
+                                    </div>
+                                    <div class="has_empty_late_fee px-3 form-desc text-danger display-7sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">Kindly select the late fee type</li>
+                                            <li class="list-group-item">How much is the late fee?</li>
+                                            <li class="list-group-item">How long before the late fee begins?</li>
+                                            <li class="list-group-item">What is the maximum amount that can be charges
+                                                as late fee?</li>
+
+                                        </ul>
+                                    </div>
+                                    <div class="has_late_fee d-none px-3 form-desc   display-7sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        The tenant has <span class="class_fee_days">Please wait</span> to fully settle
+                                        <span class="class_fee_name">the charge</span>. After this period is over, <span
+                                            class="class_fee_type">Please wait</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="onboarding-slide">
+                        <div class="onboarding-media"><img alt=""
+                                src="<?php echo base_url(); ?>/img/images/payment.webp" width="80px">
+                        </div>
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" name="late_fee_payment_type" id="late_fee_payment_type">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary p-3" id="submit_charge" type="submit">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="multiple_tenant_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <div class="modal-content text-center">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <div class="onboarding-content with-gradient">
+                <h4 class="onboarding-title lead display-8 fancy_text5 mb-5 text-left">Tenants in
+                </h4>
+                <input type="hidden" class="select_all okanga" name="select_all" value="tenant">
+                <form method="post" id="tenant_allocate_form">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group ">
+                                <label for="">
+                                    <span class='fancy_text_4 text-muted'>Select property </span>
+                                </label>
+                                <select class="form-control selectpicker select_property" data-header="Select property"
+                                    data-live-search="true" name="select_property" id='select_property' data-size="6"
+                                    multiple data-selected-text-format="count > 2" data-size="4"
+                                    data-actions-box="true">
+                                    <option selected="" disabled value="">
+                                        Choose a property
+                                    </option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group d-none select_unit">
+                                <label for="">
+                                    <span>Select tenants </span>
+                                </label>
+                                <select class="form-control selectpicker" data-live-search="true" name="unit_id"
+                                    id='select_unit' multiple title="Choose
+                                    your tenants..." data-size="6" multiple data-selected-text-format="count > 2"
+                                    data-actions-box="true">
+                                    <option selected disabled>
+                                        tenant not found </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-buttons-w d-flex flex-row justify-content-between">
+                        <input type="hidden" class="select_all" name="select_all" value="none">
+                        <input type="hidden" class="select_all_choice" name="select_all_choice">
+                        <div class="cancel-process steps p-2 lead justify-content-start invoice_cancel_button d-none"><a
+                                href="#" aria-label="Close" data-dismiss="modal">Cancel the process</a></div>
+                        <button class="btn btn-primary py-3 px-5 step-button justify-content-end invoice_button d-none"
+                            type="button">Continue</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="select_filter_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <div class="modal-content text-center">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+
+            <div class="onboarding-content with-gradient">
+                <h4 class="onboarding-title lead display-8">Who do you want to email
+                </h4>
+                <div class="form-buttons-w d-flex flex-row justify-content-between">
+                    <button class="mr-2 mb-2 col-sm-5 btn btn-outline-primary single_tenant_button">A single
+                        tenant</button>
+                    <button class=" mb-2 col-sm-5 btn btn-outline-primary multiple_tenant_button">Multiple
+                        tenants</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="single_tenant_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <div class="modal-content text-center">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <div class="onboarding-content with-gradient">
+                <h4 class="onboarding-title lead display-8 fancy_text5 mb-5 text-left">Select a tenant
+                </h4>
+                <input type="hidden" class="select_all okanga" name="select_all">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group select_tenant">
+                            <select class="form-control selectpicker" data-live-search="true" name="tenant_id"
+                                title="Choose a tenant..." id='select_tenant'>
+                                <option selected="" disabled="">Select a tenant</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" class="select_all" name="select_all" value="tenantyy">
+                <input type="hidden" class="select_all_choice" name="select_all_choice">
+                <div class="form-buttons-w d-flex flex-row justify-content-between">
+                    <div class="cancel-process steps p-2 lead justify-content-start invoice_cancel_button d-none"><a
+                            href="#" aria-label="Close" data-dismiss="modal">Cancel the process</a></div>
+                    <button class="btn btn-primary px-5 py-3 step-button justify-content-end invoice_button d-none"
+                        type="button">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="email_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog  modal-centered" role="document">
+        <form method="POST" id="email_form">
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-content with-gradient">
+                    <div class="display-8 fancy_text5 text-left text-primary mb-5">
+                        Email
+                    </div>
+                    <div class="row mb-2 mt-4">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="">Email subject</label>
+                                <input class="form-control " placeholder="Enter email subject..." type="text"
+                                    name="subject" id="subject">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group body"><label> Email body</label><textarea
+                                    placeholder="Enter email body" class="form-control" rows="5" name="body"
+                                    id="body"></textarea></div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="type" name="type" value="normal">
+                    <input type="hidden" class="unit_list" name="unit_list">
+
+                    <div class="form-buttons-w d-flex flex-row justify-content-between">
+                        <div class="actions-left" style="position:relative">
+                            <a class="btn btn-link" type="file"><i class="os-icon os-icon-ui-51 display-7"></i><span
+                                    class="attachment_name fancy_text3">Add an attachment?</span></a>
+                            <input type="file" id="upload_file" class="col-sm-12 upload_template" name="document"
+                                style="opacity:0;height:100%; left: 0; top: 0;position: absolute;" />
+                        </div>
+                        <div class="actions-right"><button class="btn btn-primary px-5 py-4" type='submit'
+                                id="submit_filter"><span>Continue</span></button></div>
+
+                    </div>
+
+                    <script>
+                        $("#upload_file").change(function () {
+                            if ($("#upload_file").val()) {
+                                $(".attachment_name").html("A file has been selected.");
+                            } else {
+                                $(".attachment_name").html("Add an attachment?");
+
+                            }
+
+                        });
+                    </script>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="view_email_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog  modal-centered" role="document">
+
+        <div class="modal-content">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <div class="onboarding-content with-gradient">
+                <div class="display-8 fancy_text5 text-left text-primary mb-5">
+                    Email
+                </div>
+                <div class="row mb-2 mt-4">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            {% comment %} <label for="">Email sent to</label> {% endcomment %}
+                            <input class="form-control btn-roundled bg-light  bolrder-primary" type="text" id="view_email_sent_to">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2 mst-4">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="">Subject</label>
+                            <input class="form-control " placeholder="Enter email subject..." type="text"
+                                id="view_subject">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-sm-12">
+                        <div class="form-group body"><label>Body</label><textarea placeholder="Enter email body"
+                                class="form-control" rows="5" id="view_body"></textarea></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+{% endblock modal %}
+{% block content %}
+
+<div class="content-body" style="min-height: 828px;">
+    <!-- row -->
+    <div class="container-fluid">
+
+
+        <div class="card mx-3">
+            <div class="card-header d-block mx-3 text-center">
+                <h5 class="card-titles display-4 custom-card-title ">Emails</h5>
+
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-xl-12">
+                <div class="col-12">
+                    <div class="card px-3">
+                        {% include 'partials/_table_extra.html' with button_class="select_filter_button" button_id="select_filter_button" button_text="Send an email" total_class="total_emails" total_text="emails"  %}
+
+                        {% comment %} <div class="table-extra my-2">
+                            <div class="row my-4 mx-3 pt-47 d-flex justify-content-end">
+
+                                <button class="btn btn-primary  py-2 px-5 btn-rounded select_filter_button"
+                                    type="button" id="select_filter_button"><span>Send an email</span></button>
+                            </div>
+                            <div class="row my-3 mx-4 pt-47 d-flex justify-content-start">
+                                <h4 class="card-title"><span class="display-4 total_emails"> Please wait</span>
+                                    emails</h4>
+                            </div>
+                        </div> {% endcomment %}
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="email_table" class="display min-w850">
+                                    <thead>
+                                        <tr>
+                                            <th>Sent to.</th>
+                                            <th>email type</th>
+                                            <th>Subject</th>
+                                            <th>Sent by</th>
+                                            <th></th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% block scripts %}
+{% include 'partials/_select_options.html' %}
+
+<script>
+    $(document).ready(function () {
+        email_table();
+    });
+    $(document).on('click', '.view_email', function () {
+
+        var id = $(this).attr("id");
+        $.ajax({
+            //url : "{% url 'finance:charges-rud' id=12345 %}".replace(/12345/, id).toString(),
+            url: "{% url 'communications:email-rud' id=12345 %}".replace(/12345/, id).toString(),
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+
+                $('#view_subject').val(data.subject);
+                $('#view_body').val(data.body);
+                $('#view_email_sent_to').val(data.email_sent_to);
+
+                $('#view_email_modal').modal('show');
+            }
+        })
+    });
+    $(document).on('click', '.select_filter_button', function () {
+        $('#email_form')[0].reset();
+        $(".attachment_name").html("Add an attachment?");
+        // $("select").val("");
+        $('#select_filter_modal').modal('show');
+    });
+    $(document).on('click', '.single_tenant_button', function () {
+        $('.select_all').val('tenant');
+        $(".select_unit").addClass("d-none");
+        $(".lease_option").addClass("d-none");
+        $('.invoice_button').addClass("d-none");
+        $('.invoice_cancel_button').addClass("d-none");
+        select_option.select_tenants_email('#select_tenant', 'all');
+        $('.action_type').val("Add");
+        $('#select_filter_modal').modal('hide');
+        $('#single_tenant_modal').modal('show');
+
+
+    });
+    $(document).on('click', '.multiple_tenant_button', function () {
+
+        $(".select_unit").addClass("d-none");
+        $(".lease_option").addClass("d-none");
+        $('.invoice_button').addClass("d-none");
+        $('.invoice_cancel_button').addClass("d-none");
+        $('.action_type').val("Add");
+        $('#select_filter_modal').modal('hide');
+        select_option.create_invoice_property('#select_property');
+        $('#multiple_tenant_modal').modal('show');
+
+    });
+    // ----------------------------------------------------------------------------------------------
+
+    $(document).on('change', '#select_property', function () {
+        $('.select_all').val('unit');
+        $(".select_unit").addClass("d-none");
+        $(".lease_option").addClass("d-none");
+        $('.invoice_button').addClass("d-none");
+        $('.invoice_cancel_button').addClass("d-none");
+        var property = $('#select_property').val();
+
+        select_option.select_tenants_email('#select_unit', property);
+        $('.select_unit').removeClass("d-none");
+        $('.invoice_button').addClass("d-none");
+        $('.invoice_cancel_button').addClass("d-none");
+
+    });
+
+    $(document).on('change', '#select_unit', function () {
+        $('.select_all').val('unit');
+        $('#invoice_duration').val('once');
+
+        if ($('#select_unit').val().length === 0) {
+            alert("kindly select atleast one tenant");
+            $('.invoice_button').addClass("d-none");
+            $('.invoice_cancel_button').addClass("d-none");
+        } else {
+
+            unit = $('#select_unit').val();
+            $('.select_all').val('unit');
+            $('.invoice_title').html('tenants in');
+            $('.unit_list').val(unit);
+            $('.invoice_button').removeClass("d-none");
+            $('.invoice_cancel_button').removeClass("d-none");
+        }
+
+    });
+    $(document).on('change', '#select_tenant', function () {
+        $('.select_all').val('tenant');
+        var select_tenant = $(this).val();
+        //  alert(select_tenant);
+        if (select_tenant != null) {
+
+            var unit_id = $('#select_tenant').val();
+            $('.select_all').val('unit');
+            $('.invoice_title').html('');
+            $('.unit_list').val(unit_id);
+
+
+            $('.invoice_button').removeClass("d-none");
+            $('.invoice_cancel_button').removeClass("d-none");
+        }
+    });
+    $(document).on('click', '.invoice_button', function () {
+
+        $('#multiple_tenant_modal').modal('hide');
+        $('#single_tenant_modal').modal('hide');
+        $('#email_modal').modal('show');
+
+
+    });
+
+
+    $(document).on('submit', '#email_form', function (event) {
+        var method = 'POST';
+        var url = '{% url "communications:email-listcreate" %}';
+
+
+        var form_data = new FormData(this);
+        event.preventDefault();
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#submit_email').attr('disabled', 'disabled');
+                $("#submit_email").html("Please wait");
+            },
+            success: function (data) {
+                $('#submit_email').attr('disabled', false);
+                $("#submit_email").html("Upload records");
+                if (data.success) {
+                    email_table();
+                    $('#email_modal').modal('hide');
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#submit_email').attr('disabled', false);
+                $("#submit_email").html("Upload records");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#edit_photos_modal').modal('hide');
+            }
+
+        });
+    });
+
+    function email_table() {
+
+        var url = "{% url 'communications:email-listcreate' %}";
+        $('#email_table').DataTable({
+            processing: true,
+            serverSide: true,
+            "destroy": true,
+            "bAutoWidth": false,
+            "responsive": true,
+            // "bLengthChange": false,
+            "ordering": false,
+            "oLanguage": {
+                "sEmptyTable": "No emails found",
+                "sStripClasses": "",
+                "sSearch": "",
+                "sSearchPlaceholder": "search...",
+                "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+                    '<option value="10">10</option>' +
+                    '<option value="20">20</option>' +
+                    '<option value="30">30</option>' +
+                    '<option value="40">40</option>' +
+                    '<option value="50">50</option>' +
+                    '<option value="50">100</option>' +
+
+                    '</select></div>'
+            },
+            initComplete: function () {
+                var btns = $('.dt-button');
+                btns.removeClass('dt-button');
+            },
+            "ajax": {
+                "url": url,
+
+
+            },
+
+            "bPaginate": true,
+            "bProcessing": true,
+            "pageLength": 10,
+
+
+            "fnDrawCallback": function () {
+                $('.total_emails').html(this.fnSettings().fnRecordsTotal());
+            },
+
+        });
+
+
+
+    }
+</script>
+{% endblock scripts %}
+
+
+
+{% endblock content %}
+
+
+<!--**********************************
+    Content body end
+***********************************-->

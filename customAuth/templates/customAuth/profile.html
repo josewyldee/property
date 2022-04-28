@@ -1,0 +1,151 @@
+{% extends 'base.html' %} {% load static %} {% load static %} {% block title %} {{tenant.name}} {% endblock title %}
+
+{% block modal %}
+
+{% endblock modal %}
+
+
+{% block content %}
+{% comment %} <style>
+    .form-control {
+        background-color: #f5f1f1 !important;
+    }
+</style> {% endcomment %}
+
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card ">
+                    <div class="card-header d-block mx-3 text-center">
+                        <h5 class="card-titles display-4 custom-card-title ">Profile 
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card overflow-hidden ">
+                            <div class="card-body mx-5">
+                                <div
+                                    class="mb-5 card-header1 align-items-center border-011 pb-4 d-flex justify-content-end bor[der-bottom">
+                                    <a class="btn btn-warning light  btn-rounded  py-2 px-5 tenant_info"
+                                        id="{{profile.id}}">Click
+                                        to update</a>
+                                </div>
+                                {% comment %} <div class="position-relative mb-3 d-inline-block">
+                                    <img src="/media/profile/ana-cute_UvzHAHO.jpg" alt="" class="rounded" width="140">
+                                    <a href="app-profile.html" class="profile-icon"><i class="las la-cog"></i></a>
+                                </div> {% endcomment %}
+                                <div class="text-center">
+                                    <div class="profile-photo">
+                                        <img id="tenant_image_card" src="{{profile.image.url}}" width="120"
+                                            height="120" style="border:6px solid
+                                            #ffedd1;border-right:none;border-top:none"
+                                            class="img-fluide rounded-circle bordder border-pridmary admin_edit light"
+                                            alt="profile photo">
+                                    </div>
+                                    {% comment %} <h3 class="mt-4 mb-1">A tenant</h3>
+                                    <p class="text-muted">{{tenant.name}}</p> {% endcomment %}
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-12  d-flex justify-content-around">
+                                        <div class=" form-group col-12 col-md-7">
+                                           
+                                            <input class="form-control required required-1 name btn-rounded"
+                                                placeholder="Example: Mariga Waithera" type="text"  name="name" value="{{profile.name}} ">
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                                {% if request.user.is_syestem_admin %}
+                                <div class="row mt-4">
+                                    <div class="col-12  d-flex justify-content-around">
+                                        <div class=" form-group col-12 col-md-7">
+                                           
+                                            <input class="form-control required required-1 name btn-rounded"
+                                                placeholder="Example: Mariga Waithera" type="text"  name="name" value="Logged in as: Admin ">
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                             
+                          
+                                {% elif request.user.is_employee %}
+                                <div class="row mt-4">
+                                    <div class="col-12  d-flex justify-content-around">
+                                        <div class=" form-group col-12 col-md-7">
+                                           
+                                            <input class="form-control required required-1 name btn-rounded"
+                                                placeholder="Example: Mariga Waithera" type="text"  name="name" value="Logged in as: Staff ">
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                                {% elif request.user.is_tenant %}
+                                <div class="row mt-4">
+                                    <div class="col-12  d-flex justify-content-around">
+                                        <div class=" form-group col-12 col-md-7">
+                                           
+                                            <input class="form-control required required-1 name btn-rounded"
+                                                placeholder="Example: Mariga Waithera" type="text"  name="name" value="Logged in as: tenant ">
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                                {% else %}
+                                <div class="row mt-4">
+                                    <div class="col-12  ">
+                                        <div class=" form-group ">
+                                           
+                                            <input class="form-control required required-1 name btn-rounded"
+                                                placeholder="Example: Mariga Waithera" type="text"  name="name" value="-------- ">
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                                {% endif %}
+                                
+
+                            </div>
+
+
+                            {% comment %} if row.user:
+                            crede='<span class="badge light badge-danger rounded">Account not active</span>'
+                            if row.user.is_active:
+                            crede='<span class="badge light badge-success rounded">Can login</span>'
+                            else:
+                            crede='<span class="badge light badge-secondary rounded">Account not created</span>'
+                            {% endcomment %}
+
+
+
+
+
+                            {% comment %} <div class="card-footer pt-0 pb-0 text-center">
+                                <div class="row py-3 d-flex justify-content-center">
+                                    <a class="btn btn-outline-primary btn-rounded mt-3 px-5">Click to edit</a>
+                                </div>
+                            </div> {% endcomment %}
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+           
+        </div>
+
+
+      
+    </div>
+</div>
+
+{% block scripts %} 
+
+{% endblock scripts %} {% endblock content %}

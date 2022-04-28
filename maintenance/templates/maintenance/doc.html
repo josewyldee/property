@@ -1,0 +1,263 @@
+{% comment %} START documents
+======================================================================================== {% endcomment %}
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="attachment_image_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <form method="POST" id='attachment_image_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w attachment_slide">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 text-left fancy_text5">Attachment name</h4>
+                            <hr>
+                            <div class="row mb-4 ">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">What is this?</label>
+                                        <input class="form-control editable" type="text" placeholder="Example:Bathroom sink" min="1" name="name" id="image_name">
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden1" name="attachment_id2" id="attachment_id2">
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-7 text-left fancy_text4">Click to attach</h4>
+                            <hr>
+                            <div class="mb-5">
+                                <label for="" class='text-left col-sm-12  fancy_text3 text-secondary'> <span class='fancy_text4 text-primary'>Allowed types</span>| jpg,png,jpeg |</label>
+                                <input type="file" name='document' class="form-control-file btn btn-outline-primary px-4 py-4" id="lease_file">
+                            </div>
+                            <!-- <div class="form-buttons-w d-flex flex-row justify-content-between">
+                                <div class="cancel-process steps p-2 lead justify-content-start"><a href="#" aria-label="Close" data-dismiss="modal">Cancel the process</a></div>
+                                <button class="btn btn-primary px-5 py-3 step-button justify-content-end" id="submit_attachment" type="submit">Upload attachment</button>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary p-3" type="submit" id="submit_attachment">Upload
+                                    attachment</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="attachment_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <div class="modal-content">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <div class="onboarding-slider-w attachment_main">
+                <div class="onboarding-slide">
+                    <div class="onboarding-content with-gradient">
+                        <h4 class=" mt-5 onboarding-title display-9 fancy_text5 lead text-center" style="color:#B3B6B7 "><span>Photos of the issue (optional)</span></h4>
+                        <legend class='text-center'><span class='display-8 text-center text-primary '> </span> </legend>
+                        <input type="hidden" name="attachment_success_type" id="attachment_success_type">
+                        <input type="hidden" name="attachment_id" id="attachment_id">
+                        <input type="hidden" name="attachment_property" id="attachment_property">
+                    </div>
+                </div>
+                <div class="onboarding-slide">
+                    <div class="onboarding-content with-gradient">
+                        <div class="row mb-2">
+                            <div class="d-flex justify-content-between mb-5">
+                                <button class="btn btn-primary justify-content-end px-5 py-2 mr-sm-4 text-white" id="attachment_button" type='button'><span>Click to attach</span></button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive" style="cursor: pointer;">
+                            <table id='attachment_table' class="table table-lightborder display responsive nowrap" data-turbolinks="false" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left"></th>
+                                        <th class="text-left"></th>
+                                        <th class="text-left">Download</th>
+                                        <th class="text-left">Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-left">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="onboarding-slide">
+                    <div class="onboarding-content with-gradient">
+                        <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                        <div class="form-buttons-w d-flex flex-row justify-content-end">
+                            <button class="btn btn-primary py-3 px-5" type="button" id="submit_final_attachment">Finish
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% comment %} END documents
+======================================================================================== {% endcomment %}
+
+
+<script>
+
+    $("#upload_file").change(function() {
+        if ($("#upload_file").val()) {
+            $(".attachment_name").html("A photo has been uploaded.");
+        } else {
+            $(".attachment_name").html("Click if you want to upload a photo of the problem.");
+
+        }
+
+    });
+    $(document).on('click', '#submit_final_attachment', function() {
+        data = $('#attachment_success_type').val();
+        if (data == "Add") {
+            $('#success_text').text("You are done, remember that you can edit this anytime.");
+            $('#success_alert').modal('show');
+        } else {
+            $('#success_text').text("You can view your attachments anytime.");
+            $('#success_alert').modal('show');
+        }
+        $('#attachment_modal').modal('hide');
+    });
+
+    $(document).on('click', '.attach_photos', function() {
+        var maintenance = $(this).attr("id");;
+        attachment_function(maintenance);
+        $('.onboarding-modal .attachment_main').slick('slickGoTo', 0);
+        $('#attachment_success_type').val("edit");
+        $('#attachment_modal').modal('show');
+    });
+    $(document).on('click', '#attachment_button', function() {
+        $('#attachment_image_form')[0].reset();
+        $('.onboarding-modal .attachment_slide').slick('slickGoTo', 0);
+        $('#attachment_id2').val($('#attachment_id').val());
+        $('#attachment_property2').val($('#attachment_property').val());
+        $('#attachment_image_modal').modal('show');
+    });
+
+    $(document).on('submit', '#attachment_image_form', function(event) {
+        var form_data = new FormData(this);
+        url = '{% url "maintenance:document-listcreate" %}';
+    
+        event.preventDefault();
+        $.ajax({
+            method: 'POST',
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function() {
+                $('#submit_attachment').attr('disabled', 'disabled');
+                $("#submit_attachment").html("Please wait");
+            },
+            success: function(data) {
+                $('#submit_attachment').attr('disabled', false);
+                $("#submit_attachment").html("Upload attachment");
+                if (data.success) {
+                    attachment_function(data.maintenance)
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+                    $('#attachment_image_modal').modal('hide');
+                  
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function(jqXhr) {
+                $('#attachment_image_modal').modal('hide');
+                $('#submit_attachment').attr('disabled', false);
+                $("#submit_attachment").html("Upload records");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+
+            }
+        });
+    });
+    $(document).on('click', '.remove_document', function() {
+        var data = $(this).attr("id");
+        var data_split = data.split(",");
+        var attachment = data_split[0];
+        var maintenance = data_split[1];
+        $('#confirm_title').text("Are you sure?");
+        $('#confirm_extra').text("Confirming the removal of this image");
+        $('#confirm_button').text("Confirm removal");
+        $('#confirm_alert').modal('show');
+        $('#confirmYes').off().on('click', function() {
+            $.ajax({
+                url :"{% url 'maintenance:document-rud' id=12345 %}".replace(/12345/, id).toString(),
+                method: "DELETE",
+                dataType: "json",
+         
+                success: function(data) {
+                    if (data.success) {
+                        attachment_function(maintenance);
+                        $('#confirm_alert').modal('hide');
+                        f_requests_table();
+                    }
+                    if (data.error) {
+                        $('#oops_text').text(data.error);
+                        $('#oops_alert').modal('show');
+                        $('#confirm_alert').modal('hide');
+                    }
+                },
+                error: function(jqXhr) {
+                    $('#oops_text').text("Something went wrong, try again later");
+                    $('#oops_alert').modal('show');
+                    $('#confirm_alert').modal('hide');
+                }
+
+            });
+        });
+        $('#confirmNo').off().on('click', function() {
+            $('#confirm_alert').modal('hide');
+        });
+    });
+
+    function attachment_function(maintenance) {
+        url_data = '{% url "maintenance:document-listcreate" %}';
+        $('#attachment_table').DataTable({
+            "destroy": true,
+            "bAutoWidth": false,
+            "ordering": false,
+            "oLanguage": {
+                "sEmptyTable": "No attachment added"
+            },
+            initComplete: function() {
+                var btns = $('.dt-button');
+                btns.removeClass('dt-button');
+            },
+            "ajax": {
+                "url": url_data,
+                "type": 'post',
+                "data": {
+                    "maintenance": maintenance,
+                
+                },
+            },
+            "searching": false,
+            "bPaginate": false,
+            "bInfo": false,
+            "bProcessing": true,
+            "scrollCollapse": true,
+            "paging": false,
+
+        });
+        jQuery('#attachment_table').wrap('<div class="dataTables_scroll" />');
+        $('#attachment_table').css('wdith', '100%');
+        $('#attachment_table').css('min-height', '200px');
+        $('#attachment_id').val(maintenance);
+    }
+</script>

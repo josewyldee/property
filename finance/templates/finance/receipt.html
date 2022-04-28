@@ -1,0 +1,885 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{request.path}} {% endblock title %}
+
+{% block modal %}
+
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated " id="prepayment_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <form method="POST" id='prepayment_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w ">
+
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title fs-26 fancy_text4 text-left">Apply payments to balances</h4>
+                            <hr>
+                            {% comment %} <div class="row mx-4 pt-47 d-flex justify-content-start">
+                                <h4 class="card-title tetx-danger">$<span class="display-4 ">750</span>
+                                </h4>
+                            </div> {% endcomment %}
+
+                            <div class="table-responsive" style="cursor: pointer;">
+
+                                <table id='prepayment_table' class="table display responsive table-heading dataTable "
+                                    width="100%">
+                                    <thead>
+                                        <tr>
+
+                                            <th style="min-width: 40px;important">Invoice account</th>
+                                            <th>Balance</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-left">
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="width: 100%;">
+                                            <th style="min-wiadth: 87px;important"><span
+                                                    class=" text-default  border-none"> Total
+                                                    amount:</span> </th>
+                                            <th class="text-left">
+                                                <span class="total_balance">0</span></th>
+
+                                            <th class="text-left">
+                                                <span class="total_amount">0</span></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" id="receipt_id" name="receipt_id" value="none">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary py-3 px-5" type="submit" id="submit_prepayment">Match
+                                    Invoice
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="start_payments_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <form method="POST" id='start_payments_form'>
+            <div class="modal-content text-left">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-content with-gradient">
+                    <h4 class="onboarding-title lead display-8 fancy_text5 mb-5 text-left">Let's begin
+                    </h4>
+                    {% comment %} <input type="hidden" class="select_all okanga" name="select_all"> {% endcomment %}
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group select_lease">
+                                <label for="">Select a tenant</label>
+                                <select class="form-control selectpicker" data-live-search="true" name="select_lease"
+                                    title="Choose a tenant..." id='select_lease'>
+                                    <option selected="" disabled="">Select a tenant</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row select_payment">
+                        <div class="col-12">
+                            <div class=" form-group ">
+                                <label for="">How much was collected?</label>
+                                <input class="bg-white form-control required required-1" type="number"
+                                    id='select_amount' name="select_amount">
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group required">
+                                <label class="control-label">How was the payment made?</label>
+                                <select class="form-control select_paid_through" required="required"
+                                    name="select_paid_through" id="select_paid_through">
+                                    <option selected value="cash">cash</option>
+                                    <option value="Cashier's check">Cashier's check</option>
+                                    <option value="Check">Check</option>
+                                    <option value="Credit card">Credit card</option>
+                                    <option value="Direct deposit">Direct deposit</option>
+                                    <option value="Electronic payment">Electronic payment</option>
+                                    <option value="Money order">Money order</option>
+                                </select> </div>
+                        </div>
+                    </div>
+
+
+                    <input type="hidden" class="select_all" name="select_all" value="tenantyy">
+                    <input type="hidden" class="select_all_choice" name="select_all_choice">
+                    <div class="form-buttons-w d-flex flex-row justify-content-between">
+                        <div class="cancel-process steps p-2 lead justify-content-start start_payments_cancel d-none"><a
+                                href="#" aria-label="Close" data-dismiss="modal">Cancel the process</a></div>
+                        <button
+                            class="btn btn-primary px-5 py-3 step-button justify-content-end start_payments_submit d-none"
+                            type="submit">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated " id="receipt_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <form method="POST" id='receipt_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w ">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-7 text-left fancy_text3 ">About the payment
+                            </h4>
+                            <hr>
+                            <div class="reference_row d-none">
+                                <div class="row">
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group required">
+                                            <label class="control-label">What was the <span
+                                                    class="reference_title">reference number</span>?
+                                            </label>
+                                            <input class="form-control editable" type="text"
+                                                placeholder="Select reference number" name="ref_no" id="ref_no">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="">Paid on</label>
+                                        <input class="form-control past_date" autocomplete="off"
+                                            placeholder="Enter date" type="text" id='created_on' name="created_on">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="">time paid</label>
+                                        <input class="form-control created_time" placeholder="Enter time"
+                                            value='06:00 PM' type="time" id='created_time' name="created_time">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title fs-26 fancy_text4 text-left">Apply payments to balances</h4>
+                            <hr>
+                            {% comment %} <div class="row mx-4 pt-47 d-flex justify-content-start">
+                                <h4 class="card-title tetx-danger">$<span class="display-4 ">750</span>
+                                </h4>
+                            </div> {% endcomment %}
+
+                            <div class="table-responsive" style="cursor: pointer;">
+
+                                <table id='apply_payments_table'
+                                    class="table display responsive table-heading dataTable " width="100%">
+                                    <thead>
+                                        <tr>
+
+                                            <th style="min-width: 40px;important">Invoice account</th>
+                                            <th>Balance</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-left">
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="width: 100%;">
+                                            <th style="min-wiadth: 87px;important"><span
+                                                    class=" text-default  border-none"> Total
+                                                    amount:</span> </th>
+                                            <th class="text-left">
+                                                <span class="total_balance">0</span></th>
+
+                                            <th class="text-left">
+                                                <span class="total_amount">0</span></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Communication</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">How do you want to notify the tenant?</label>
+                                        <select class="form-control" required="required" name="communication"
+                                            id="send_ornot">
+                                            {% comment %} <option value="sms">SMS</option> {% endcomment %}
+                                            <option value="email">Email (with a digital receipt)</option>
+                                            {% comment %} <option selected value="both">Both email and SMS</option>
+                                            {% endcomment %}
+                                            <option value="none">No notification</option>
+                                        </select> </div>
+                                </div>
+                            </div><br>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Comments</h4>
+                            <hr>
+                            <div class="form-group"><label> footer comments</label><textarea name='description'
+                                    id='invoice_comment' class="form-control" rows="3"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" class="select_all" name="select_all" value="none">
+                            <input type="hidden" id="paid_through" name="paid_through">
+                            <input type="hidden" class="unit_list" name="unit_list">
+                            <input type="hidden" class="invoice_duration" value="once" name="invoice_duration">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary py-3 px-5" type="submit" id="submit_receipt">Create
+                                    receipt
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="edit_receipt_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+
+        <div class="modal-content">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <div class="onboarding-slider-w">
+
+                <div class="onboarding-slide">
+                    <div class="onboarding-content with-gradient">
+                        <h4 class="onboarding-title display-8 fancy_text5 text-primary lead text-left">About the
+                            receipt
+                        </h4>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <div class=" form-group ">
+                                    <label for="" class="step-text">Receipt No.</label>
+                                    <input class="bg-white form-control required required-1" readonly type="text"
+                                        id='details_id'>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <div class=" form-group ">
+                                    <label for="" class="step-text">Amount:</label>
+                                    <input class="bg-white form-control required required-1" readonly type="text"
+                                        id='details_amount'>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <div class=" form-group ">
+                                    <label for="" class="step-text">Created on:</label>
+                                    <input class="bg-white form-control required required-1" readonly type="text"
+                                        id='details_created_on'>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <div class=" form-group ">
+                                    <label for="" class="step-text">Paid through:</label>
+                                    <input class="bg-white form-control required required-1" readonly type="text"
+                                        id='details_paid_through'>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <div class=" form-group ">
+                                    <label for="" class="step-text">Reference number:</label>
+                                    <input class="bg-white form-control required required-1" readonly type="text"
+                                        id='details_ref'>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="onboarding-slide">
+                    <div class="onboarding-content with-gradient">
+                        <h4 class="onboarding-title display-8 font-w300 fancy_text5 text-primary lead text-left">More
+                            info
+                        </h4>
+                        <hr>
+
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="">Communication</label>
+                                    <input class="form-control bg-white" type="text" readonly
+                                        id='details_communication'>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="">Notes</label>
+                                    <textarea readonly class="form-control bg-white" rows="4"
+                                        id="details_description"></textarea></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock modal %}
+{% block content %}
+
+<div class="content-body" style="min-height: 828px;">
+    <!-- row -->
+    <div class="container-fluid">
+
+
+        <div class="card mx-3">
+            <div class="card-header d-block mx-3 text-center">
+                <h5 class="card-titles display-4 custom-card-title ">Collect payments</h5>
+
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-xl-12">
+                <div class="col-12">
+                    <div class="card px-3">
+                        {% include 'partials/_table_extra.html' with button_class="start_payments_button" button_id="start_payments_button" button_text="Collect payments" total_class="total_payments" total_text="payments"  %}
+
+                        {% comment %} <div class="table-extra my-2">
+                            <div class="row my-4 mx-3 pt-47 d-flex justify-content-end">
+
+                                <button class="btn btn-primary  py-2 px-5 btn-rounded start_payments_button"
+                                    type="button" id="start_payments_button"><span>Collect payments</span></button>
+                            </div>
+                            <div class="row my-3 mx-4 pt-47 d-flex justify-content-start">
+                                <h4 class="card-title"><span class="display-4 total_payments"> Please wait</span>
+                                    records</h4>
+                            </div>
+                        </div> {% endcomment %}
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="receipt_table" class="display min-w850">
+                                    <thead>
+                                        <tr>
+                                            <th>Receipt no.</th>
+                                            <th>Amount</th>
+                                            <th>Paid through</th>
+                                            <th>Created on</th>
+                                            <th>Tenant</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% block scripts %}
+{% include 'partials/_select_options.html' %}
+{% include 'partials/_date.html' %}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.1.1/css/rowGroup.dataTables.min.css">
+<script src="https://cdn.datatables.net/rowgroup/1.1.1/js/dataTables.rowGroup.min.js"></script>
+<script>
+    $(document).ready(function () {
+        receipt_table();
+    });
+
+
+    $(document).on('click', '.start_payments_button', function () {
+        $('.select_all').val('tenant');
+        $(".select_unit").addClass("d-none");
+        $(".select_payment").addClass("d-none");
+        $(".lease_option").addClass("d-none");
+        $('.start_payments_submit').addClass("d-none");
+        $('.start_payments_cancel').addClass("d-none");
+        select_option.create_invoice_unit('#select_lease', 'all');
+        $('.action_type').val("Add");
+        $('#select_paid_through').val("cash").change();
+        $('#start_payments_modal').modal('show');
+    });
+
+    $(document).on('change', '#select_paid_through', function () {
+        var payment_option = $(this).val();
+
+        if (payment_option == 'cash') {
+
+            $("#ref_no").attr("placeholder", "(ignore me)");
+            $('.reference_title').text("(ignore me)");
+            $('.reference_row').addClass("d-none");
+
+
+        } else if (payment_option == "Cashier's check" || payment_option == 'Check') {
+            $("#ref_no").attr("placeholder", "Check number");
+            $('.reference_title').text("Check number");
+            $('.reference_row').removeClass("d-none");
+        } else {
+            $("#ref_no").attr("placeholder", "Reference number");
+            $('.reference_title').text("Reference number");
+            $('.reference_row').removeClass("d-none");
+        }
+    });
+
+    // ----------------------------------------------------------------------------------------------
+
+    $(document).on('change', '#select_unit', function () {
+        $('.select_all').val('unit');
+        $('#invoice_duration').val('once');
+
+        if ($('#select_unit').val().length === 0) {
+            alert("kindly select atleast one unit")
+        } else {
+            unit = $('#select_unit').val();
+            $('.select_all').val('unit');
+            $('.invoice_title').html('tenants in');
+            $('.unit_list').val(unit);
+            $('.start_payments_submit').removeClass("d-none");
+            $('.start_payments_cancel').removeClass("d-none");
+        }
+    });
+    $(document).on('change', '#select_lease', function () {
+        $('.select_all').val('tenant');
+        $('#select_amount').val('');
+        $(".select_payment").addClass("d-none");
+        var select_lease = $(this).val();
+        if (select_lease != null) {
+            var unit_id = $('#select_lease').val();
+            $('.select_all').val('unit');
+            $('.invoice_title').html('');
+            $('.unit_list').val(unit_id);
+            $(".select_payment").removeClass("d-none");
+            $('.start_payments_submit').removeClass("d-none");
+            $('.start_payments_cancel').removeClass("d-none");
+        }
+    });
+
+
+    $(document).on('submit', '#start_payments_form', function (event) {
+        var form_data = new FormData(this);
+        event.preventDefault();
+        amount = $('#select_amount').val();
+        if (amount > 0) {
+            $.ajax({
+                method: 'POST',
+                url: '{% url "finance:unapplied-invoices" %}',
+                data: form_data,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                beforeSend: function () {
+                    $(".third-floated-btn").addClass('d-none');
+                    $(".floated-customizer-panel2").removeClass('active');
+                    $('#start_payments_submit').attr('disabled', 'disabled');
+                    $("#start_payments_submit").html("Please wait");
+                },
+                success: function (data) {
+
+                    if (data.error) {
+                        $('#start_payments_submit').attr('disabled', false);
+                        $("#start_payments_submit").html("Continue");
+                        $('#oops_text').text(data.error);
+                        $('#oops_alert').modal('show');
+
+                    } else {
+
+                        $('#apply_payments_table').css('width', '695px');
+                        $('#apply_payments_table').DataTable({
+
+                            "destroy": true,
+                            'paging': false,
+
+                            "oLanguage": {
+                                "sEmptyTable": "No invoice charges found"
+                            },
+
+                            "bPaginate": false,
+                            "bInfo": false,
+                            "language": {
+                                search: ""
+                            },
+                            "columnDefs": [{
+                                "width": 50,
+                                "targets": 0
+                            }, ],
+
+                            "bAutoWidth": false,
+                            "responsive": true,
+                            "ordering": false,
+                            "data": data.aaData,
+                            "bPaginate": true,
+                            "bProcessing": true,
+                            "pageLength": 10,
+                            //"scrollX": true,
+                            "scrollCollapse": true,
+                            "fixedColumns": true,
+                            "scrollY": "200px",
+
+                            "paging": false,
+
+
+                            "fnDrawCallback": function () {
+                                $('#amount_unapplied').text(this.fnSettings()
+                                    .fnRecordsTotal());
+
+                            }
+
+
+                        });
+
+                        $(".fcp-group-contents").addClass('d-none');
+                        $(".third-floated-btn").addClass('d-none');
+                        $('#start_payments_submit').attr('disabled', false);
+                        $("#start_payments_submit").text("Continue");
+                        $('#start_payments_modal').modal('hide');
+
+
+                        $('.total_balance').text(data.total_balance);
+                        $('.total_amount').text(data.amount);
+                        $('#amount').val(data.amount);
+                        $('#lease').val(data.lease);
+                        $('#paid_through').val(data.paid_through);
+                        $('#receipt_modal').modal('show');
+                        $('#apply_payments_table').css('wdith', '100%');
+                    }
+                },
+                error: function (jqXhr) {
+                    $('#start_payments_submit').attr('disabled', false);
+                    $("#start_payments_submit").text("Continue");
+                    $('#oops_text').text("Something went wrong, try again later");
+                    $('#oops_alert').modal('show');
+                }
+            });
+        } else {
+            $('#oops_text').text("The amount collected should be greater than 0");
+            $('#oops_alert').modal('show');
+        }
+    });
+    $(document).on('click', '.prepayment_button', function () {
+        var data = $(this).attr("id");
+        var data_split = data.split(",");
+        var receipt = data_split[0];
+        var lease = data_split[1];
+        var amount = data_split[2];
+        $.ajax({
+            method: 'POST',
+            url: '{% url "finance:match_invoice" %}',
+            data: {
+                receipt: receipt,
+                lease: lease,
+                amount: amount,
+            },
+
+            // contentType:'application/json',
+            //   processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $(".third-floated-btn").addClass('d-none');
+                $(".floated-customizer-panel2").removeClass('active');
+                $('#start_payments_submit').attr('disabled', 'disabled');
+                $("#start_payments_submit").html("Please wait");
+            },
+            success: function (data) {
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+
+                } else if (data.has_invoice == "No") {
+                    $('#notice_text').text("Sorry, this tenant doesn't have any pending invoices");
+                    $('#notice_modal').modal('show');
+                } else {
+
+                    $('#prepayment_table').css('width', '695px');
+                    $('#prepayment_table').DataTable({
+
+                        "destroy": true,
+                        'paging': false,
+
+                        "oLanguage": {
+                            "sEmptyTable": "No invoice charges found"
+                        },
+
+                        "bPaginate": false,
+                        "bInfo": false,
+                        "language": {
+                            search: ""
+                        },
+                        "columnDefs": [{
+                            "width": 50,
+                            "targets": 0
+                        }, ],
+
+                        "bAutoWidth": false,
+                        "responsive": true,
+                        "ordering": false,
+                        "data": data.aaData,
+                        "bPaginate": true,
+                        "bProcessing": true,
+                        "pageLength": 10,
+                        "paging": false,
+
+                        "scrollCollapse": true,
+                        "fixedColumns": true,
+                        "scrollY": "200px",
+
+                    });
+
+                    $('.total_balance').text(data.total_balance);
+                    $('.total_amount').text(data.amount);
+                    $('#receipt_id').val(receipt);
+                    $('#prepayment_modal').modal('show');
+                    $('#prepayment_table').css('wdith', '100%');
+                }
+            },
+            error: function (jqXhr) {
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+            }
+        });
+
+    });
+
+
+    $(document).on('submit', '#prepayment_form', function (event) {
+
+        var method = 'POST';
+        var url = '{% url "finance:submit_prepayment" %}';
+
+
+        var form_data = new FormData(this);
+        event.preventDefault();
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#submit_prepayment').attr('disabled', 'disabled');
+                $("#submit_prepayment").html("Please wait");
+            },
+            success: function (data) {
+                $('#submit_prepayment').attr('disabled', false);
+                $("#submit_prepayment").html("Upload records");
+                if (data.success) {
+                    receipt_table();
+                    $('#prepayment_modal').modal('hide');
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#submit_prepayment').attr('disabled', false);
+                $("#submit_prepayment").html("Upload records");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+              //  $('#prepayment_modal').modal('hide');
+            }
+
+        });
+    });
+
+
+
+
+
+
+
+
+    $(document).on('change', '.general_name', function () {
+        $('.class_fee_name').text("the " + $('#payments_name').val());
+    });
+
+
+    $(document).on('submit', '#receipt_form', function (event) {
+
+        var method = 'POST';
+        var url = '{% url "finance:payments-listcreate" %}';
+
+
+        var form_data = new FormData(this);
+        event.preventDefault();
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#submit_receipt').attr('disabled', 'disabled');
+                $("#submit_receipt").html("Please wait");
+            },
+            success: function (data) {
+                $('#submit_receipt').attr('disabled', false);
+                $("#submit_receipt").html("Upload records");
+                if (data.success) {
+                    receipt_table();
+                    $('#receipt_modal').modal('hide');
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#submit_receipt').attr('disabled', false);
+                $("#submit_receipt").html("Upload records");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#receipt_modal').modal('hide');
+            }
+
+        });
+    });
+
+    function receipt_table() {
+
+        $(".fcp-group-contents").addClass('d-none');
+        $(".create_invoice_record").removeClass('d-none');
+        $(".third-floated-btn").removeClass('d-none');
+        $(".filter_label").text('receipts');
+        var url = "{% url 'finance:payments-listcreate' %}";
+        $('#receipt_table').DataTable({
+            processing: true,
+            serverSide: true,
+            "destroy": true,
+            "bAutoWidth": false,
+            "responsive": true,
+            // "bLengthChange": false,
+            "ordering": false,
+            "oLanguage": {
+                "sEmptyTable": "No receipts added",
+                "sStripClasses": "",
+                "sSearch": "",
+                "sSearchPlaceholder": "search...",
+                "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+                    '<option value="10">10</option>' +
+                    '<option value="20">20</option>' +
+                    '<option value="30">30</option>' +
+                    '<option value="40">40</option>' +
+                    '<option value="50">50</option>' +
+                    '<option value="50">100</option>' +
+
+                    '</select></div>'
+            },
+            initComplete: function () {
+                var btns = $('.dt-button');
+                btns.removeClass('dt-button');
+            },
+            "ajax": {
+                "url": url,
+
+
+            },
+
+            "bPaginate": true,
+            "bProcessing": true,
+            "pageLength": 10,
+
+
+            "fnDrawCallback": function () {
+                $('.total_payments').html(this.fnSettings().fnRecordsTotal());
+            },
+
+        });
+
+
+
+    }
+
+
+
+    $(document).on('click', '.edit_receipt_button', function () {
+
+        var receipt = $(this).attr("id");
+
+        $.ajax({
+            method: 'GET',
+            url: '{% url "finance:receipt-details" %}',
+            data: {
+                "receipt": receipt
+            },
+            // contentType: false,
+            // processData: false,
+            dataType: "json",
+
+            success: function (data) {
+                $('#details_amount').val(data.details_amount);
+                $('#details_id').val(data.details_id);
+                $('#details_ref').val(data.details_ref);
+                $('#details_paid_through').val(data.details_paid_through);
+                $('#details_communication').val(data.details_communication);
+                $('#details_created_on').val(data.details_created_on);
+                $('#details_description').val(data.details_description);
+                $('#edit_receipt_modal').modal('show');
+
+            }
+        })
+    });
+</script>
+{% endblock scripts %}
+
+
+
+{% endblock content %}
+
+
+<!--**********************************
+    Content body end
+***********************************-->

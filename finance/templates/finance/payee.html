@@ -1,0 +1,418 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{request.path}} {% endblock title %}
+
+{% block modal %}
+
+
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="payee_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <form method="POST" id='payee_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title2 text-muted lead "><span
+                                    class="onboarding-title1 text-primary display-8 text-left fancy_text5 payee_name">Add
+                                    a new payee</span></h4>
+                            <div class="row">
+                                <div class="col-12 ">
+                                    <div class="form-group ">
+                                        <label class="control-label">Company name <span
+                                                class="text-black fancy_text5 display-7sm"><small> (Leave as blank if
+                                                    none)</small></label>
+                                        <input class="form-control editable " type="text"
+                                            placeholder="Example:Dsiraeli management" name="company_name"
+                                            id="company_name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 ">
+                                    <div class="form-group ">
+                                        <label class="control-label">What was the name of the payee?</label>
+                                        <input class="form-control editable " type="text"
+                                            placeholder="Example:John Kamau" name="name" id="name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class=" form-group">
+                                        <label for="">Category</label>
+                                        <select class=" form-control selectpicker dropup" data-dropup-auto="false"
+                                            id='payee_category' name="payee_category" data-dropup-auto="false"
+                                            data-size="4" data-live-search="true">
+                                            <option value="Contractor">Contractor</option>
+                                            <option value="Garbage collector">Garbage collector</option>
+                                            <option value="Cleaning services">Cleaning services</option>
+                                            <option value="Lender">Lender</option>
+                                            <option value="Property management">Property management</option>
+                                            <option value="Professional-legal">Professional-legal</option>
+                                            <option value="Professional-accounting">Professional-accounting</option>
+                                            <option value="Professional-realtor">Professional-realtor</option>
+                                            <option value="Supplier">Supplier</option>
+                                            <option value="Uncategorized">Uncategorized</option>
+                                            <option value="Insurance">Insurance</option>
+                                            <option value="Utility">Utility</option>
+                                            <option value="Abc tenant">Abc tenant</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-7 fancy_text4 lead text-left">Contact info</h4>
+                            <hr>
+                            {% comment %} <div class="row">
+                                <div class="col-12 pl-0">
+                                    <div class="form-group"><label class="control-label text-left">Code and phone
+                                            number</label>
+                                        <div class="input-group mb-2 mb-sm-0">
+                                            <div class="input-group-append col-4 "><input autocomplete="off"
+                                                    name="calling_code" id="calling_code" class="form-control editable"
+                                                    type="number" placeholder="Example: 254" value="254"></div><input
+                                                autocomplete="off" name="payee_phone" id="payee_phone"
+                                                class="form-control editable" type="number"
+                                                placeholder="Example: 705095622">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> {% endcomment %}
+                            {% include 'partials/_calling_code.html' with name="calling_code" id="calling_code" class="calling_code" %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group"><label class='' for="">What is their phone number?</label>
+                                        <div class="input-group mb-2 mb-sm-0">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text per_calling">1</div>
+                                            </div>
+                                            <input class="form-control " maxlength="10" placeholder="Example: 720425412"
+                                                type="phone" id='phone_number' name="phone_number">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 ">
+                                    <div class="form-group">
+                                        <label class="control-label">Email address</label>
+                                        <input class="form-control editable" type="text"
+                                            placeholder="Example: support@abctenant.com" id="email" name="email">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-7 fancy_text4 lead text-left">More info</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12 ">
+                                    <div class="form-group ">
+                                        <label class="control-label">Website</label>
+                                        <input class="form-control editable " type="text"
+                                            placeholder="Example:www.abctenant.com" name="website" id="website">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Comment</label>
+                                        <textarea placeholder="Example: They are our go to for such services"
+                                            class="form-control textarea" rows="4" name="description"
+                                            id="description"></textarea></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" name="id" id="payee_id">
+                            <input type="hidden" name="action_type" id="payee_action_type">
+                            <input type="hidden" id="payee_from">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary px-5 py-2 submit" type="submit" id="submit_payee">Click
+                                    to upload</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock modal %}
+{% block content %}
+
+<div class="content-body" style="min-height: 828px;">
+    <!-- row -->
+    <div class="container-fluid">
+
+
+        <div class="card mx-3">
+            <div class="card-header d-block mx-3 text-center">
+                <h5 class="card-titles display-4 custom-card-title ">Payees</h5>
+
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-xl-12">
+                <div class="col-12">
+                    <div class="card px-3">
+                        {% include 'partials/_table_extra.html' with button_class="payee_button" button_id="payee_button" button_text="Create a payee" total_class="total_invoices" total_text="payees"  %}
+
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="payee_table" class="display min-w850">
+                                    <thead>
+                                        <tr>
+                                            <th>Payee</th>
+                                            <th>Category</th>
+                                            <th>Total cash spent with them</th>
+                                            <th></th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% block scripts %}
+{% include 'partials/_select_options.html' %}
+{% include 'partials/_date.html' %}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.1.1/css/rowGroup.dataTables.min.css">
+<script src="https://cdn.datatables.net/rowgroup/1.1.1/js/dataTables.rowGroup.min.js"></script>
+<script>
+    $(document).ready(function () {
+        payee_table();
+    });
+    $(document).on('click', '#payee_button', function () {
+          $('#payee_form')[0].reset();
+        $('.payee_name').text("Let's begin");
+        $('#payee_action_type').val("add");
+        $('#payee_from').val("modal");
+        $('#payee_modal').modal('show');
+    });
+
+
+    $(document).on('change', '#calling_code', function () {
+        var the_data = $(this).val();
+        $('.per_calling').text(the_data);
+    });
+
+    $(document).on('submit', '#payee_form', function (event) {
+        var action_type = $('#payee_action_type').val();
+
+        if (action_type == 'add') {
+            var method = 'POST';
+            var url = '{% url "finance:payee-listcreate" %}';
+        }
+        if (action_type == 'edit') {
+            var id = $('#payee_id').val();
+            var method = 'PUT';
+            var url = "{% url 'finance:payee-rud' id=12345 %}".replace(/12345/, id).toString();
+        }
+
+        //var method = 'POST';
+        //var url = '{% url "finance:payee-listcreate" %}';
+        var form_data = new FormData(this);
+        event.preventDefault();
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#submit_payee').attr('disabled', 'disabled');
+                $("#submit_payee").html("Please wait");
+            },
+            success: function (data) {
+                $('#submit_payee').attr('disabled', false);
+                $("#submit_payee").html("Upload records");
+                if (data.success) {
+                    payee_table();
+                    $('#payee_modal').modal('hide');
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#submit_payee').attr('disabled', false);
+                $("#submit_payee").html("Upload records");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#payee_modal').modal('hide');
+            }
+
+        });
+    });
+
+    $(document).on('click', '.edit_payee', function () {
+        $('#payee_form')[0].reset();
+        var id = $(this).attr("id");
+
+        $.ajax({
+            url: "{% url 'finance:payee-rud' id=12345 %}".replace(/12345/, id).toString(),
+            method: "GET",
+            dataType: "json",
+            data: {
+                id: id
+            },
+
+            success: function (data) {
+                $('.payee_name').text(data.name);
+                $('#payee_id').val(data.id);
+                $('#name').val(data.name);
+                $('#company_name').val(data.company_name);
+                $('#payee_category').val(data.payee_category).change();
+                $('#calling_code').val(data.calling_code);
+                $('#phone_number').val(data.phone_number);
+                $('#email').val(data.email);
+                $('#website').val(data.website);
+                $('#description').val(data.description);
+                $('#payee_action_type').val('edit');
+                $('#payee_modal').modal('show');
+            }
+        })
+    });
+    $(document).on('click', '.remove_payee', function () {
+        var data = $(this).attr("id");
+        var data_split = data.split(",");
+        var id = data_split[0];
+        var name = data_split[1];
+
+        $('#confirm_title').text("Are you sure?");
+        $('#confirm_extra').text("" + name +
+            " will be deleted");
+        $('#confirm_button').text("Confirm removal");
+        $('#confirm_alert').modal('show');
+        $('#confirmYes').off().on('click', function () {
+            $.ajax({
+                url: "{% url 'finance:payee-rud' id=12345 %}".replace(/12345/,
+                    id).toString(),
+                method: "DELETE",
+                dataType: "json",
+                data: {
+                    id: id,
+
+
+                },
+                success: function (data) {
+                    if (data.success) {
+                        $('#confirm_alert').modal('hide');
+                        $('#success_text').text(data.success);
+                        $('#success_alert').modal('show');
+                        payee_table();
+                    }
+                    if (data.error) {
+                        $('#oops_text').text(data.error);
+                        $('#oops_alert').modal('show');
+                        $('#confirm_alert').modal('hide');
+                    }
+                },
+                error: function (jqXhr) {
+                    $('#oops_text').text("Something went wrong, try again later");
+                    $('#oops_alert').modal('show');
+                    $('#confirm_alert').modal('hide');
+                }
+
+            });
+        });
+        $('#confirmNo').off().on('click', function () {
+            $('#confirm_alert').modal('hide');
+        });
+    });
+
+    function payee_table() {
+
+        var url = "{% url 'finance:payee-listcreate' %}";
+        $('#payee_table').DataTable({
+            processing: true,
+            serverSide: true,
+            "destroy": true,
+            "bAutoWidth": false,
+            "responsive": true,
+            // "bLengthChange": false,
+            "ordering": false,
+            "oLanguage": {
+                "sEmptyTable": "No payee added",
+                "sStripClasses": "",
+                "sSearch": "",
+                "sSearchPlaceholder": "search...",
+                "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+                    '<option value="10">10</option>' +
+                    '<option value="20">20</option>' +
+                    '<option value="30">30</option>' +
+                    '<option value="40">40</option>' +
+                    '<option value="50">50</option>' +
+                    '<option value="50">100</option>' +
+
+                    '</select></div>'
+            },
+            initComplete: function () {
+                var btns = $('.dt-button');
+                btns.removeClass('dt-button');
+            },
+            "ajax": {
+                "url": url,
+
+
+            },
+
+            "bPaginate": true,
+            "bProcessing": true,
+            "pageLength": 10,
+
+
+            "fnDrawCallback": function () {
+                $('.total_invoices').html(this.fnSettings().fnRecordsTotal());
+            },
+
+        });
+
+
+
+    }
+</script>
+{% endblock scripts %}
+
+
+
+{% endblock content %}
+
+
+<!--**********************************
+    Content body end
+***********************************-->

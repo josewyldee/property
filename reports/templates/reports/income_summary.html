@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{request.path}} {% endblock title %}
+
+
+{% block content %}
+<style>
+    table.dataTable tr.dtrg-group td {
+        background-color: white !important;
+        border-top: 5px solid white !important;
+        border-top: 1px solid grey !important;
+    }
+
+    th {
+        border-bottom: 1px solid white !important;
+    }
+</style>
+
+<div class="content-body" style="min-height: 828px;">
+    <!-- row -->
+    <div class="container-fluid">
+
+
+        <div class="card mx-3 no-print">
+            <div class="card-header d-block mx-3 text-center">
+                <h5 class="card-titles display-4 custom-card-title ">Income summary</h5>
+
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-xl-12">
+                <div class="col-12">
+                    <div class="card print-card px-3">
+                        <div class="col-sm-12 d-flex justify-content-end mb-4  border-secondary ">
+                            <div class="element-wrapper compact pt-4 col-sm-5 ">
+                                <h6
+                                    class="element-header1 text-primary text-center1 display-8 fancy_text3 border-secondary border-bottom2 pb-3">
+                                </h6>
+                                <div class="element-box-tp">
+                                    <table class="table table-clean">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="valueq fancy_text5">Total income (in USD):</div>
+                                                </td>
+                                                <td class="text-right">
+                                                    <div class="valuez amount_taxable display-7sm fancy_text4 "
+                                                        id="total_income">Please
+                                                        wait</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="valueq  fancy_text5">Total expense (in USD):</div>
+                                                </td>
+                                                <td class="text-right">
+                                                    <div class="valuez amount_taxable display-7sm fancy_text4 "
+                                                        id="total_expense">Please
+                                                        wait</div>
+                                                </td>
+                                            </tr>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+             
+                        <div class="card-body pt-0">
+                            <div class="table-responsive">
+                                         <a class="printPage btn btn-outline-dark  px-5 py-2 mb-3" onclick="window.print();" href="#">Click to print</a>
+                                <table id="reports_table" class="display min-w850">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">Data</th>
+                                            <th class="text-left"></th>
+                                            <th class="text-left"></th>
+                                            <th class="text-left"></th>
+                                            <th class="text-left"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% block scripts %}
+{% include 'partials/_select_options.html' %}
+{% include 'partials/_date.html' %}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.1.1/css/rowGroup.dataTables.min.css">
+<script src="https://cdn.datatables.net/rowgroup/1.1.1/js/dataTables.rowGroup.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+<script>
+    $(document).ready(function () {
+        reports_table();
+    });
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+			$.fn.dataTable.Buttons.defaults.dom.button.className = 'value btn btn-dark px-5 py-2 ligsht mb-3';
+			$.fn.dataTable.ext.classes.sPageButton = 'button1 btn1 btn-sm1 button-secondary';
+    function reports_table() {
+        $(".fcp-group-contents").addClass('d-none');
+        $(".create_invoice_record").removeClass('d-none');
+        $(".third-floated-btn").removeClass('d-none');
+        $(".filter_label").text('receipts');
+        var url = "{% url 'reports:income_summary_table' %}";
+        $('#reports_table').DataTable({
+            processing: true,
+            serverSide: true,
+            "destroy": true,
+            "bAutoWidth": false,
+            "responsive": true,
+            "bPaginate": false,
+            "bLengthChange": false,
+           // dom: 'Bfrtip',
+          //  buttons: [
+        //    'print'
+           // ],
+            "bInfo": false,
+            "bFilter": false,
+            // "bLengthChange": false,
+            "ordering": false,
+            "oLanguage": {
+                "sEmptyTable": "No transaction",
+                "sStripClasses": "",
+                "sSearch": "",
+                "sSearchPlaceholder": "search...",
+
+            },
+            initComplete: function () {
+                var btns = $('.dt-button');
+                btns.removeClass('dt-button');
+            },
+            "ajax": {
+                "url": url,
+
+
+            },
+
+          
+            "bProcessing": true,
+            "pageLength": 10,
+            "columnDefs": [{
+                    "width": "75%",
+                    "targets": 1
+                },
+                {
+                    "width": "25%",
+                    "targets": 2
+                },
+                {
+
+                    "targets": 0,
+                    "visible": false,
+                },
+                {
+
+                    "targets": 3,
+                    "visible": false,
+                },
+                {
+
+                    "targets": 4,
+                    "visible": false,
+                },
+
+            ],
+            "rowGroup": {
+                "dataSrc": 0
+            },
+
+            "fnDrawCallback": function () {
+                $('.total_payments').html(this.fnSettings().fnRecordsTotal());
+            },
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(),
+                    data;
+                // converting to interger to find total
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+                // computing column Total of the complete result
+                var total_income = api
+                    .column(3)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+                var total_expense = api
+                    .column(4)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+               
+
+                $('#total_income').text(formatNumber(total_income));
+                $('#total_expense').text(formatNumber(total_expense));
+
+
+            },
+        });
+    }
+</script>
+{% endblock scripts %}
+
+
+
+{% endblock content %}
+
+
+<!--**********************************
+    Content body end
+***********************************-->

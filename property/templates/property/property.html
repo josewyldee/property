@@ -1,0 +1,1964 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} property {% endblock title %}
+
+{% block modal %}
+<div aria-hidden="true" data-backdrop="static" data-tab="sub_modal"
+    class="onboarding-modal modal fade animated sub_modal" style='z-index:1060 !important' id="utility_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered " role="document">
+        <form method="POST" id='utility_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w sub_modal">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-10 fancy_text4 lead text-left">Tax and property expenses
+                            </h4>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Name</label>
+                                        <input class="form-control editable" type="text" placeholder="Example:Tax fees "
+                                            name="name" id="utility_name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group"><label for="">Category</label>
+                                        <select class="form-control" id="group_utility" name="group">
+                                            <option value="expense">Expense</option>
+                                            <option value="tax">Tax</option>
+                                            <option value="maintenance">maintenance</option>
+                                            <option value="rent and development to authorities">Rent and development to
+                                                authorities</option>
+                                            <option value="custom">other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row show_custom_utility d-none">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">What is the custom category?</label>
+                                        <input class="form-control editable" type="text" placeholder="Example:Tax fees "
+                                            name="category" id="category">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row show_year d-none">
+                                <div class="col-sm-12">
+                                    <div class="form-group required display_year display_">
+                                        <label for=""> Which day of the year is tax expected</label>
+                                        <div class="date-input"><input autocomplete="off"
+                                                class="month_day_date form-control payments_year editable"
+                                                placeholder="Select the month and day" type="text" name="year_date"
+                                                id="edit_payments_year"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row show_month">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label for=""> Which day of the month is this due?</label>
+                                        <div class="date-input"><input autocomplete="off"
+                                                class="month_date form-control payments_month editable"
+                                                placeholder="Select day of the month" type="text" name="month_date"
+                                                id="edit_payments_month"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" id="utility_random_value" class="random_value" name="random_value">
+                            <input type="hidden" id="utility_action" value="add">
+                            <input type="hidden" id="utility_id">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary px-5 py-2" id="submit_utility" type="submit">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" data-tab="sub_modal"
+    class="onboarding-modal modal fade animated sub_modal" style='z-index:1060 !important' id="documents_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered " role="document">
+        <form method="POST" id='documents_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w sub_modal">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-10 fancy_text4 lead text-left">Documents </h4>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Name</label>
+                                        <input class="form-control editable" type="text"
+                                            placeholder="Example:Certificate " name="name" id="document_name">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row pt-4">
+                                <div class="col-12">
+                                    <div class="form-group"><label class='' for="">Catgeory</label>
+                                        <select class="form-control" name="category">
+                                            <option value="document">Document</option>
+                                            <option value="certificate">Certificate</option>
+                                            <option value="photo">Photo</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="div_upload_file file mt-4">
+                                <label for="" style="font-size:15px"
+                                    class='text-center col-sm-12  fancy_text3 text-black '>
+                                    <span class='fancy_text4 text-primary font-w600'>Select a file to upload </span>
+                                </label>
+                                <input type="file" name='document'
+                                    class="form-control-file btn-rounded btn btn-outline-primary px-5 py-2"
+                                    id="document">
+                            </div>
+                        </div>
+                        <br><br><br>
+                    </div>
+
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" class="random_value" name="random_value">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary px-5 py-2" id="submit_document" type="submit">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="next_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <div class="modal-content">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+
+            <div class="onboarding-content with-gradient">
+                <h4 class="onboarding-title lead display-7 text-center"><span
+                        class="onboarding-title display-4 fancy_text5 lead">Good job!</span></h4>
+                <h4 class="onboarding-title text-muted lead display-7 text-center"><span
+                        class="onboarding-title text-muted display-8 font-w600 fancy_text3 text-primary">The property
+                        has
+                        been added succesfully.</span>
+                    <span><br></span></h4>
+                <div class="row pt-4">
+                    <div class="col-12">
+                        <div class="form-group"><label class='' for="">What do you want to do next?</label>
+                            <select class="form-control" id="next_value">
+                                {% comment %} <option value="units">Add units (For rent/Sale)</option> {% endcomment %}
+                                <option value="tenants">Add new tenants</option>
+                                <option value="lease">Create new leases</option>
+                                <option value='payments'>Add payment options</option>
+
+                                <option value='nothing'>Nothing for now</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" id="next_id" class='next_id'>
+                <div class='form-buttons-w3 d-flex flex-row justify-content-end'> <a class="btn btn-primary px-5 py-3 "
+                        id="next_submit"><span class="answer text-white">Continue
+                        </span></a></div>
+
+                <!-- <div class="form-buttons-w center text-center d-flex justify-content-end">
+					<a data-dismiss="modal" class="btn btn-primary text-white px-5 py-3" id='success_button'><span>Floors in lanagata paradise</span></a>
+				</div> -->
+            </div>
+        </div>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="property_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <div class="modal-content" stylse="min-height:500px">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <form method="POST" id='property_form'>
+                <div class="onboarding-slider-w" stysle="min-height:500px">
+
+                    <div class="onboarding-slide" stsyle="min-height:500px">
+                        <div class="onboarding-content with-gradient" stsyle="min-height:500px">
+                            <h4
+                                class="onboarding-title1 text-blackd display-10 font-w600 fancy_text5 text-left mb-0 property_title">
+                                Add property</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="control-label">What is the name of the property?</label>
+                                        <input class="form-control editable" type="text" autocomplete="off"
+                                            placeholder="Example: Langata paradise" name="property_name"
+                                            id="property_name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">Property type</label>
+                                        <select class="form-control selectpicker dropup" data-dropup-auto="false"
+                                            name="property_type_raw" data-live-search="true" data-size="4"
+                                            id="property_type_raw">
+                                            <optgroup label="Residential">
+                                                <option value="Apartment buildings,Residential">Apartment buildings
+                                                </option>
+                                                <option value="Townhouse,Residential">Townhouse</option>
+                                                <option value="Single-family houses,Residential">Single-family houses
+                                                </option>
+                                                <option value="Duplex,Residential">Duplex</option>
+                                                <option value="Triplex,Residential">Triplex</option>
+                                                <option value="Fourplex,Residential">Fourplex</option>
+                                            </optgroup>
+                                            <optgroup label="Commercial">
+                                                <option value="Office spaces,Commercial">Office space</option>
+                                                <option value="Retail spaces ,Commercial">Retail space </option>
+                                                <option value="Storage facilities,Commercial">Storage facilities
+                                                </option>
+                                                <option value="Parking lots and garages,Commercial">Parking lots and
+                                                    garages</option>
+                                                <option value="Grocery stores ,Commercial">Grocery stores </option>
+                                                <option value="gas stations,Commercial">gas stations</option>
+                                                <option value="Movie theatres,Commercial">Movie theatres</option>
+                                            </optgroup>
+                                            <optgroup label="Industrial">
+                                                <option value="Production facilities,Industrial">Production facilities
+                                                </option>
+                                                <option value="refrigerated storage,Industrial">refrigerated storage
+                                                </option>
+                                                <option value="Research and development parks,Industrial">Research and
+                                                    development parks</option>
+                                                <option value="Power plans,Industrial">Power plans</option>
+                                            </optgroup>
+                                            <optgroup label="Special Use">
+                                                <option value="Mixed-use,Special Use">Mixed-use</option>
+                                                <option value="Car washes and gas stations,Special Use">Car washes and
+                                                    gas stations</option>
+                                                <option value="Recreational facilities(ie gym),Special Use">Recreational
+                                                    facilities(ie gym)</option>
+                                                <option value="Government buildings,Special Use">Government buildings
+                                                </option>
+                                                <option value="Places of worship,Special Use">Places of worship</option>
+                                                <option value="Orchards,Special Use">Orchards</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group"><label class="control-label">Description</label><textarea
+                                            class="form-control editable"
+                                            placeholder="Example: Freshly painted home with new appliances and carpeting. Easy walking to public transit and a great neighborhood."
+                                            rows="4" id="description" name="description"></textarea></div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="onboarding-slide   ">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 lead text-left font-w600">Location info</h4>
+                            <hr>
+
+                            {% comment %} <div class="row ">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="form-group required">
+                                            <label class="control-label">Country</label>
+                                            <input class="form-control " placeholder="Example: United states"
+                                                type="text" name="country" id="property_country">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> {% endcomment %}
+                            {% include 'partials/_select_country.html' with name="country_raw" id="country_raw" class="country_raw" %}
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <div class="form-group required">
+                                            <label class="control-label">City</label>
+                                            <input class="form-control " placeholder="Example: Nairobi" type="text"
+                                                name="city" id="property_city">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <div class="form-group required">
+                                            <label class="control-label">Street name</label>
+                                            <input class="form-control " placeholder="Example: Nairobi west" type="text"
+                                                name="street" id="property_street">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">Street description/ Landmarks</label>
+                                        <textarea placeholder="Example: Blue building opposite T-mall in Lanagta road"
+                                            class="form-control textarea " rows="2" name="landmark_description"
+                                            id="property_description"></textarea></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Ownership info</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Which authority is this property under?</label>
+                                        <input class="form-control editable" type="text" autocomplete="off"
+                                            placeholder="Example: " name="property_authority" id="property_authority">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Who owns the property?</label>
+                                        <input class="form-control editable" type="text" autocomplete="off"
+                                            placeholder="Example: Joseph Disraeli " name="property_owner"
+                                            id="property_owner">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row show_ownership">
+                                <div class="p-4 col-12 border d-flex justify-content-around"
+                                    style="background-color: #FFFFE0;">
+                                    <div class="text-secondary">
+                                        <div class=" px-3 form-desc  display-7sm fancy_text3 p-2"
+                                            style="line-height: 150%;font-size:18px;">
+                                            <a href="#" download class="fancy_text5 text-primary" id="view_ownership"
+                                                style="border-bottom:2px solid #3B4CB8"> Click to view ownership
+                                                document</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="upload_ownership file mt-4">
+                                <label for="" style="font-size:15px"
+                                    class='text-center col-sm-12  fancy_text3 text-black '>
+                                    <span class='fancy_text4 text-primary font-w600'>Attach ownership document </span>
+                                </label>
+                                <input type="file" name='ownership_document'
+                                    class="form-control-file btn-rounded btn btn-outline-primary px-5 py-2"
+                                    id="ownership_document">
+                            </div>
+
+
+                            {% comment %} <div class="row mb-5">
+                                <div class="col-sm-12">
+                                    <div class=" form-group">
+                                        <label for=""> What is this property for? </label>
+                                        <select class="form-control " id='property_use' name="property_use">
+                                            <option value="rent">Rent</option>
+                                            <option value="yes">Yes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div> {% endcomment %}
+
+
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient my-5">
+                            <h4 class="onboarding-title display-10 text-center fancy_text5">Other documents</h4>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" class="random_value" name="random_value">
+                            <div class="row mb-5 mt-2">
+                                <div class="d-flex justify-content-end col-12">
+                                    <button
+                                        class="btn btn-primary btn-rounded px-5 py-2 mr-sm-4 text-white add_documents_button"
+                                        type='button'><span>Click to add</span></button>
+                                </div>
+                            </div>
+                            <div class="table-responsive" style="cursor: pointer;">
+                                <table id='documents_table' class="table display responsive table-heading dataTable"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+
+
+                                            {% comment %} <th class="text-left">Category</th> {% endcomment %}
+                                            <th class="text-left">Name</th>
+                                            <th class="text-left">Download</th>
+                                            <th class="text-left">Delete</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-left">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient my-5">
+                            <h4 class="onboarding-title display-10 text-center fancy_text5">Tax and property expenses
+                            </h4>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" class="random_value" name="random_value">
+                            <div class="row mb-5 mt-2">
+                                <div class="d-flex justify-content-end col-12">
+                                    <button
+                                        class="btn btn-primary btn-rounded px-5 py-2 mr-sm-4 text-white add_utility_button"
+                                        type='button'><span>Click to add</span></button>
+                                </div>
+                            </div>
+                            <div class="table-responsive" style="cursor: pointer;">
+                                <table id='utility_table' class="table display responsive table-heading dataTable"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+
+
+                                            {% comment %} <th class="text-left">Category</th> {% endcomment %}
+                                            <th class="text-left">Name</th>
+                                            <th class="text-left">Category</th>
+                                            <th class="text-left">Due on</th>
+                                            <th class="text-left"></th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-left">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %} <div class="onboarding-slide   ">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Details about this
+                                property</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">Description</label>
+                                        <textarea
+                                            placeholder="Example: Apartments epitomize evolved living where life is a pleasurable experience, at a surprisingly affordable price tag. Executive 2 and 3 bedroom Apartments with Master En suite furnished "
+                                            class="form-control textarea " rows="4" name="description"
+                                            id="description"></textarea></div>
+                                </div>
+                            </div>
+                            <div class="show_photo d-none">
+                                <img class="show_photo_src mx-auto border-rounded border-primary"
+                                    src="http://127.0.0.1:8000/media/Property/building_k4yKU04.jpg" width="150"
+                                    height="125">
+
+                            </div>
+                            <div class="div_upload_file">
+                                <label for="" style="font-size:15px"
+                                    class='text-left col-sm-12  fancy_text3 text-black '> <span
+                                        class='fancy_text4 text-primary font-w600'>Upload a good photo </span>| png,jpeg
+                                    |</label>
+                                <input type="file" name='photo' class="form-control-file btn btn-primary px-4 py-4"
+                                    id="photo">
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+
+
+                    <div class="onboarding-slide   ">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Lastly</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12 ">
+                                    <div class="form-group required">
+                                        <label class="control-label">What is the property for?</label>
+                                        <select class="form-control" name="occupancy_status" id="occupancy_status">
+                                            <option value="vacant">Unit is for rent</option>
+                                            <option value="not sold">For selling</option>
+                                            <option value="personal use">For personal use</option>
+                                            <option value="not available">Not available(rented/sold)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row show_rent">
+                                <div class="col-sm-12">
+                                    <div class="form-group required  display_month display_">
+                                        <label for=""> Expected on</label>
+                                        <div class="date-input"><input autocomplete="off"
+                                                class="month_date form-control payments_month editable"
+                                                placeholder="Select day of the month" type="number"
+                                                name="property_rent_date" id="property_rent_date"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="property_rent_category" name="property_rent_category"
+                                value="custom">
+                            <input type="hidden" id="property_rent_name" name="property_rent_name" value="rent">
+                            <input type="hidden" id="property_rent_duration" name="property_rent_duration"
+                                value="monthly">
+                            <div class="row show_rent">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label amount_description">Amount</label>
+                                        <input class="form-control editable" type="text" placeholder="Example: 7000"
+                                            name="property_rent_amount" id="property_rent_amount">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" name="action_type" id="action_type">
+                            <input type="hidden" name="id" id="property_auto" class='property_auto'>
+
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary px-5 py-2 mt-3 " type="buttom" id="submit_property">Click
+                                    to upload
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>s
+        </div>
+    </div>
+</div>
+{% endblock modal %}
+{% block content %}
+<div class="content-body" style="min-height: 828px;">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="card mx-3">
+            <div class="card-header d-block mx-3 text-center">
+                <h5 class="card-titles custom-card-title display-4 ">Property list</h5>
+
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="col-12">
+
+
+                    <div class="card px-3">
+
+                        {% include 'partials/_table_extra.html' with button_class="" button_id="add_property_button" button_text="Click to add" total_class="total_property" total_text="property"  %}
+                        {% comment %} <div class="row my-4 mx-3 pt-47 d-flex justify-content-end">
+                            <button class="btn btn-warning light  py-2 px-5 btn-rounded" type="button"
+                                id="next_test"><span>Click to test</span></button>
+                        </div> {% endcomment %}
+                        {% comment %} <div class="table-extra my-2">
+                            <div class="row my-4 mx-3 pt-47 d-flex justify-content-end">
+                                <button class="btn btn-warning light  py-2 px-5 btn-rounded" type="button"
+                                    id="next_test"><span>Click to add</span></button>
+                            </div>
+                            <div class="row my-3 mx-4 pt-47 d-flex justify-content-start">
+
+                                <h4 class="card-title  display-8"
+                                    style="letter-spacing:1.6px;color: #7e7e7e!important;"><span
+                                        class="display-4 total_property1 fancy_text3">4</span><span class="fancy_text4">
+                                        property</span></h4>
+                            </div>
+
+                        </div> {% endcomment %}
+                        {% comment %}
+                        {% include "partials/_table.html" with table_row="<th>Property</th><th>Type</th><th>Owned by</th><th>Managed by</th> <th> </th>" foo=bar%}
+                        {% endcomment %}
+
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="property_table" class="display min-w850">
+                                    <thead class="bg-primaryf">
+                                        <tr>
+
+                                            <th>Property</th>
+                                            <th>Type</th>
+                                            <th>Owner</th>
+                                            <th>Location</th>
+                                            <th> </th>
+
+
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% comment %} <div class="floated-customizer-btn third-floated-btn btn-primary px-5">
+
+    <span class="fancy_text3 d-none d-md-block d-lg-block d-xl-block">Click to filter</span></span>
+    <span class="fancy_text3 d-md-none d-sm-block">Filter </span>
+</div>
+
+<div class="floated-customizer-panel2" style="z-index:2800">
+    <div class="fcp-content">
+        <div class="close-customizer-btn">
+            <i class="os-icon os-icon-x"></i>
+        </div>
+        <div class="fcp-group">
+            <div class="fcp-group-header1 lead text-center b-b p-2 fancy_text4 display-8 text-primary mb-3">
+                Filter records
+            </div>
+            <div class="fcp-group-contents mb-5 pb-4 b-b property_list_record">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group ">
+                            <label class="control-label">Building</label>
+                            <div class="dropdown bootstrap-select show-tick form-control form-control-sm1 dropup">
+                                <select id="filter_property_list"
+                                    class="form-control selectpicker show-tick form-control-sm1" data-live-search="true"
+                                    data-size="4" tabindex="-98">
+                                    <option selected="" value="all">All</option>
+                                    <option data-subtext="Block A In Disraeli apartments" value="BBH">Block A</option>
+                                    <option data-subtext="Block B In Disraeli apartments" value="BBI">Block B</option>
+                                    <option data-subtext="Block C In Disraeli apartments" value="BBJ">Block C</option>
+                                    <option data-subtext="Block A In Langata paradise" value="BBB">Block A</option>
+                                    <option data-subtext="Building B In Langata paradise" value="BBC">Building B
+                                    </option>
+                                    <option data-subtext="Block C In Langata paradise" value="BBD">Block C</option>
+                                    <option data-subtext="Block D In Langata paradise" value="BBE">Block D</option>
+                                    <option data-subtext="Block E In Langata paradise" value="BBF">Block E</option>
+                                    <option data-subtext="Building F In Langata paradise" value="BBG">Building F
+                                    </option>
+                                    <option data-subtext="Saint townhouse" value="BBK">Saint townhouse</option>
+                                </select><button type="button" class="btn dropdown-toggle form-control-select btn-light"
+                                    data-toggle="dropdown" role="button" data-id="filter_property_list" title="All">
+                                    <div class="filter-option">
+                                        <div class="filter-option-inner">
+                                            <div class="filter-option-inner-inner">All</div>
+                                        </div>
+                                    </div>
+                                </button>
+                                <div class="dropdown-menu " role="combobox"
+                                    style="max-height: 180px; overflow: hidden; min-width: 299px;">
+                                    <div class="bs-searchbox"><input type="text" class="form-control" autocomplete="off"
+                                            role="textbox" aria-label="Search"></div>
+                                    <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1"
+                                        style="max-height: 116px; overflow-y: auto;">
+                                        <ul class="dropdown-menu inner show">
+                                            <li class="selected active"><a role="option"
+                                                    class="dropdown-item selected active" aria-disabled="false"
+                                                    tabindex="0" aria-selected="true"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">All</span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block A<small class="text-muted">Block A In
+                                                            Disraeli apartments</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block B<small class="text-muted">Block B In
+                                                            Disraeli apartments</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block C<small class="text-muted">Block C In
+                                                            Disraeli apartments</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block A<small class="text-muted">Block A In Langata
+                                                            paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Building B<small class="text-muted">Building B In
+                                                            Langata paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block C<small class="text-muted">Block C In Langata
+                                                            paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block D<small class="text-muted">Block D In Langata
+                                                            paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block E<small class="text-muted">Block E In Langata
+                                                            paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Building F<small class="text-muted">Building F In
+                                                            Langata paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Saint townhouse<small class="text-muted">Saint
+                                                            townhouse</small></span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-none1">
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <label class="control-label">Category</label>
+                            <div
+                                class="dropdown bootstrap-select form-control form-control-sm floating_select_big d-flex justify-content-end">
+                                <select id="filter_property_category"
+                                    class="form-control selectpicker form-control-sm floating_select_big d-flex justify-content-end"
+                                    tabindex="-98">
+                                    <option selected="" value="all" class="display-7sm">All</option>
+                                    <option value="Residential" class="display-7sm">Residential</option>
+                                    <option value="Commercial" class="display-7sm">Commercial</option>
+                                    <option value="Parking" class="display-7sm">Parking</option>
+                                </select><button type="button" class="btn dropdown-toggle btn-light form-control-select"
+                                    data-toggle="dropdown" role="button" data-id="filter_property_category" title="All">
+                                    <div class="filter-option">
+                                        <div class="filter-option-inner">
+                                            <div class="filter-option-inner-inner">All</div>
+                                        </div>
+                                    </div>
+                                </button>
+                                <div class="dropdown-menu " role="combobox">
+                                    <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1">
+                                        <ul class="dropdown-menu inner show"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 mt-3">
+                    <div class="row d-flex justify-content-around mb1-4 ">
+                        <button class="btn btn-primary pulse-button px-5 py-3" id="property_list_button"
+                            type="button"><span>Click to filter</span></button>
+                    </div>
+                </div>
+            </div>
+            <div class="fcp-group-contents mb-5 pb-4 b-b property_settings_record d-none">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group ">
+                            <label class="control-label">Building</label>
+                            <div class="dropdown bootstrap-select show-tick form-control form-control-sm1"><select
+                                    id="filter_property_settings"
+                                    class="form-control selectpicker show-tick form-control-sm1" data-live-search="true"
+                                    data-size="4" tabindex="-98">
+                                    <option selected="" value="all">All</option>
+                                    <option data-subtext="Block A In Disraeli apartments" value="BBH">Block A</option>
+                                    <option data-subtext="Block B In Disraeli apartments" value="BBI">Block B</option>
+                                    <option data-subtext="Block C In Disraeli apartments" value="BBJ">Block C</option>
+                                    <option data-subtext="Block A In Langata paradise" value="BBB">Block A</option>
+                                    <option data-subtext="Building B In Langata paradise" value="BBC">Building B
+                                    </option>
+                                    <option data-subtext="Block C In Langata paradise" value="BBD">Block C</option>
+                                    <option data-subtext="Block D In Langata paradise" value="BBE">Block D</option>
+                                    <option data-subtext="Block E In Langata paradise" value="BBF">Block E</option>
+                                    <option data-subtext="Building F In Langata paradise" value="BBG">Building F
+                                    </option>
+                                    <option data-subtext="Saint townhouse" value="BBK">Saint townhouse</option>
+                                </select><button type="button" class="btn dropdown-toggle form-control-select btn-light"
+                                    data-toggle="dropdown" role="button" data-id="filter_property_settings" title="All">
+                                    <div class="filter-option">
+                                        <div class="filter-option-inner">
+                                            <div class="filter-option-inner-inner">All</div>
+                                        </div>
+                                    </div>
+                                </button>
+                                <div class="dropdown-menu " role="combobox"
+                                    style="max-height: 180px; overflow: hidden; min-width: 299px;">
+                                    <div class="bs-searchbox"><input type="text" class="form-control" autocomplete="off"
+                                            role="textbox" aria-label="Search"></div>
+                                    <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1"
+                                        style="max-height: 116px; overflow-y: auto;">
+                                        <ul class="dropdown-menu inner show">
+                                            <li class="selected active"><a role="option"
+                                                    class="dropdown-item selected active" aria-disabled="false"
+                                                    tabindex="0" aria-selected="true"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">All</span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block A<small class="text-muted">Block A In
+                                                            Disraeli apartments</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block B<small class="text-muted">Block B In
+                                                            Disraeli apartments</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block C<small class="text-muted">Block C In
+                                                            Disraeli apartments</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block A<small class="text-muted">Block A In Langata
+                                                            paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Building B<small class="text-muted">Building B In
+                                                            Langata paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block C<small class="text-muted">Block C In Langata
+                                                            paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block D<small class="text-muted">Block D In Langata
+                                                            paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block E<small class="text-muted">Block E In Langata
+                                                            paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Building F<small class="text-muted">Building F In
+                                                            Langata paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Saint townhouse<small class="text-muted">Saint
+                                                            townhouse</small></span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 mt-3">
+                    <div class="row d-flex justify-content-around mb1-4 ">
+                        <button class="btn btn-primary pulse-button px-5 py-3" id="property_settings_button"
+                            type="button"><span>Click to filter</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fcp-group-contents mb-5 pb-4 b-b create_units_record d-none">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group ">
+                            <label class="control-label">Building</label>
+                            <div class="dropdown bootstrap-select show-tick form-control form-control-sm1"><select
+                                    id="filter_unit_property"
+                                    class="form-control selectpicker show-tick form-control-sm1" data-live-search="true"
+                                    data-size="7" tabindex="-98">
+                                    <option selected="" value="all">All</option>
+                                    <option data-subtext="Block A In Disraeli apartments" value="BBH">Block A</option>
+                                    <option data-subtext="Block B In Disraeli apartments" value="BBI">Block B</option>
+                                    <option data-subtext="Block C In Disraeli apartments" value="BBJ">Block C</option>
+                                    <option data-subtext="Block A In Langata paradise" value="BBB">Block A</option>
+                                    <option data-subtext="Building B In Langata paradise" value="BBC">Building B
+                                    </option>
+                                    <option data-subtext="Block C In Langata paradise" value="BBD">Block C</option>
+                                    <option data-subtext="Block D In Langata paradise" value="BBE">Block D</option>
+                                    <option data-subtext="Block E In Langata paradise" value="BBF">Block E</option>
+                                    <option data-subtext="Building F In Langata paradise" value="BBG">Building F
+                                    </option>
+                                    <option data-subtext="Saint townhouse" value="BBK">Saint townhouse</option>
+                                </select><button type="button" class="btn dropdown-toggle form-control-select btn-light"
+                                    data-toggle="dropdown" role="button" data-id="filter_unit_property" title="All">
+                                    <div class="filter-option">
+                                        <div class="filter-option-inner">
+                                            <div class="filter-option-inner-inner">All</div>
+                                        </div>
+                                    </div>
+                                </button>
+                                <div class="dropdown-menu " role="combobox"
+                                    style="max-height: 267px; overflow: hidden; min-width: 299px;">
+                                    <div class="bs-searchbox"><input type="text" class="form-control" autocomplete="off"
+                                            role="textbox" aria-label="Search"></div>
+                                    <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1"
+                                        style="max-height: 203px; overflow-y: auto;">
+                                        <ul class="dropdown-menu inner show">
+                                            <li class="selected active"><a role="option"
+                                                    class="dropdown-item selected active" aria-disabled="false"
+                                                    tabindex="0" aria-selected="true"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">All</span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block A<small class="text-muted">Block A In
+                                                            Disraeli apartments</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block B<small class="text-muted">Block B In
+                                                            Disraeli apartments</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block C<small class="text-muted">Block C In
+                                                            Disraeli apartments</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block A<small class="text-muted">Block A In Langata
+                                                            paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Building B<small class="text-muted">Building B In
+                                                            Langata paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block C<small class="text-muted">Block C In Langata
+                                                            paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block D<small class="text-muted">Block D In Langata
+                                                            paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Block E<small class="text-muted">Block E In Langata
+                                                            paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Building F<small class="text-muted">Building F In
+                                                            Langata paradise</small></span></a></li>
+                                            <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                    tabindex="0" aria-selected="false"><span
+                                                        class=" bs-ok-default check-mark"></span><span
+                                                        class="text">Saint townhouse<small class="text-muted">Saint
+                                                            townhouse</small></span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <label class="control-label">Occupancy</label>
+                            <div
+                                class="dropdown bootstrap-select form-control form-control-sm floating_select_big d-flex justify-content-end">
+                                <select id="f_unit_occupancy_status"
+                                    class="form-control selectpicker form-control-sm floating_select_big d-flex justify-content-end"
+                                    tabindex="-98">
+                                    <option selected="" value="all" class="display-7sm">All</option>
+                                    <option value="vacant" class="display-7sm">Vacant</option>
+                                    <option value="occupied" class="display-7sm">Occupied</option>
+                                    <option value="maintenance" class="display-7sm">Maintenance</option>
+                                </select><button type="button" class="btn dropdown-toggle btn-light form-control-select"
+                                    data-toggle="dropdown" role="button" data-id="f_unit_occupancy_status" title="All">
+                                    <div class="filter-option">
+                                        <div class="filter-option-inner">
+                                            <div class="filter-option-inner-inner">All</div>
+                                        </div>
+                                    </div>
+                                </button>
+                                <div class="dropdown-menu " role="combobox">
+                                    <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1">
+                                        <ul class="dropdown-menu inner show"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <label class="control-label">Category</label>
+                            <div
+                                class="dropdown bootstrap-select form-control form-control-sm floating_select_big d-flex justify-content-end">
+                                <select id="f_unit_category"
+                                    class="form-control selectpicker form-control-sm floating_select_big d-flex justify-content-end"
+                                    tabindex="-98">
+                                    <option selected="" value="all" class="display-7sm">All</option>
+                                    <option value="Residential" class="display-7sm">Residential</option>
+                                    <option value="Commercial" class="display-7sm">Commercial</option>
+                                    <option value="Parking" class="display-7sm">Parking</option>
+                                </select><button type="button" class="btn dropdown-toggle btn-light form-control-select"
+                                    data-toggle="dropdown" role="button" data-id="f_unit_category" title="All">
+                                    <div class="filter-option">
+                                        <div class="filter-option-inner">
+                                            <div class="filter-option-inner-inner">All</div>
+                                        </div>
+                                    </div>
+                                </button>
+                                <div class="dropdown-menu " role="combobox">
+                                    <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1">
+                                        <ul class="dropdown-menu inner show"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <label class="control-label">types</label>
+                            <div
+                                class="dropdown bootstrap-select form-control form-control-sm floating_select_big d-flex justify-content-end">
+                                <select id="f_unit_type"
+                                    class="form-control selectpicker form-control-sm floating_select_big d-flex justify-content-end"
+                                    data-live-search="true" tabindex="-98">
+                                    <option selected="" value="all" class="display-7sm">All</option>
+                                    <option class="residential" value="studio">Studio/bedsitters</option>
+                                    <option class="residential" value="single rooms">Single rooms</option>
+                                    <option class="residential" value="one-bedroom">One-bedroom apartments</option>
+                                    <option class="residential" value="two-bedroom">Two-bed room apartments</option>
+                                    <option class="residential" value="three-bedroom">Three-bed room apartments</option>
+                                    <option class="residential" value="four-bedroom">Four-bed room apartments</option>
+                                    <option class="residential" value="five-bedroom">Five-bed room apartments</option>
+                                    <option class="residential" value="six-bedroom">Six-bed room apartments</option>
+                                    <option class="residential" value="seven-bedroom">Seven-bed room apartments</option>
+                                    <option class="residential" value="other">Other</option>
+                                    <option class="commercial" value="shops">Shops</option>
+                                    <option class="commercial" value="stalls">Stalls</option>
+                                    <option class="commercial" value="rooms">Rooms</option>
+                                    <option class="commercial" value="spaces(sections of a floor)">Spaces(sections of a
+                                        floor)</option>
+                                    <option class="commercial" value="floor(an entire floor)">Floor(an entire floor)
+                                    </option>
+                                    <option class="commercial" value="other">Other</option>
+                                </select><button type="button" class="btn dropdown-toggle btn-light form-control-select"
+                                    data-toggle="dropdown" role="button" data-id="f_unit_type" title="All">
+                                    <div class="filter-option">
+                                        <div class="filter-option-inner">
+                                            <div class="filter-option-inner-inner">All</div>
+                                        </div>
+                                    </div>
+                                </button>
+                                <div class="dropdown-menu " role="combobox">
+                                    <div class="bs-searchbox"><input type="text" class="form-control" autocomplete="off"
+                                            role="textbox" aria-label="Search"></div>
+                                    <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1">
+                                        <ul class="dropdown-menu inner show"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group required ">
+                            <label for="">Rent from</label>
+                            <div class="date-input"><input autocomplete="off" class=" form-control editable"
+                                    placeholder="Rent from" type="number" name="f_rent_from" id="f_rent_from"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group required ">
+                            <label for="">Rent to</label>
+                            <div class="date-input"><input autocomplete="off" class=" form-control editable"
+                                    placeholder="Rent to" type="number" name="f_rent_to" id="f_rent_to"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 mt-3">
+                    <div class="row d-flex justify-content-around mb1-4 ">
+                        <button class="btn btn-primary pulse-button px-5 py-3" id="create_units_button"
+                            type="button"><span>Click to filter</span></button>
+                    </div>
+                </div>
+            </div>
+            <div class="fcp-group-contents mb-5 pb-4 b-b property_document_record d-none">
+                <div class="form-desc">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group ">
+                                <label class="control-label">Buildings</label>
+                                <div
+                                    class="dropdown bootstrap-select form-control form-control-sm floating_select_big d-flex justify-content-end">
+                                    <select id="docs_filter_property"
+                                        class="form-control selectpicker form-control-sm floating_select_big d-flex justify-content-end"
+                                        data-live-search="true" data-size="4" tabindex="-98">
+                                        <option selected="" value="all">All</option>
+                                        <option data-subtext="Block A In Disraeli apartments" value="BBH">Block A
+                                        </option>
+                                        <option data-subtext="Block B In Disraeli apartments" value="BBI">Block B
+                                        </option>
+                                        <option data-subtext="Block C In Disraeli apartments" value="BBJ">Block C
+                                        </option>
+                                        <option data-subtext="Block A In Langata paradise" value="BBB">Block A</option>
+                                        <option data-subtext="Building B In Langata paradise" value="BBC">Building B
+                                        </option>
+                                        <option data-subtext="Block C In Langata paradise" value="BBD">Block C</option>
+                                        <option data-subtext="Block D In Langata paradise" value="BBE">Block D</option>
+                                        <option data-subtext="Block E In Langata paradise" value="BBF">Block E</option>
+                                        <option data-subtext="Building F In Langata paradise" value="BBG">Building F
+                                        </option>
+                                        <option data-subtext="Saint townhouse" value="BBK">Saint townhouse</option>
+                                    </select><button type="button"
+                                        class="btn dropdown-toggle form-control-select btn-light" data-toggle="dropdown"
+                                        role="button" data-id="docs_filter_property" title="All">
+                                        <div class="filter-option">
+                                            <div class="filter-option-inner">
+                                                <div class="filter-option-inner-inner">All</div>
+                                            </div>
+                                        </div>
+                                    </button>
+                                    <div class="dropdown-menu " role="combobox"
+                                        style="max-height: 180px; overflow: hidden; min-width: 265px;">
+                                        <div class="bs-searchbox"><input type="text" class="form-control"
+                                                autocomplete="off" role="textbox" aria-label="Search"></div>
+                                        <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1"
+                                            style="max-height: 116px; overflow-y: auto;">
+                                            <ul class="dropdown-menu inner show">
+                                                <li class="selected active"><a role="option"
+                                                        class="dropdown-item selected active" aria-disabled="false"
+                                                        tabindex="0" aria-selected="true"><span
+                                                            class=" bs-ok-default check-mark"></span><span
+                                                            class="text">All</span></a></li>
+                                                <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                        tabindex="0" aria-selected="false"><span
+                                                            class=" bs-ok-default check-mark"></span><span
+                                                            class="text">Block A<small class="text-muted">Block A In
+                                                                Disraeli apartments</small></span></a></li>
+                                                <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                        tabindex="0" aria-selected="false"><span
+                                                            class=" bs-ok-default check-mark"></span><span
+                                                            class="text">Block B<small class="text-muted">Block B In
+                                                                Disraeli apartments</small></span></a></li>
+                                                <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                        tabindex="0" aria-selected="false"><span
+                                                            class=" bs-ok-default check-mark"></span><span
+                                                            class="text">Block C<small class="text-muted">Block C In
+                                                                Disraeli apartments</small></span></a></li>
+                                                <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                        tabindex="0" aria-selected="false"><span
+                                                            class=" bs-ok-default check-mark"></span><span
+                                                            class="text">Block A<small class="text-muted">Block A In
+                                                                Langata paradise</small></span></a></li>
+                                                <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                        tabindex="0" aria-selected="false"><span
+                                                            class=" bs-ok-default check-mark"></span><span
+                                                            class="text">Building B<small class="text-muted">Building B
+                                                                In Langata paradise</small></span></a></li>
+                                                <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                        tabindex="0" aria-selected="false"><span
+                                                            class=" bs-ok-default check-mark"></span><span
+                                                            class="text">Block C<small class="text-muted">Block C In
+                                                                Langata paradise</small></span></a></li>
+                                                <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                        tabindex="0" aria-selected="false"><span
+                                                            class=" bs-ok-default check-mark"></span><span
+                                                            class="text">Block D<small class="text-muted">Block D In
+                                                                Langata paradise</small></span></a></li>
+                                                <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                        tabindex="0" aria-selected="false"><span
+                                                            class=" bs-ok-default check-mark"></span><span
+                                                            class="text">Block E<small class="text-muted">Block E In
+                                                                Langata paradise</small></span></a></li>
+                                                <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                        tabindex="0" aria-selected="false"><span
+                                                            class=" bs-ok-default check-mark"></span><span
+                                                            class="text">Building F<small class="text-muted">Building F
+                                                                In Langata paradise</small></span></a></li>
+                                                <li><a role="option" class="dropdown-item" aria-disabled="false"
+                                                        tabindex="0" aria-selected="false"><span
+                                                            class=" bs-ok-default check-mark"></span><span
+                                                            class="text">Saint townhouse<small class="text-muted">Saint
+                                                                townhouse</small></span></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-12 mt-3">
+                    <div class="row d-flex justify-content-around mb1-4 ">
+                        <button class="btn btn-primary pulse-button px-5 py-3" id="property_document_filter"
+                            type="button"><span>Click to filter</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> {% endcomment %}
+{% block scripts %}
+{% include 'partials/_select_options.html' %}
+{% include 'partials/_date.html' %}
+<script>
+    $(document).ready(function () {
+        select_option.admin();
+      
+    });
+
+ //   $(document).on('click', '.floated-customizer-btn', function () {
+       // alert("clicked");
+       // $('.floated-customizer-panel2').toggleClass('active');
+
+   // });
+
+    $(document).on('click', '#add_property_button', function () {
+        $('#property_form')[0].reset();
+        $('.show_photo').addClass('d-none');
+        $("#action_type").val("add");
+        $(".property_title").text("Add property");
+        $("#submit_property").html("Click to upload");
+        //$('#occupancy_status').val('not sold').change();
+        random_value = Math.random().toString(36).substr(2, 15);
+       // alert(random_value);
+        $(".random_value").val(random_value);
+        documents_table(random_value);
+        utility_table(random_value);
+
+        $(".upload_ownership").removeClass("d-none");
+        $(".show_ownership").addClass("d-none");
+        $('#ownership_document').attr("name",'ownership_document').change();
+        $('#view_ownership').attr("href", "#").change();
+        $("#property_rent_category").val("custom");
+        $("#property_rent_name").val("rent");
+        $("#property_rent_duration").val("monthly");
+        $("#property_rent_amount").val(0);
+
+
+
+        $('#property_modal').modal('show');
+    });
+    $(document).on('click', '#test', function () {
+        property_name = "Langata paradise";
+        $('#confirm_title').text("Are you sure?");
+        $('#confirm_text').text("Confirming the delete of " + property_name + " as a property");
+        $('#confirm_extra').text("Do you really want to delete " + property_name + "?");
+        $('#confirm_button').text("Confirm delete");
+        $('#confirm_alert').modal('show');
+    });
+    $('#property_table').css('min-height', '200px');
+    var property_table = $("#property_table").DataTable({
+        processing: true,
+        serverSide: true,
+        "oLanguage": {
+            "sEmptyTable": "No property added",
+            "sStripClasses": "",
+            "sSearch": "",
+            "sSearchPlaceholder": "search...",
+            "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+                '<option value="10">10</option>' +
+                '<option value="20">20</option>' +
+                '<option value="30">30</option>' +
+                '<option value="40">40</option>' +
+                '<option value="50">50</option>' +
+                '<option value="50">100</option>' +
+
+                '</select></div>'
+        },
+        ajax: {
+            url: '{% url "property:property-listcreate" %}',
+        },
+        // dom: 'Bfrtip',
+        //  buttons: [
+        //      'copyHtml5',
+        //        'excelHtml5',
+        //        'csvHtml5',
+        //        'pdfHtml5'
+        // ],
+
+
+        "footerCallback": function (row, data, start, end, display) {
+            var api = this.api(),
+                data;
+
+            // converting to interger to find total
+            var intVal = function (i) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '') * 1 :
+                    typeof i === 'number' ?
+                    i : 0;
+            };
+
+            // computing column Total of the complete result 
+
+        },
+        "fnDrawCallback": function () {
+            $('.total_property').html(this.fnSettings().fnRecordsTotal());
+        }
+    });
+
+    $(document).on('click', '.edit_property_button', function () {
+        var property = $(this).attr("id");
+        $('input.form-control').val("");
+        $('input.textarea').val("");
+        $("#property_name").attr("readonly", false);
+        $.ajax({
+            url: "{% url 'property:property-rud' id=12345 %}".replace(/12345/, property).toString(),
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                $('.property_title').text(data.property_name);
+                $('#property_name').val(data.property_name);
+                $('#description').val(data.description);
+                $("#property_type_raw").val(data.property_type + ',' + data.property_category).change();
+                $("#country_raw").val(data.country_code + ',' + data.country).change();
+
+                //$("#property_owned_by").val(data.owned_by).change();
+                //$("#property_managed_by").val(data.managed_by).change();
+                $('.show_photo').addClass('d-none');
+                $('#property_auto').val(data.id);
+                $('#property_authority').val(data.property_authority);
+                $('#property_owner').val(data.property_owner);
+           
+                $('#occupancy_status').val(data.occupancy_status).change();
+                $("#property_rent_category").val(data.property_rent_category);
+                $("#property_rent_name").val(data.property_rent_name);
+                $("#property_rent_duration").val(data.property_rent_duration);
+                $("#property_rent_date").val(data.property_rent_date);
+                $("#property_rent_amount").val(data.property_rent_amount);
+                // $('#property_country').val(data.country).change();
+          //   $('#search_managed_by').val(data.managed_by).change();
+                //$('#search_owned_by').val(data.owned_by).change();
+                $('#property_city').val(data.city);
+                $('#property_year').val(data.year_created);
+                $('#property_street').val(data.street);
+                $('#property_description').val(data.landmark_description);
+                $('.random_value').val(data.random_value);
+                //$('#photo').val(data.photo);
+                documents_table(data.random_value);
+                utility_table(data.random_value);
+                if (data.photo) {
+                    $('.show_photo_src').attr('src', data.photo);
+                    $('.show_photo').removeClass('d-none');
+                }
+                $('#description').val(data.description);
+                $('#property_location').val(data.property_location);
+                $("#action_type").val("edit");
+
+                $('#confirm_location').val("confirm location");
+                $('#submit_property').attr('disabled', false);
+                $("#submit_property").html("Edit the property");
+
+
+                $(".upload_ownership").addClass("d-none");
+                $(".show_ownership").removeClass("d-none");
+                
+                $('#ownership_document').attr("src", data.ownership_document).change();
+                $('#ownership_document').attr("name",'nofile').change();
+
+                $('#view_ownership').attr("href", data.ownership_document).change();
+
+               
+                $('#property_modal').modal('show');
+
+            }
+        })
+    });
+    $(document).on('click', '.delete_property_button', function () {
+        var data = $(this).attr("id");
+        var data_split = data.split(",");
+        var property_name = data_split[0];
+        var property_id = data_split[1];
+        $('#confirm_title').text("Just confirming...");
+        $('#confirm_text').text("Confirming the delete of " + property_name + " as a property");
+        $('#confirm_extra').text("Do you really want to delete " + property_name + "?");
+        $('#confirm_button').text("Confirm delete");
+        $('#confirm_alert').modal('show');
+        $('#confirmYes').one('click', function () {
+            $.ajax({
+                url: "{% url 'property:property-rud' id=12345 %}".replace(/12345/,
+                        property_id)
+                    .toString(),
+                method: "DELETE",
+                dataType: "json",
+                success: function (data) {
+                    property_table.ajax.reload();
+                    $('#success_text').text("Property removed.");
+                    $('#confirm_alert').modal('hide');
+                    $('#success_alert').modal('show');
+                }
+            });
+
+        });
+        $("#confirmNo").click(function () {
+            $('#confirm_alert').modal('hide');
+        });
+
+    });
+    $(document).on('submit', '#property_form', function (event) {
+        var action_type = $('#action_type').val();
+        var id = $('#property_auto').val();
+        if (action_type == 'add') {
+            var method = 'POST';
+            var url = '{% url "property:property-listcreate" %}';
+        }
+        if (action_type == 'edit') {
+            var method = 'PUT';
+            var url = "{% url 'property:property-rud' id=12345 %}".replace(/12345/, id).toString();
+        }
+
+        $('#property_country').attr('disabled', false);
+        var form_data = new FormData(this);
+        event.preventDefault();
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#submit_property').attr('disabled', 'disabled');
+                $("#submit_property").html("Please wait");
+            },
+            success: function (data) {
+                $('#submit_property').attr('disabled', false);
+                $("#submit_property").html("Create the property");
+
+                if (data.success) {
+                    property_table.ajax.reload();
+                    var the_currency = $('#currency').val();
+                    var currency_property = $('#currency_property').val();
+                    $('#property_modal').modal('hide');
+                    $('.onboarding-modal .onboarding-slider-w').slick('slickUnfilter',
+                        '.onboarding-slide').slick('refresh');
+                    $('.onboarding-modal .onboarding-slider-w').slick('slickFilter',
+                        '.onboarding-slide').slick('refresh');
+                    if (action_type == "add") {
+                        $('#next_id').val(data.property_auto);
+                        //{% comment %} url_path = "{% url 'property:units' property=12345 %}".replace(/12345/, data
+                        // .property_auto).toString(); {% endcomment %}
+                        // $("#success_confirm_button").attr("href", url_path)
+                        $('.onboarding-modal .onboarding-slider-w').slick('slickGoTo', 0);
+                        //  $('#success_confirm_text').text("Would you like to create units for " + data
+                        //     .property_name + " ?");
+                        // $('#success_confirm_alert').modal('show');
+                        $('#next_modal').modal('show');
+                    } else {
+
+                        $('#success_text').text(data.success);
+                        $('#success_alert').modal('show');
+                    }
+                    $('.onboarding-modal .onboarding-slider-w').slick('slickGoTo', 0);
+
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#submit_property').attr('disabled', false);
+                $("#submit_property").html("Create the property");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+            }
+        });
+    });
+
+
+    $(document).on('click', '.add_documents_button', function () {
+        $('#document_name').val("");
+        $("#document").val(null);
+        $('#documents_modal').modal('show');
+    });
+    
+    $(document).on('click', '.delete_document_button', function () {
+        var data = $(this).attr("id");
+        var data_split = data.split(",");
+        var name = data_split[0];
+        var id = data_split[1];
+        var random_value = data_split[2];
+        $('#confirm_title').text("Just confirming...");
+        $('#confirm_text').text("Confirming the delete of " + name + ".");
+        $('#confirm_extra').text("Do you really want to delete " + name + "?");
+        $('#confirm_button').text("Confirm delete");
+        $('#confirm_alert').modal('show');
+        $('#confirmYes').one('click', function () {
+            $.ajax({
+                url: "{% url 'property:documents-rud' id=12345 %}".replace(/12345/, id)
+                    .toString(),
+                method: "DELETE",
+                dataType: "json",
+
+                success: function (data) {
+                    documents_table(random_value);
+                    $('#success_text').text("Photo removed.");
+                    $('#confirm_alert').modal('hide');
+                    $('#success_alert').modal('show');
+                }
+            });
+
+        });
+        $("#confirmNo").click(function () {
+            $('#confirm_alert').modal('hide');
+        });
+
+    });
+    $(document).on('submit', '#documents_form', function (event) {
+
+        var method = 'POST';
+        var url = '{% url "property:documents-listcreate" %}';
+
+
+        var form_data = new FormData(this);
+        event.preventDefault();
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#submit_document').attr('disabled', 'disabled');
+                $("#submit_document").html("Please wait");
+            },
+            success: function (data) {
+                $('#submit_document').attr('disabled', false);
+                $("#submit_document").html("Upload records");
+                if (data.success) {
+                    random_value = $(".random_value").val();
+                    documents_table(random_value);
+
+                    $('#documents_modal').modal('hide');
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+                    // $('.onboarding-modal .edit_the_photos').slick('slickGoTo', 0);
+                    $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#submit_document').attr('disabled', false);
+                $("#submit_document").html("Upload records");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#documents_modal').modal('hide');
+            }
+
+        });
+    });
+
+    function documents_table(random_value) {
+        url_data = '{% url "property:documents-listcreate" %}';
+
+        $('#documents_table').DataTable({
+            //processing: true,
+            //serverSide: true,
+
+            "destroy": true,
+            "bAutoWidth": false,
+            "bFilter": false,
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false,
+
+
+            "oLanguage": {
+                "sEmptyTable": "No document added",
+                "sStripClasses": "",
+                "sSearch": "",
+                "sSearchPlaceholder": "search...",
+                "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+                    '<option value="10">10</option>' +
+                    '<option value="20">20</option>' +
+                    '<option value="30">30</option>' +
+                    '<option value="40">40</option>' +
+                    '<option value="50">50</option>' +
+                    '<option value="50">100</option>' +
+
+                    '</select></div>'
+            },
+            "ajax": {
+                "url": url_data,
+                "data": {
+                    "random_value": random_value,
+
+                }
+            },
+            "columnDefs": [{
+                    "width": "45%",
+                    "targets": 0
+                },
+
+            ],
+            "bPaginate": false,
+            "pageLength": 10,
+
+        });
+
+
+    }
+
+   
+    $(document).on('click', '.add_utility_button', function () {
+        $('#utility_name').val("");
+        $('#category').val("");
+        $('#utility_action').val("add");
+        $("#utility").val(null);
+        $(".display_month").removeClass("d-none");
+        $("#edit_payments_duration").val("monthly").change();
+        $("#edit_payments_week").val("Sunday").change();
+        $("#group_utility").val("expense").change();
+        $("#edit_payments_month").val("");
+        $("#edit_payments_once").val("{% now "Y-m-d" %}");
+        $('#utility_modal').modal('show');
+    });
+    $(document).on('click', '.edit_utility_button', function() {
+        var id = $(this).attr("id");
+        $.ajax({
+            url : "{% url 'property:utility-rud' id=12345 %}".replace(/12345/, id).toString(),
+            method: "GET",
+            dataType: "json",
+            success: function(data) {
+                $('#utility_form')[0].reset();
+                $("#edit_payments_once").val("{% now "Y-m-d" %}");
+                $('#utility_id').val(data.id);
+                $('#utility_random_value').val(data.random_value);
+                $('#utility_name').val(data.name);
+                $('#amount').val(data.amount);
+                $("#edit_payments_duration").val(data.duration).change();
+                $("#group_utility").val(data.group).change();
+                $("#category").val(data.category);
+                $("#edit_payments_once").val(data.once_date);
+                $("#edit_payments_week").val(data.week_date).change();
+                $("#edit_payments_month").val(data.month_date);
+                $('#utility_action').val("edit");
+                $("#edit_payments_year").val(data.year_date);
+               
+                $('#utility_modal').modal('show');
+            }
+        })
+    });  
+    $(document).on('change', '#group_utility', function() {
+        var category = $(this).val();
+        
+        if (category == "custom") {
+           
+            $(".show_custom_utility").removeClass("d-none");
+            $(".show_month").removeClass("d-none");
+            $(".show_year").addClass("d-none");
+            $("#edit_payments_month").val("");
+        }
+        else if (category == "tax") {
+           
+            $(".show_custom_utility").addClass("d-none");
+            $(".show_month").addClass("d-none");
+            $(".show_year").removeClass("d-none");
+            $("#edit_payments_month").val(1);
+        }
+        else {
+            
+            $(".show_custom_utility").addClass("d-none");
+            $(".show_month").removeClass("d-none");
+            $(".show_year").addClass("d-none");
+            $("#edit_payments_month").val("");
+        }
+        $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+    });
+    $(document).on('change', '#occupancy_status', function() {
+        var occupancy_status= $(this).val();
+
+        if (occupancy_status=="vacant"){
+            $('#occupancy_status').val(occupancy_status);
+            $(".not_available").addClass("d-none");
+            $(".show_rent").removeClass("d-none");
+        }   
+        if (occupancy_status=="not sold"){
+            $('#occupancy_status').val(occupancy_status);
+            $(".not_available").addClass("d-none");
+            $(".show_rent").addClass("d-none");
+        }   
+        if (occupancy_status=="personal use"){
+            $('#occupancy_status').val(occupancy_status);
+            $(".not_available").addClass("d-none");
+            $(".show_rent").addClass("d-none");
+        }   
+        if (occupancy_status=="sold"){
+            $('#occupancy_status').val("not available");
+            $(".not_available").addClass("d-none");
+            $(".show_rent").addClass("d-none");
+        }   
+        if (occupancy_status=="rented"){
+            $('#occupancy_status').val("not available");
+            $(".not_available").removeClass("d-none");
+            $(".show_rent").removeClass("d-none");
+        }   
+
+
+
+       
+      
+    });
+    $(document).on('change', '#edit_payments_duration', function() {
+        var duration = $(this).val();
+        if (duration == "lease") {
+            $(".display_").addClass("d-none");
+        }
+        if (duration == "once") {
+            $(".display_").addClass("d-none");
+            $(".display_date").removeClass("d-none");
+        }
+        if (duration == "weekly") {
+            $(".display_").addClass("d-none");
+            $(".display_week").removeClass("d-none");
+        }
+        if (duration == "monthly") {
+            $(".display_").addClass("d-none");
+            $(".display_month").removeClass("d-none");
+        }
+        if (duration == "annually") {
+            $(".display_").addClass("d-none");
+            $(".display_year").removeClass("d-none");
+        }
+    });
+    $(document).on('click', '.delete_utility_button', function () {
+        var data = $(this).attr("id");
+        var data_split = data.split(",");
+        var name = data_split[0];
+        var id = data_split[1];
+        var random_value = data_split[2];
+        $('#confirm_title').text("Just confirming...");
+        $('#confirm_text').text("Confirming the delete of " + name + ".");
+        $('#confirm_extra').text("Do you really want to delete " + name + "?");
+        $('#confirm_button').text("Confirm delete");
+        $('#confirm_alert').modal('show');
+        $('#confirmYes').one('click', function () {
+            $.ajax({
+                url: "{% url 'property:utility-rud' id=12345 %}".replace(/12345/, id)
+                    .toString(),
+                method: "DELETE",
+                dataType: "json",
+                success: function (data) {
+                    utility_table(random_value);
+                    $('#success_text').text("Photo removed.");
+                    $('#confirm_alert').modal('hide');
+                    $('#success_alert').modal('show');
+                }
+            });
+
+        });
+        $("#confirmNo").click(function () {
+            $('#confirm_alert').modal('hide');
+        });
+    });
+    $(document).on('submit', '#utility_form', function (event) {
+        
+        var id = $('#utility_id').val();
+        var action_type = $('#utility_action').val();
+        if (action_type == 'add') {
+            var method = 'POST';
+            var url = '{% url "property:utility-listcreate" %}';
+        }
+        if (action_type == 'edit') {
+            var method = 'PUT';
+            var url = "{% url 'property:utility-rud' id=12345 %}".replace(/12345/, id).toString();
+        }
+
+        var form_data = new FormData(this);
+        event.preventDefault();
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#submit_utility').attr('disabled', 'disabled');
+                $("#submit_utility").html("Please wait");
+            },
+            success: function (data) {
+                $('#submit_utility').attr('disabled', false);
+                $("#submit_utility").html("Upload records");
+                if (data.success) {
+                    random_value = $(".random_value").val();
+                    utility_table(random_value);
+
+                    $('#utility_modal').modal('hide');
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+                    // $('.onboarding-modal .edit_the_photos').slick('slickGoTo', 0);
+                    $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#submit_utility').attr('disabled', false);
+                $("#submit_utility").html("Upload records");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#utility_modal').modal('hide');
+            }
+
+        });
+    });
+
+    function utility_table(random_value) {
+        url_data = '{% url "property:utility-listcreate" %}';
+
+        $('#utility_table').DataTable({
+            //processing: true,
+            //serverSide: true,
+
+            "destroy": true,
+            "bAutoWidth": false,
+            "bFilter": false,
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false,
+
+
+            "oLanguage": {
+                "sEmptyTable": "No data added",
+                "sStripClasses": "",
+                "sSearch": "",
+                "sSearchPlaceholder": "search...",
+                "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+                    '<option value="10">10</option>' +
+                    '<option value="20">20</option>' +
+                    '<option value="30">30</option>' +
+                    '<option value="40">40</option>' +
+                    '<option value="50">50</option>' +
+                    '<option value="50">100</option>' +
+
+                    '</select></div>'
+            },
+            "ajax": {
+                "url": url_data,
+                "data": {
+                    "random_value": random_value,
+
+                }
+            },
+        
+            "bPaginate": false,
+            "pageLength": 10,
+
+        });
+
+
+    }
+    $(document).on('click', '#next_test', function () {
+        $('#next_modal').modal('show');
+
+    });
+    $(document).on('click', '#next_submit', function () {
+        var target_location = $('#next_value').val();
+        var id = $('#next_id').val();
+        if (target_location == "units") {
+            url_path = "{% url 'property:units' property=12345 %}".replace(/12345/, id).toString();
+            window.open(url_path);
+        }
+        if (target_location == "payments") {
+            url_path = "{% url 'finance:payment_options'%}";
+            window.open(url_path);
+        }
+        if (target_location == "tenants") {
+            url_path = "{% url 'tenant:tenants' %}";
+            window.open(url_path);
+        }
+
+        if (target_location == "lease") {
+            url_path = "{% url 'tenant:lease' %}";
+            window.open(url_path);
+        }
+
+
+        if (target_location == "nothing") {
+            $('#next_modal').modal('hide');
+        }
+        //
+        // window.location.replace("https://www.tutorialrepublic.com/");
+
+
+    });
+</script>
+{% endblock scripts %}
+
+
+
+{% endblock content %}
+
+
+<!--**********************************
+    Content body end
+***********************************-->

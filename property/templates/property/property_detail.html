@@ -1,0 +1,833 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %} {{property.property_name}} {% endblock title %}
+
+
+{% block content %}
+<style>
+    .card-body .form-control {
+		background-color: #f5f1f1 !important;
+	}
+
+    .apexcharts-legend-text {
+        font-family: fancy_text4 !important;
+        font-size: 1.3rem !important;
+    }
+</style>
+{% block modal %}
+<div aria-hidden="true" data-backdrop="static" data-tab="sub_modal"
+    class="onboarding-modal modal fade animated sub_modal" style='z-index:1060 !important' id="utility_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered " role="document">
+        <form method="POST" id='utility_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w sub_modal">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-10 fancy_text4 lead text-left">Utility expenses</h4>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Name</label>
+                                        <input class="form-control editable" type="text" placeholder="Example:Tax fees "
+                                            name="name" id="utility_name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Amount</label>
+                                        <input class="form-control editable" type="text" placeholder="Example:100 "
+                                            name="amount" id="amount">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">How ofted will this be paid?</label>
+                                        <select class="form-control payments_duration" required="required"
+                                            name="duration" id="edit_payments_duration">
+                                            <option value="once">Just once</option>
+                                            <option value="weekly">Weekly</option>
+                                            <option selected value="monthly">Monthly</option>
+                                            <option value="annually">Annually</option>
+                                        </select> </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required d-none display_date display_">
+                                        <label for=""> Date</label>
+                                        <div class="date-input"><input autocomplete="off"
+                                                class="ahead_date form-control payments_once editable"
+                                                placeholder="Select date" type="text" name="once_date"
+                                                id="edit_payments_once"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required d-none display_week display_">
+                                        <label class="control-label">Day of the week</label>
+                                        <div class="date-input">
+                                            <select class="form-control payments_week" name="week_date"
+                                                id="edit_payments_week">
+                                                <option value="Sunday">Sunday</option>
+                                                <option value="Monday">Monday</option>
+                                                <option value="Tuesday">Tuesday</option>
+                                                <option value="Wednesday">Wednesday</option>
+                                                <option value="Thursday">Thursday</option>
+                                                <option value="Friday">Friday</option>
+                                                <option value="Saturday">Saturday</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required d-none display_month display_">
+                                        <label for=""> Day of the month</label>
+                                        <div class="date-input"><input autocomplete="off"
+                                                class="month_date form-control payments_month editable"
+                                                placeholder="Select day of the month" type="text" name="month_date"
+                                                id="edit_payments_month"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required d-none display_year display_">
+                                        <label for=""> Month and day</label>
+                                        <div class="date-input"><input autocomplete="off"
+                                                class="month_day_date form-control payments_year editable"
+                                                placeholder="Select the month and day" type="text" name="year_date"
+                                                id="edit_payments_year"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <br><br><br>
+                    </div>
+
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" id="utility_random_value" class="random_value" name="random_value">
+                            <input type="hidden" id="utility_action" value="add">
+                            <input type="hidden" id="utility_id">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary px-5 py-2" id="submit_utility" type="submit">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock modal %}
+
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card ">
+                    <div class="card-header d-block mx-3 text-center">
+                        <h5 class="card-titles display-4 custom-card-title "><span>{{property.property_name}}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-xl-12 ">
+
+                <ul class="rfow nav nav-pills d-flex justify-content-around review-tab mdb-4">
+                    <li class=" nav-item text-center" sdtyle="width:45% !important">
+                        <a href="#navpills-1" class="nav-link active " data-toggle="tab" aria-expanded="false">About the
+                            property </a>
+                    </li>
+                    {% comment %} <ul class="d-flex justify-content-end col-6 nav nav-pills review-tab">
+                        {% endcomment %}
+                        <li class="nav-item  text-center">
+                            <a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false">Units in the
+                                property</a>
+                        </li>
+                        <li class=" nav-item  text-center">
+                            <a href="#navpills-4" class="nav-link" data-toggle="tab" aria-expanded="false">Documents
+                            </a>
+                        </li>
+                        <li class=" nav-item  text-center">
+                            <a href="#navpills-5" class="nav-link" data-toggle="tab" aria-expanded="false">Utility
+                                expenses
+                            </a>
+                        </li>
+                        {% comment %}
+                    </ul> {% endcomment %}
+
+                </ul>
+
+                {% comment %} <ul class="nav nav-pills review-tab bg-danger">
+                    <li class="nav-item">
+                        <a href="#navpills-1" class="nav-link active" data-toggle="tab" aria-expanded="false">About
+                            {{property.property_name}} </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false">Units</a>
+                    </li>
+
+                </ul> {% endcomment %}
+                <div class="tab-content pt-4 bg-white">
+                    <div id="navpills-1" class="tab-pane active">
+
+
+                        <div class="card col-12 ">
+                            <div class="card-body">
+
+
+                                <div class="row">
+                                    <div class="col-sm-6 ">
+                                        <div class="form-group">
+                                            <label for="">Property name</label>
+                                            <input class="form-control property_property_title"
+                                                value="{{property.property_name}}" readonly=""
+                                                placeholder="Example: langata paradise" type="text"
+                                                name="property_name">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-sm-6 ">
+                                        <div class="form-group">
+                                            <label for="">Building category</label>
+                                            <input class="form-control property_property_title" readonly=""
+                                                value="{{property.property_category}}"
+                                                placeholder="Example: langata paradise" type="text"
+                                                name="property_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 ">
+                                        <div class="form-group">
+                                            <label for="">Building type</label>
+                                            <input class="form-control property_type property_category" readonly=""
+                                                value="{{property.property_type}}"
+                                                placeholder="Example: langata paradise" type="text"
+                                                name="property_type">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Country</label>
+                                            <input class="form-control property_country" readonly=""
+                                                placeholder="Example: Kenya" value="{{property.country}}" type="text"
+                                                value="Kenya" name="property_country">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">City</label>
+                                            <input class="form-control property_city" readonly=""
+                                                placeholder="Example: Nairobi" value="{{property.city}}" type="text"
+                                                value="Kenya" name="property_city">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="">Street name</label>
+                                            <input class="form-control property_street" readonly=""
+                                                placeholder="Example: Nairobi west" value="{{property.street}}"
+                                                type="text" value="Kenya" name="property_street">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group"><label> Street description</label><textarea readonly=""
+                                                value="{{property.landmark_description}}"
+                                                placeholder="Example: Blue building opposite T-mall in Lanagta road"
+                                                class="form-control property_description" rows="5"
+                                                name="property_description">{{property.landmark_description}}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="">Year built</label>
+                                            <input class="form-control property_year" readonly=""
+                                                value="{{property.year_created}}" placeholder="Example: 1997"
+                                                type="number">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <!-- <hr> -->
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="">Property owned by</label>
+                                            <input class="form-control " value="{{property.property_owner}}"
+                                                readonly="" placeholder="Example: Mariga Waithera" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="">Property Authority</label>
+                                            <input class="form-control " value="{{property.property_authority}}"
+                                                readonly="" placeholder="Example: Mariga Waithera" type="text">
+                                        </div>
+                                    </div>
+
+                                   
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="navpills-2" class="tab-pane">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive recentOrderTable">
+                                    <table class="table verticle-middle table-responsive-md">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Unit.</th>
+                                                <th scope="col">Category</th>
+                                                <th scope="col">Type</th>
+                                                <th scope="col">Baths</th>
+                                                <th scope="col">Occupancy</th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {% for row in units %}
+                                            <tr>
+                                                <td>{{row.unit_name}}</td>
+                                                <td>{{row.unit_category}}</td>
+                                                <td>{{row.unit_type}}</td>
+                                                <td>{{row.baths}} baths</td>
+                                                <td>{{row.occupancy_status}}</td>
+                                                <td><a href="{% url 'property:unit-detail' row.id %}"
+                                                        class="btn btn-primary light btn-rounded px-4 py-1">Click to
+                                                        open</a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% comment %} <tr>
+                                                <td>12</td>
+                                                <td>Mr. Bobby</td>
+                                                <td>Dr. Jackson</td>
+                                                <td>01 August 2020</td>
+                                                <td><span class="badge badge-rounded badge-primary">Checkin</span></td>
+                                                <td>$120</td>
+                                                <td>
+                                                    <div class="dropdown custom-dropdown mb-0">
+                                                        <div class="btn sharp btn-primary tp-btn" data-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="18px"
+                                                                height="18px" viewBox="0 0 24 24" version="1.1">
+                                                                <g stroke="none" stroke-width="1" fill="none"
+                                                                    fill-rule="evenodd">
+                                                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                                                    <circle fill="#000000" cx="12" cy="5" r="2">
+                                                                    </circle>
+                                                                    <circle fill="#000000" cx="12" cy="12" r="2">
+                                                                    </circle>
+                                                                    <circle fill="#000000" cx="12" cy="19" r="2">
+                                                                    </circle>
+                                                                </g>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="dropdown-menu dropdown-menu-right"
+                                                            x-placement="top-end"
+                                                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(40px, 1px, 0px);">
+                                                            <a class="dropdown-item"
+                                                                href="javascript:void(0);">Details</a>
+                                                            <a class="dropdown-item text-danger"
+                                                                href="javascript:void(0);">Cancel</a>
+                                                        </div>
+                                                    </div>
+                                                </td> {% endcomment %}
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="navpills-3" class="tab-pane">
+                        <div class="card col-12 ">
+                            <div class="card-body mx-5"
+                                style="border:2px solid #D0D3D4;border-top:none;border-left:none">
+                                <div class="col-sm-12 d-flex justify-content-end   border-secondary ">
+                                    <div class="element-wrapper compact pt-4 col-sm-5 ">
+                                        <h6
+                                            class="element-header1 text-primary text-center1 display-8 fancy_text3 border-secondary border-bottom2 pb-3">
+                                        </h6>
+                                        <div class="element-box-tp">
+                                            <table class="table table-clean">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="valueq fancy_text5">Total Income:</div>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <div class="valuez display-7sm fancy_text4 "
+                                                                id="total_income">
+                                                                {{total_income|default:0 |intcomma}}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="valueq fancy_text5">Total expense:</div>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <div class="valuez  display-7sm fancy_text4 "
+                                                                id="total_expense">
+                                                                {{total_expense|default:0 |intcomma }}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12  d-flex justify-content-center">
+                                    <div class="col-10">
+                                        <div class="card">
+
+                                            <div class="card-body">
+                                                <canvas id="income_chart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="navpills-4" class="tab-pane">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive recentOrderTable">
+                                    <table class="table verticle-middle table-responsive-md">
+                                        <thead>
+                                            <tr>
+                                                {% comment %} <th class="text-left">Category</th> {% endcomment %}
+                                                <th class="text-left">Name</th>
+                                                <th class="text-left">Category</th>
+                                                <th class="text-left"></th>
+                                                {% comment %} <th class="text-left"></th>
+                                                {% endcomment %}
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {% for row in documents %}
+                                            <tr>
+                                                <td><span class="me-3 text-primary">
+                                                        <svg id="icon-orders" xmlns="http://www.w3.org/2000/svg"
+                                                            width="30" height="30" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                            class="feather feather-file-text">
+                                                            <path
+                                                                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                                                            </path>
+                                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                                        </svg>
+                                                    </span><span
+                                                        class="fancy_text5 text-primary f-16">{{row.name}}</span>
+                                                </td>
+                                                <td>
+                                                    {{row.category}}
+                                                </td>
+                                                <td><a class="fancy_text5 btn btn-outline-primary px-4 py-1 btn-rounded"
+                                                        href="{{row.document.url}}" download="{{row.name}}">Click to
+                                                        view </a></td>
+
+                                                {% comment %} <td><a
+                                                        class=" delete_document_button btn btn-outline-danger px-4 py-1 btn-rounded"
+                                                        id="{{row.name}},{{row.id}},{{row.random_value}}">Click to
+                                                        delete</a> </td> {% endcomment %}
+                                            </tr>
+                                            {% endfor %}
+                                            {% comment %} <tr>
+                                                <td>12</td>
+                                                <td>Mr. Bobby</td>
+                                                <td>Dr. Jackson</td>
+                                                <td>01 August 2020</td>
+                                                <td><span class="badge badge-rounded badge-primary">Checkin</span></td>
+                                                <td>$120</td>
+                                                <td>
+                                                    <div class="dropdown custom-dropdown mb-0">
+                                                        <div class="btn sharp btn-primary tp-btn" data-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="18px"
+                                                                height="18px" viewBox="0 0 24 24" version="1.1">
+                                                                <g stroke="none" stroke-width="1" fill="none"
+                                                                    fill-rule="evenodd">
+                                                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                                                    <circle fill="#000000" cx="12" cy="5" r="2">
+                                                                    </circle>
+                                                                    <circle fill="#000000" cx="12" cy="12" r="2">
+                                                                    </circle>
+                                                                    <circle fill="#000000" cx="12" cy="19" r="2">
+                                                                    </circle>
+                                                                </g>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="dropdown-menu dropdown-menu-right"
+                                                            x-placement="top-end"
+                                                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(40px, 1px, 0px);">
+                                                            <a class="dropdown-item"
+                                                                href="javascript:void(0);">Details</a>
+                                                            <a class="dropdown-item text-danger"
+                                                                href="javascript:void(0);">Cancel</a>
+                                                        </div>
+                                                    </div>
+                                                </td> {% endcomment %}
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="navpills-5" class="tab-pane">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive recentOrderTable">
+                                    <table class="table verticle-middle table-responsive-md" id="utility_table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left">Name</th>
+                                                <th class="text-left">Amount</th>
+                                                <th class="text-left">Duration</th>
+                                                <th class="text-left"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="{% static 'js/Chart.bundle.min.js' %}"></script>
+{% block scripts %}
+
+<script>
+    utility_table("{{property.random_value}}")
+    var donutChart = $("#income_chart");
+
+    // donut chart data
+    var data = {
+        labels: ["Income", "Expenses"],
+        datasets: [{
+            data: [{{total_income|default:0 }}, {{total_expense|default:0 }}],
+            backgroundColor: ["#5797fc", "#E6B0AA"],
+            hoverBackgroundColor: ["#5797fc", "#E6B0AA"],
+            borderWidth: 0
+        }]
+    };
+
+    // -----------------
+    // init donut chart
+    // -----------------
+    new Chart(donutChart, {
+        type: 'doughnut',
+        data: data,
+        options: {
+            legend: {
+                position: 'bottom',
+            },
+
+
+            animation: {
+                animateScale: true
+            },
+            cutoutPercentage: 65
+        }
+    });
+
+
+    Chart.pluginService.register({
+        beforeDraw: function (chart) {
+            var width = chart.chart.width,
+                height = chart.chart.height,
+                ctx = chart.chart.ctx;
+            ctx.restore();
+            var fontSize = (height / 114).toFixed(2);
+            ctx.font = fontSize + "em fancy_text3";
+            ctx.textBaseline = "middle";
+            var text = "{{total_percent|default:0 }}%",
+                textX = Math.round((width - ctx.measureText(text).width) / 2),
+                textY = height / 2;
+            ctx.fillText(text, textX, textY);
+            ctx.save();
+        }
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+    $(document).on('click', '.edit_utility_button', function() {
+        var id = $(this).attr("id");
+        $.ajax({
+            url : "{% url 'property:utility-rud' id=12345 %}".replace(/12345/, id).toString(),
+            method: "GET",
+            dataType: "json",
+            success: function(data) {
+              //  $('#utility_form')[0].reset();
+                $("#edit_payments_once").val("{% now "Y-m-d" %}");
+                $('#utility_id').val(data.id);
+                $('#utility_random_value').val(data.random_value);
+                $('#utility_name').val(data.name);
+                $('#amount').val(data.amount);
+                $("#edit_payments_duration").val(data.duration).change();
+                $("#edit_payments_once").val(data.once_date);
+                $("#edit_payments_week").val(data.week_date).change();
+                $("#edit_payments_month").val(data.month_date);
+                $('#utility_action').val("edit");
+                $("#edit_payments_year").val(data.year_date);
+               
+                $('#utility_modal').modal('show');
+            }
+        })
+    });  
+    $(document).on('change', '#edit_payments_duration', function() {
+        var duration = $(this).val();
+        if (duration == "lease") {
+            $(".display_").addClass("d-none");
+        }
+        if (duration == "once") {
+            $(".display_").addClass("d-none");
+            $(".display_date").removeClass("d-none");
+        }
+        if (duration == "weekly") {
+            $(".display_").addClass("d-none");
+            $(".display_week").removeClass("d-none");
+        }
+        if (duration == "monthly") {
+            $(".display_").addClass("d-none");
+            $(".display_month").removeClass("d-none");
+        }
+        if (duration == "annually") {
+            $(".display_").addClass("d-none");
+            $(".display_year").removeClass("d-none");
+        }
+    });
+    $(document).on('click', '.delete_utility_button', function () {
+        var data = $(this).attr("id");
+        var data_split = data.split(",");
+        var name = data_split[0];
+        var id = data_split[1];
+        var random_value = data_split[2];
+        $('#confirm_title').text("Just confirming...");
+        $('#confirm_text').text("Confirming the delete of " + name + ".");
+        $('#confirm_extra').text("Do you really want to delete " + name + "?");
+        $('#confirm_button').text("Confirm delete");
+        $('#confirm_alert').modal('show');
+        $('#confirmYes').one('click', function () {
+            $.ajax({
+                url: "{% url 'property:utility-rud' id=12345 %}".replace(/12345/, id)
+                    .toString(),
+                method: "DELETE",
+                dataType: "json",
+                success: function (data) {
+                    utility_table(random_value);
+                    $('#success_text').text("Photo removed.");
+                    $('#confirm_alert').modal('hide');
+                    $('#success_alert').modal('show');
+                }
+            });
+
+        });
+        $("#confirmNo").click(function () {
+            $('#confirm_alert').modal('hide');
+        });
+    });
+    $(document).on('submit', '#utility_form', function (event) {
+
+        var id = $('#utility_id').val();
+        var action_type = $('#utility_action').val();
+        if (action_type == 'add') {
+            var method = 'POST';
+            var url = '{% url "property:utility-listcreate" %}';
+        }
+        if (action_type == 'edit') {
+            var method = 'PUT';
+            var url = "{% url 'property:utility-rud' id=12345 %}".replace(/12345/, id).toString();
+        }
+
+        var form_data = new FormData(this);
+        event.preventDefault();
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#submit_utility').attr('disabled', 'disabled');
+                $("#submit_utility").html("Please wait");
+            },
+            success: function (data) {
+                $('#submit_utility').attr('disabled', false);
+                $("#submit_utility").html("Upload records");
+                if (data.success) {
+                    random_value = $(".random_value").val();
+                    utility_table(random_value);
+
+                    $('#utility_modal').modal('hide');
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+                    // $('.onboarding-modal .edit_the_photos').slick('slickGoTo', 0);
+                    $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#submit_utility').attr('disabled', false);
+                $("#submit_utility").html("Upload records");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#utility_modal').modal('hide');
+            }
+
+        });
+    });
+
+    function utility_table(random_value) {
+      
+        url_data = '{% url "property:utility-listcreate" %}';
+
+           $('#utility_table').DataTable({
+            //processing: true,
+            //serverSide: true,
+
+            "destroy": true,
+            "bAutoWidth": false,
+            "bFilter": false,
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false,
+
+
+            "oLanguage": {
+                "sEmptyTable": "No utility added",
+                "sStripClasses": "",
+                "sSearch": "",
+                "sSearchPlaceholder": "search...",
+                "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+                    '<option value="10">10</option>' +
+                    '<option value="20">20</option>' +
+                    '<option value="30">30</option>' +
+                    '<option value="40">40</option>' +
+                    '<option value="50">50</option>' +
+                    '<option value="50">100</option>' +
+
+                    '</select></div>'
+            },
+            "ajax": {
+                "url": url_data,
+                "data": {
+                    "random_value": random_value,
+
+                }
+            },
+           
+            "bPaginate": false,
+            "pageLength": 10,
+
+        });
+
+
+    }
+</script>
+
+{% endblock scripts %}
+
+
+
+{% endblock content %}

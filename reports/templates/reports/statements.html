@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{request.path}} {% endblock title %}
+
+
+{% block content %}
+<style>
+    table.dataTable tr.dtrg-group td {
+        background-color: white !important;
+        border-top: 5px solid white !important;
+        border-top: 1px solid grey !important;
+    }
+
+    th {
+        border-bottom: 1px solid white !important;
+    }
+</style>
+<div class="content-body" style="min-height: 828px;">
+    <!-- row -->
+    <div class="container-fluid">
+
+
+        <div class="card mx-3 no-print">
+            <div class="card-header d-block mx-3 text-center">
+                <h5 class="card-titles display-4 custom-card-title ">Statements</h5>
+
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-xl-12">
+                <div class="col-12">
+                    <div class="card px-3 print-card">
+                        <div class="col-sm-12 d-flex justify-content-end mb-4  border-secondary ">
+                            <div class="element-wrapper compact pt-4 col-sm-5 ">
+                                <h6
+                                    class="element-header1 text-primary text-center1 display-8 fancy_text3 border-secondary border-bottom2 pb-3">
+                                </h6>
+                                <div class="element-box-tp">
+                                    <table class="table table-clean">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="valueq fancy_text5">Running balance:</div>
+                                                </td>
+                                                <td class="text-left">
+                                                    <div class="valuez amount_taxable display-7sm fancy_text4 "
+                                                        id="running_balance">Please
+                                                        wait</div>
+                                                </td>
+                                            </tr>
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body pt-0">
+                            <div class="table-responsive">
+                                <a class="printPage btn btn-outline-dark  px-5 py-2 mb-3" onclick="window.print();"
+                                    href="#">Click to
+                                    print</a>
+
+                                <table id="finance_history"
+                                    class="table table-borderd table-heading display responsive">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left ">Date</th>
+                                            <th class="text-left">Transaction</th>
+                                            <th class="text-left">Debit</th>
+                                            <th class="text-left">Credit</th>
+                                            <th class="text-left">Running balance</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% block scripts %}
+{% include 'partials/_select_options.html' %}
+{% include 'partials/_date.html' %}
+
+<script>
+    $(document).ready(function () {
+        finance_history();
+    });
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
+    function finance_history() {
+
+        $('#finance_history').DataTable({
+            processing: true,
+            serverSide: true,
+            "destroy": true,
+            "bAutoWidth": false,
+            "ordering": false,
+            "bFilter": false,
+            "bInfo": false,
+            "bLengthChange": false,
+            "bPaginate": false,
+
+            // "bPaginate": false,
+            "scrollCollapse": true,
+            "fixedColumns": true,
+            "oLanguage": {
+                "sEmptyTable": "No finance history",
+                "sStripClasses": "",
+                "sSearch": "",
+                "sSearchPlaceholder": "search...",
+
+            },
+            "ajax": {
+                'url': '{% url "finance:finance_history" %}',
+                "data": {
+                    "id": 'all',
+                    "type": 'property',
+                }
+            },
+            "order": [
+                [0, 'asc']
+            ],
+
+            "fnDrawCallback": function () {
+
+                data = this.fnSettings().json.running_balance;
+
+                $('#running_balance').text(formatNumber(data));
+            },
+
+        });
+
+    }
+</script>
+{% endblock scripts %}
+
+
+
+{% endblock content %}
+
+
+<!--**********************************
+    Content body end
+***********************************-->

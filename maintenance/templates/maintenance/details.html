@@ -1,0 +1,1131 @@
+{% extends 'base.html' %} {% load static %} {% load static %} {% block title %} {{main.name}} {% endblock title %}
+
+
+{% block modal %}
+<div aria-hidden="true" data-backdrop="static" style='z-index:2000' data-tab="sub_modal"
+    class="onboarding-modal modal fade animated" id="add_cost_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <form method="POST" id='add_cost_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w cost_sub sub_modal">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 text-center fancy_text3 cost_title">Maintenance costs
+                            </h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">What type of cost is this?</label>
+                                        <select class="form-control " name="cost_type" id="mc_material_type">
+                                            <option selected value="material" class="display-7sm">Material cost</option>
+                                            <option value="labour" class="display-7sm">Labour cost</option>
+                                        </select> </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-12">
+                                    <div class="form-group"> <label id='material_label_name' for="">Material
+                                            name</label>
+                                        <div class="input-group mb-2 mb-sm-0">
+                                            <input class="form-control" placeholder="Example: New sink" type="text"
+                                                name="cost_name" id="mc_material">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-none quantity_column">
+                                <div class="col-sm-12 col-12">
+                                    <div class="form-group"> <label class="" for="">How many do you need?</label>
+                                        <div class="input-group mb-2 mb-sm-0">
+                                            <input class="form-control" placeholder="Example: 17" type="number"
+                                                name="cost_number" id="mc_material_qty">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group "><label>Why do we need this? </label><textarea
+                                            placeholder="Example: We need this to replace the valve"
+                                            class="form-control" rows="5" name="cost_description"
+                                            id="mc_desc"></textarea></div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="costs_id" id="costs_id">
+                            <input type="hidden" name="maintenance" id="m_id">
+
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 text-center"></h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12 col-12">
+                                    <div class="form-group"> <label class='' for="">What is the total cost? (in
+                                            Ksh)</label>
+                                        <div class="input-group mb-2 mb-sm-0">
+                                            <input class="form-control" placeholder="Example: Ksh 10,000" type="number"
+                                                name="cost_total" id="mc_cost">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Has this been paid for yet?</label>
+                                        <select class="form-control" name="paid" id="mc_cost_status">
+                                            <option value="paid">Yes</option>
+                                            <option selected value="not paid">No</option>
+                                        </select> </div>
+                                </div>
+                            </div>
+                            <div class="row d-none paid_for_column">
+                                <div class="col-sm-12">
+                                    <div class="form-group  ">
+                                        <label for=""> When was this paid for?</label>
+                                        <div class="date-input"><input autocomplete="off"
+                                                class="date_with_end form-control editable past_date"
+                                                placeholder="Select date" type="text" name="paid_date"
+                                                id="mc_cost_date"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row d-none paid_for_column">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">Paid by</label>
+                                        <select class="form-control " required="required" name="paid_by"
+                                            id="mc_cost_paid_by">
+                                            <option selected value="us">us</option>
+                                            <option value="tenant">tenant</option>
+                                        </select> </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="onboarding-slide">
+                        <div class="onboarding-media"><img alt=""
+                                src="<?php echo base_url(); ?>/img/images/payment.webp" width="80px">
+                        </div>
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" name="cost_action_type" id="cost_action_type">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary px-5 py-2" type="submit" id="submit_cost">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div aria-hidden="true" data-backdrop="static" style='z-index:2000' class="onboarding-modal modal fade animated"
+    data-tab="sub_modal" id="attachment_image_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <form method="POST" id='attachment_image_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w attachment_slide sub_modal">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 text-left fancy_text5">Attachment name</h4>
+                            <hr>
+                            <div class="row mb-4 ">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">What is this?</label>
+                                        <input class="form-control editable" type="text"
+                                            placeholder="Example:Bathroom sink" min="1" name="name" id="image_name">
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="maintenance" id="attachment_id2" value="{{main.id}}">
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-7 text-left fancy_text4">Click to attach</h4>
+                            <hr>
+                            <div class="mb-5">
+                                <label for="" class='text-left col-sm-12  fancy_text3 text-secondary'> <span
+                                        class='fancy_text4 text-primary'>Allowed types</span>| jpg,png,jpeg |</label>
+                                <input type="file" name='document'
+                                    class="form-control-file btn btn-outline-primary px-4 py-4" id="lease_file">
+                            </div>
+                            <!-- <div class="form-buttons-w d-flex flex-row justify-content-between">
+                                <div class="cancel-process steps p-2 lead justify-content-start"><a href="#" aria-label="Close" data-dismiss="modal">Cancel the process</a></div>
+                                <button class="btn btn-primary px-5 py-3 step-button justify-content-end" id="submit_attachment" type="submit">Upload attachment</button>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary p-3" type="submit" id="submit_attachment">Upload
+                                    attachment</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div aria-hidden="true" data-backdrop="static" style='z-index:2000' class="onboarding-modal modal fade animated"
+    id="create_request_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <form method="POST" id='create_request_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w">
+
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-10 text-left fancy_text5 request_title">Let's begin</h4>
+                            <hr>
+                            {% if request.user.is_syestem_admin %}
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Select a tenant and property</label>
+                                        <select id='unit_maintenance' name="unit"
+                                            class=" form-control selectpicker show-tick form-control-sm1"
+                                            data-live-search="true" data-size="4">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="row d-noned ">
+                                <div class="col-sm-12">
+                                    <div class="form-group  ">
+                                        <label for=""> The tenant and unit</label>
+                                        <div><input autocomplete="off" class="form-control"
+                                                value="{{tenant.id}},{{lease.unit.id}}"
+                                                placeholder="Example: Loud noise" type="text" name="unit"
+                                                id="unit_maintenance"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+
+
+                            <input type="hidden" id="request_data_id" name="id">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Kindly select the category</label>
+                                        <select class="form-control selectpicker" required="required" name="category"
+                                            id="request_data_category">
+                                            <option selected disabled>Select a category</option>
+                                            <option value="plumbing" data-subtext="(Tiolets, sinks, showers, leaks)"
+                                                class="display-7sm">Plumbing</option>
+                                            <option value="appliances"
+                                                data-subtext="(Refrigirator, oven, water heater, cooling fans)"
+                                                class="display-7sm">Appliances</option>
+                                            <option value="electrical"
+                                                data-subtext="(Power outlets, fuse, bulbs, Alarms, Internet,Doorbell)"
+                                                class=" display-7sm">Electrical</option>
+                                            <option value="pest control" data-subtext="(Ants,termites, rodents)"
+                                                class="display-7sm">Pest control</option>
+                                            <option value="house hold"
+                                                data-subtext="(Doors,windows,ceiling,floor,cabinets)"
+                                                class="display-7sm">House hold</option>
+                                            <option value="outdoor"
+                                                data-subtext="(Landscape,fencing,garbage,parking,pool)"
+                                                class="display-7sm">Outdoor</option>
+                                            <option value="Cleaning services"
+                                                data-subtext="(General cleaning,Builders’ Clean,End of Tenancy Clean,windows)"
+                                                class="display-7sm">Cleaning services</option>
+                                            <option value="other" class="display-7sm">Others</option>
+                                        </select> </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">What is the priority</label>
+                                        <select class="form-control " name="priority" id="request_priority">
+                                            <option value="high">High</option>
+                                            <option selected value="normal">Normal</option>
+                                            <option value="low">Low</option>
+                                        </select> </div>
+                                </div>
+                            </div>
+                            <div class="row d-none custom_label">
+                                <div class="col-sm-12">
+                                    <div class="form-group  ">
+                                        <label for=""> What type of issue is this?</label>
+                                        <div><input autocomplete="off" class="form-control"
+                                                placeholder="Example: Loud noise" type="text" name="name"
+                                                id="request_data_custom"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group "><label>Describe the issue </label><textarea
+                                            placeholder="Example: My toilet is leaking" class="form-control" rows="5"
+                                            name="description" id="request_data_desc"></textarea></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <br>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 text-center"></h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group  ">
+                                        <label for=""> When was this issue reported?</label>
+                                        <div class="date-input"><input autocomplete="off"
+                                                class="past_date form-control editable" placeholder="Select date"
+                                                type="text" name="reported_on" id="request_data_date"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Has the maintenance issue been completed?</label>
+                                        <select class="form-control" required="required" name="status"
+                                            id="request_data_solved">
+                                            <option value="solved">Yes</option>
+                                            <option value="in progeress">In progress</option>
+                                            <option selected value="not started">Not yet started</option>
+                                        </select> </div>
+                                </div>
+                            </div>
+                            <div class="row class_data_solved_date d-none">
+                                <div class="col-sm-12">
+                                    <div class="form-group  ">
+                                        <label for=""> When was it completed?</label>
+                                        <div class="date-input"><input autocomplete="off"
+                                                class="date_with_end form-control editable past_date" value=""
+                                                placeholder="Select date" type="text" name="solved_on"
+                                                id="request_data_solved_date"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br></br>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" value="add" id="action_type" name="action_type">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary px-5 py-2" type="submit" id="submit_request">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock modal %}
+{% block content %}
+<style>
+    .form-control {
+        background-color: #f5f1f1 !important;
+    }
+</style>
+
+
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="form-head page-titles d-flex align-items-center">
+            <div class="mr-auto d-lg-block">
+                <h2 class="text-black font-w600 display-10  fancy_text4 request_title text-center">{{main.name|title}}</h2>
+
+                {% comment %}
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Propert</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Reviews</a></li>
+                </ol>
+                {% endcomment %}
+            </div>
+            {% comment %} <a href="#" class="btn btn-primary rounded light mr-3">Refresh</a>
+            <a href="#" class="btn btn-primary rounded"><i class="flaticon-381-settings-2 mr-0"></i></a>
+            {% endcomment %}
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <ul class="nav nav-pills justify-content-start review-tab mb-4">
+                    <li class="nav-item">
+                        <a href="#navpills-1" class="nav-link active request_title" data-toggle="tab"
+                            aria-expanded="false">{{main.name}} </a>
+                    </li>
+
+                    {% if request.user.is_syestem_admin %}
+                    <li class="nav-item">
+                        <a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false">Cost</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a href="#navpills-3" class="nav-link" data-toggle="tab" aria-expanded="false">Images </a>
+                    </li>
+                </ul>
+                {% comment %}
+                <ul class="nav nav-pills review-tab bg-danger">
+                    <li class="nav-item">
+                        <a href="#navpills-1" class="nav-link active" data-toggle="tab" aria-expanded="false">About
+                            {{main.property_name}} </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false">Units</a>
+                    </li>
+                </ul>
+                {% endcomment %}
+                <div class="tab-content pt-4 bg-white">
+                    <div id="navpills-1" class="tab-pane active">
+                        <div class="card col-12">
+                            <div class="card-body">
+
+
+                                <div class="row mb-2">
+                                    <div class="d-flex justify-content-between mb-5">
+                                        <button
+                                            class="btn btn-primary justify-content-end px-5 py-2 mr-sm-4 text-white edit_maintenance"
+                                            id="{{main.id}} " type='button'><span>Click to edit</span></button>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Name</label>
+                                            <input class="form-control property_type property_category" readonly=""
+                                                value="{{main.name}}" placeholder="Example: Pest control" type="text"
+                                                id="name_id" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Tenant</label>
+                                            <input class="form-control property_property_title"
+                                                value="{{main.tenant.name}}" readonly=""
+                                                placeholder="Example: Mariga Waithera" type="text" id="tenant_id" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Property</label>
+                                            <input class="form-control property_property_title" readonly=""
+                                                value="{{main.unit.unit_name}}" placeholder="Example: house A"
+                                                type="text" id="unit_id" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">priority</label>
+                                            <input class="form-control " readonly="" placeholder="Example: Kenya"
+                                                value="{{main.priority}}" type="text" value="Kenya" id="priority_id" />
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label> description</label><textarea readonly=""
+                                                value=" {{main.description}}"
+                                                placeholder="Example: Blue building opposite T-mall in Lanagta road"
+                                                class="form-control text-left" rows="4"
+                                                id="description_id">{{main.description}}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="">Reported on</label>
+                                            <input class="form-control" readonly="" value="{{main.reported_on}}"
+                                                placeholder="Example: 1997" type="text" id="reported_on_id" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <!-- <hr> -->
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Status</label>
+                                            <input class="form-control" value="{{main.status}}" readonly=""
+                                                placeholder="Example: Mariga Waithera" type="text" id="status_id" />
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="navpills-2" class="tab-pane">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Material and labour costs</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive recentOrderTable">
+                                    {% comment %} <div class="row mb-2">
+                                        <div class="d-flex justify-content-between mb-5">
+                                            <button
+                                                class="btn btn-primary justify-content-end px-5 py-2 mr-sm-4 text-white"
+                                                id="add_cost_button" type="button">
+                                                <span>Click to add</span>
+                                            </button>
+                                        </div>
+                                    </div> {% endcomment %}
+
+                                    <div class="table-responsive" style="cursor: pointer">
+                                        <table id="cost_table" class="table table-lightborder display responsive nowrap"
+                                            data-turbolinks="false" style="width: 100%">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left">Labour/Material</th>
+                                                    <th class="text-left">Total cost</th>
+                                                    <th class="text-left">Status</th>
+
+                                                    <th class="text-left"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-left"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="navpills-3" class="tab-pane">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Photos of the issue</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive recentOrderTable">
+                                    {% comment %} <div class="row mb-2">
+                                        <div class="d-flex justify-content-between mb-5">
+                                            <button
+                                                class="btn btn-primary justify-content-end px-5 py-2 mr-sm-4 text-white"
+                                                id="attachment_button" type="button">
+                                                <span>Click to attach</span>
+                                            </button>
+                                        </div>
+                                    </div> {% endcomment %}
+
+                                    <div class="table-responsive" style="cursor: pointer">
+                                        <table id="attachment_table"
+                                            class="table table-lightborder display responsive nowrap"
+                                            data-turbolinks="false" style="width: 100%">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left">Photo</th>
+                                                    <th class="text-left">name</th>
+                                                    <th class="text-left"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-left"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+{% include 'partials/_select_options.html' %}
+{% include 'partials/_date.html' %}
+<script>
+
+   $(document).ready(function() {
+      
+        var maintenance={{main.id}}
+        cost_function(maintenance);
+        attachment_function(maintenance);
+         select_option.unit_maintenance('#unit_maintenance');
+    });
+
+    $(document).on('submit', '#create_request_form', function(event) {
+    
+        var action_type=$('#action_type').val();
+ 
+       
+            var id= {{main.id}};
+            var method='PUT';
+            var url = "{% url 'maintenance:maintenance-rud' id=12345 %}".replace(/12345/, id).toString();
+
+        var form_data = new FormData(this);
+        event.preventDefault();
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function() {
+                $('#submit_request').attr('disabled', 'disabled');
+                $("#submit_request").html("Please wait");
+            },
+            success: function(data) {
+                $('#submit_request').attr('disabled', false);
+                $("#submit_request").html("Upload records");
+                if (data.success) {
+                $('#create_request_modal').modal('hide');
+                $('#cost_success_type').val(action_type);
+                $('.request_title').text(data.response.name);
+                $('#action_type').val('edit');
+              
+                $('#tenant_id').val(data.response.tenant.name);
+                $('#unit_id').val(data.response.unit.unit_name);
+                $('#name_id').val(data.response.name);
+                $('#description_id').val(data.response.description);
+                $('#priority_id').val(data.response.priority);
+                $('#reported_on_id').val(data.response.reported_on);
+                $('#status_id').val(data.response.status);
+
+        }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function(jqXhr) {
+                $('#submit_request').attr('disabled', false);
+                $("#submit_request").html("Upload records");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+            }
+        });
+    });
+    $(document).on('change', '#request_data_solved', function() {
+        var request_data_solved = $(this).val();
+        if (request_data_solved == "solved") {
+            $('.is_was').text('was');
+            $('.maintenance_decision').addClass('d-none');
+            $('.class_data_solved_date').removeClass('d-none');
+            $('#request_data_solved_date').val("");
+        } else {
+            $('.is_was').text('is');
+            $('.class_data_solved_date').addClass('d-none');
+            $('.maintenance_decision').removeClass('d-none');
+            $('#request_data_solved_date').val("");
+        }
+        $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+    });
+    $(document).on('click', '.edit_maintenance', function() {
+        $('#create_request_form')[0].reset();
+     
+        var id = {{main.id}};
+      
+        $.ajax({
+            url : "{% url 'maintenance:maintenance-rud' id=12345 %}".replace(/12345/, id).toString(),
+            method: "GET",
+            dataType: "json",
+            data: {
+                id: id
+            },
+           
+            success: function(data) {
+                $('.request_title').text(data.name);
+                $('#request_data_id').val(data.id);
+                $('#action_type').val('edit');
+              
+                $('#unit_maintenance').val(data.tenant+','+data.unit).change();
+                $('#request_data_category').val(data.category).change();
+                $('#request_data_custom').val(data.name);
+                $('#request_data_desc').val(data.description);
+                $('#request_priority').val(data.priority).change();
+                $('#request_data_date').val(data.reported_on);
+                $('#request_data_solved').val(data.status).change();
+                if (data.status == "solved") {
+                    $('.is_was').text('was');
+                    $('.maintenance_decision').addClass('d-none');
+                    $('.class_data_solved_date').removeClass('d-none');
+                    $('#request_data_solved_date').val(data.solved_on);
+                } else {
+                    $('.is_was').text('is');
+                    $('.maintenance_decision').removeClass('d-none');
+                    $('.class_data_solved_date').addClass('d-none');
+                    $('#request_data_solved_date').val();
+                }
+                $('#create_request_modal').modal('show');
+
+            }
+        })
+    });
+    $(document).on('click', '.remove_maintenance', function() {
+        var id ={{main.id}};
+   
+        $('#confirm_title').text("Are you sure?");
+        $('#confirm_extra').text("The image attachments and costs of the maintenance issue will be deleted as well");
+        $('#confirm_button').text("Confirm removal");
+        $('#confirm_alert').modal('show');
+        $('#confirmYes').off().on('click', function() {
+            $.ajax({
+                url :"{% url 'maintenance:maintenance-rud' id=12345 %}".replace(/12345/, id).toString(),
+                method: "DELETE",			
+                dataType: "json",
+                data: {
+                    id: id,
+
+   
+                },
+                success: function(data) {
+                    if (data.success) {
+                        $('#confirm_alert').modal('hide');
+                        $('#success_text').text(data.success);
+                        $('#success_alert').modal('show');
+                      
+                    }
+                    if (data.error) {
+                        $('#oops_text').text(data.error);
+                        $('#oops_alert').modal('show');
+                        $('#confirm_alert').modal('hide');
+                    }
+                },
+                error: function(jqXhr) {
+                    $('#oops_text').text("Something went wrong, try again later");
+                    $('#oops_alert').modal('show');
+                    $('#confirm_alert').modal('hide');
+                }
+
+            });
+        });
+        $('#confirmNo').off().on('click', function() {
+            $('#confirm_alert').modal('hide');
+        });
+    });
+    $(document).on('change', '#request_data_category', function() {
+        var request_type = $(this).val();
+        if (request_type == "other") {
+            $('.custom_label').removeClass('d-none');
+        } else {
+            $('.custom_label').addClass('d-none');
+            $('#request_data_custom').val("");
+        }
+        $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+    });
+
+   
+
+{% comment %} start documents---------------------------------------------------- {% endcomment %}
+$("#upload_file").change(function() {
+    if ($("#upload_file").val()) {
+        $(".attachment_name").html("A photo has been uploaded.");
+    } else {
+        $(".attachment_name").html("Click if you want to upload a photo of the problem.");
+
+    }
+
+});
+$(document).on('click', '#submit_final_attachment', function() {
+    data = $('#attachment_success_type').val();
+    if (data == "add") {
+        $('#success_text').text("You are done, remember that you can edit this anytime.");
+        $('#success_alert').modal('show');
+    } else {
+        $('#success_text').text("You can view your attachments anytime.");
+        $('#success_alert').modal('show');
+    }
+    $('#attachment_modal').modal('hide');
+});
+
+$(document).on('click', '.attach_photos', function() {
+    var maintenance ={{main.id}};
+    attachment_function(maintenance);
+    $('#attachment_success_type').val("edit");
+    $('#attachment_modal').modal('show');
+});
+$(document).on('click', '#attachment_button', function() {
+    $('#attachment_image_form')[0].reset();
+    $('#attachment_id2').val({{main.id}});
+    $('#attachment_property2').val($('#attachment_property').val());
+    $('#attachment_image_modal').modal('show');
+});
+
+$(document).on('submit', '#attachment_image_form', function(event) {
+    var form_data = new FormData(this);
+    url = '{% url "maintenance:document-listcreate" %}';
+
+    event.preventDefault();
+    $.ajax({
+        method: 'POST',
+        url: url,
+        data: form_data,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function() {
+            $('#submit_attachment').attr('disabled', 'disabled');
+            $("#submit_attachment").html("Please wait");
+        },
+        success: function(data) {
+            $('#submit_attachment').attr('disabled', false);
+            $("#submit_attachment").html("Upload attachment");
+            if (data.success) {
+                attachment_function(data.response.maintenance)
+                $('#success_text').text(data.success);
+                $('#success_alert').modal('show');
+                $('#attachment_image_modal').modal('hide');
+              
+            }
+            if (data.error) {
+                $('#oops_text').text(data.error);
+                $('#oops_alert').modal('show');
+            }
+        },
+        error: function(jqXhr) {
+            $('#attachment_image_modal').modal('hide');
+            $('#submit_attachment').attr('disabled', false);
+            $("#submit_attachment").html("Upload records");
+            $('#oops_text').text("Something went wrong, try again later");
+            $('#oops_alert').modal('show');
+
+        }
+    });
+});
+$(document).on('click', '.remove_document', function() {
+    var data = $(this).attr("id");
+    var data_split = data.split(",");
+    var id = data_split[0];
+    var maintenance = data_split[1];
+    $('#confirm_title').text("Are you sure?");
+    $('#confirm_extra').text("Confirming the removal of this image");
+    $('#confirm_button').text("Confirm removal");
+    $('#confirm_alert').modal('show');
+    $('#confirmYes').off().on('click', function() {
+        $.ajax({
+            url :"{% url 'maintenance:document-rud' id=12345 %}".replace(/12345/, id).toString(),
+            method: "DELETE",
+            dataType: "json",
+     
+            success: function(data) {
+                if (data.success) {
+                    attachment_function(maintenance);
+                    $('#confirm_alert').modal('hide');
+                  
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                    $('#confirm_alert').modal('hide');
+                }
+            },
+            error: function(jqXhr) {
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#confirm_alert').modal('hide');
+            }
+
+        });
+    });
+    $('#confirmNo').off().on('click', function() {
+        $('#confirm_alert').modal('hide');
+    });
+});
+
+function attachment_function(maintenance) {
+    url_data = '{% url "maintenance:document-listcreate" %}';
+    $('#attachment_table').DataTable({
+        "destroy": true,
+        "bAutoWidth": false,
+        "ordering": false,
+        "oLanguage": {
+            "sEmptyTable": "No attachment added"
+        },
+        initComplete: function() {
+            var btns = $('.dt-button');
+            btns.removeClass('dt-button');
+        },
+        "ajax": {
+            "url": url_data,
+          
+            "data": {
+                "maintenance": maintenance,
+            
+            },
+        },
+        "searching": false,
+        "bPaginate": false,
+        "bInfo": false,
+        "bProcessing": true,
+        "scrollCollapse": true,
+        "paging": false,
+
+    });
+    jQuery('#attachment_table').wrap('<div class="dataTables_scroll" />');
+    $('#attachment_table').css('wdith', '100%');
+    $('#attachment_table').css('min-height', '200px');
+    $('#attachment_id').val(maintenance);
+}
+
+{% comment %} end documents---------------------------------------------------- {% endcomment %}
+
+{% comment %} start costs---------------------------------------------------- {% endcomment %}
+
+$(document).on('change', '#mc_cost_status', function() {
+    var request_type = $(this).val();
+    if (request_type == "paid") {
+        $('.paid_for_column').removeClass('d-none');
+        $('.was_is').text('was this');
+       
+    } else if (request_type == "not paid") {
+        $('.paid_for_column').addClass('d-none');
+        $('#mc_cost_date').val("");
+        $('.was_is').text('is this');
+    }
+    $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+});
+$(document).on('click', '#submit_final_cost', function() {
+    data = $('#cost_success_type').val();
+    insert_id = {{main.id}};
+    if (data == "add") {
+        $('#attachment_success_type').val("add");
+        attachment_function(insert_id);
+        $('#attachment_modal').modal('show');
+    } else {
+        $('#success_text').text("You can view/edit Maintenance costs anytime.");
+        $('#success_alert').modal('show');
+    }
+    $('#cost_modal').modal('hide');
+});
+$(document).on('click', '.cost_button', function() {
+    var data ={{main.id}};
+    var attachment = data;
+
+    cost_function(attachment);
+    $('#cost_success_type').val("edit");
+    $('#submit_final_cost').text('Finish');
+    $('#cost_modal').modal('show');
+
+});
+$(document).on('click', '#add_cost_button', function() {
+    $('#add_cost_form')[0].reset();
+    $('#cost_action_type').val("add");
+    $('#mc_cost_status').val("not paid").change();
+    $('#mc_material_type').val("material").change();
+    $('#material_label_name').text("Material name");
+    $('.quantity_column').removeClass('d-none');
+    $('#m_id').val({{main.id}});
+    $('#add_cost_modal').modal('show');
+});
+
+$(document).on('click', '.edit_cost', function() {
+    $('#add_cost_form')[0].reset();
+    var id = $(this).attr("id");
+    $.ajax({
+        url : "{% url 'maintenance:cost-rud' id=12345 %}".replace(/12345/, id).toString(),
+        method: "GET",
+      
+        data: {
+            id: id
+        },
+        dataType: "json",
+        success: function(data) {
+            $('.cost_title').text(data.name);
+            $('#costs_id').val(id);
+            $('#cost_action_type').val('edit');
+            $('#m_id').val(data.maintenance);
+            $('#attm_id').val(data.maintenance);
+            $('#mc_cost_paid_by').val(data.paid_by).change();
+         
+            $('#mc_material').val(data.cost_name);
+            $('#mc_material_type').val(data.cost_type).change();
+            $('#mc_cost').val(data.cost_total);
+            $('#mc_cost_date').val(data.paid_date);
+            $('#mc_cost_status').val(data.paid).change();
+            $('#mc_material_qty').val(data.cost_number);
+            $('#mc_desc').val(data.cost_description);
+           
+            $('#add_cost_modal').modal('show');
+
+        }
+    })
+});
+$(document).on('submit', '#add_cost_form', function(event) {
+    var action_type=$('#cost_action_type').val()
+
+    if (action_type =='add'){
+        var method='POST';
+        var url = '{% url "maintenance:cost-listcreate" %}';
+    }
+    if (action_type =='edit'){
+        var id= {{main.id}};
+        var method='PUT';
+        var url = "{% url 'maintenance:cost-rud' id=12345 %}".replace(/12345/, id).toString();
+    }
+    var form_data = new FormData(this);
+    event.preventDefault();
+    $.ajax({
+        method: method,
+        url: url,
+        data: form_data,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function() {
+            $('#submit_cost').attr('disabled', 'disabled');
+            $("#submit_cost").html("Please wait");
+        },
+        success: function(data) {
+            $('#submit_cost').attr('disabled', false);
+            $("#submit_cost").html("Upload records");
+            if (data.success) {
+                cost_function(data.response.maintenance);
+                $('#add_cost_modal').modal('hide');
+                $('#success_text').text(data.success);
+                $('#success_alert').modal('show');
+              
+            }
+            if (data.error) {
+                $('#oops_text').text(data.error);
+                $('#oops_alert').modal('show');
+            }
+        },
+        error: function(jqXhr) {
+            $('#add_cost_modal').modal('hide');
+            $('#submit_cost').attr('disabled', false);
+            $("#submit_cost").html("Upload records");
+            $('#oops_text').text("Something went wrong, try again later");
+            $('#oops_alert').modal('show');
+
+        }
+    });
+});
+$(document).on('click', '.remove_cost', function() {
+    var data = $(this).attr("id");
+    var data_split = data.split(",");
+    var id = data_split[0];
+    var maintenance = data_split[1];
+    $('#confirm_title').text("Are you sure?");
+    $('#confirm_extra').text("Confirming the removal of this cost");
+    $('#confirm_button').text("Confirm removal");
+    $('#confirm_alert').modal('show');
+    $('#confirmYes').off().on('click', function() {
+        $.ajax({
+            url :"{% url 'maintenance:cost-rud' id=12345 %}".replace(/12345/, id).toString(),
+            method: "DELETE",		
+            dataType: "json",
+            data: {
+                id: id,
+            },
+            success: function(data) {
+                if (data.success) {
+                    cost_function(maintenance);
+                    $('#confirm_alert').modal('hide');
+                
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                    $('#confirm_alert').modal('hide');
+                }
+            },
+            error: function(jqXhr) {
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#confirm_alert').modal('hide');
+            }
+
+        });
+    });
+    $('#confirmNo').off().on('click', function() {
+        $('#confirm_alert').modal('hide');
+    });
+});
+
+function cost_function(maintenance) {
+    url_data = '{% url "maintenance:cost-listcreate" %}';
+    $('#cost_table').DataTable({
+        "destroy": true,
+        "bAutoWidth": false,
+        // "bLengthChange": false,
+        "ordering": false,
+        "oLanguage": {
+            "sEmptyTable": "No materials used"
+        },
+        initComplete: function() {
+            var btns = $('.dt-button');
+            btns.removeClass('dt-button');
+        },
+        "ajax": {
+            "url": url_data,
+       
+            "data": {
+                "maintenance": maintenance,
+            },
+        },
+        "searching": false,
+        "bPaginate": false,
+        "bInfo": false,
+        "bProcessing": true,
+        "scrollCollapse": true,
+        "paging": false,
+
+    });
+    jQuery('#cost_table').wrap('<div class="dataTables_scroll" />');
+    $('#cost_table').css('wdith', '100%');
+    $('#cost_table').css('min-height', '200px');
+    $('#add_cost_id').val(maintenance);
+}
+$(document).on('change', '#mc_material_type', function() {
+    var request_type = $(this).val();
+    if (request_type == "material") {
+        $('#material_label_name').text("Material name");
+        $('.quantity_column').removeClass('d-none');
+    } else if (request_type == "labour") {
+        $('#material_label_name').text("labourer's name");
+        $('.quantity_column').addClass('d-none');
+        $('#mc_material_qty').val("");
+    }
+    $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+
+});
+{% comment %} end costs---------------------------------------------------- {% endcomment %}
+
+
+</script>
+{% endblock scripts %} {% endblock content %}

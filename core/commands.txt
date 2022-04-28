@@ -1,0 +1,6 @@
+celery -A core.celery worker --pool=solo -l info
+celery -A core beat -l INFO 
+
+
+
+celery -A core.celery worker -l info

@@ -1,0 +1,577 @@
+{% extends 'base.html' %} {% load static %} {% load static %} {% block title %} {{tenant.name}} {% endblock title %}
+
+
+{% load custom_tags %}
+{% load humanize %}
+
+
+
+
+{% block content %}
+{% if lease.lease_group == "rent"  %}
+    {% setvar "About the lease" as list_title %}
+    {% setvar "tenant" as person %}
+	{% setvar "Rental charges" as charges %}
+{% else %}
+    {% setvar "About the purchase" as list_title %}
+    {% setvar "buyer" as person %}
+    {% setvar "Purchase price" as charges %}
+	
+{% endif %}
+
+<style>
+	.card-body .form-control {
+		background-color: #f5f1f1 !important;
+	}
+</style>
+
+<div class="content-body">
+	<!-- row -->
+	<div class="container-fluid">
+
+		<div class="card ">
+			<div class="card-header d-block mx-3 text-center">
+				{% if lease.lease_group == "rent" %}
+				<h5 class="card-title fancy_text4s display-4 custom-card-title fancy_text4 "><span>About the lease
+					</span></h5>
+				{% else %}
+				<h5 class="card-title fancy_text4s display-4 custom-card-title fancy_text4 "><span>Purchase agreement
+					</span></h5>
+				{% endif %}
+
+			</div>
+		</div>
+	
+		<div class="row">
+			<div class="col-xl-12">
+				<ul class="nav nav-pills justify-content-around review-tab ">
+					<li class="nav-item">
+						<a href="#navpills-1" class="nav-link active tenant_name_title" data-toggle="tab"
+							aria-expanded="false">{{list_title}} </a>
+					</li>
+
+					<li class="nav-item">
+						<a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false">About the property
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a href="#navpills-3" class="nav-link" data-toggle="tab" aria-expanded="false">About the {{person}} </a>
+					</li>
+					<li class="nav-item">
+						<a href="#navpills-4" class="nav-link" data-toggle="tab" aria-expanded="false">{{charges}}
+						</a>
+					</li>
+				</ul>
+
+				<div class="tab-content pt-4 bg-white">
+					<div id="navpills-1" class="tab-pane active">
+						<div class="card col-12 px-3">
+							<div class="card-header">
+								<h4 class="card-title fancy_text4">{{list_title}}</h4>
+							</div>
+							{% if lease.lease_group == "rent"  %}
+							<div class="card-body">
+
+								<div class="row">
+
+									<div class="col-6">
+										<div class="form-group">
+											<label for="" class="step-text">Lease </label>
+											<input class="form-control required required-1"
+												placeholder="Example: fixed period" type="text"
+												value="{{lease.lease_type}}" id="lease_type_card" />
+										</div>
+									</div>
+								</div>
+
+
+								<div class="row">
+									<div class="col-6">
+										<div class="form-group"><label class='' for="">Start
+												date</label>
+											<div class="input-group mb-2 mb-sm-0">
+
+												<input class="form-control " value="{{lease.start_date}}" type="text"
+													id='start_date_card'>
+											</div>
+										</div>
+									</div>
+									<div class="col-6">
+										<div class="form-group">
+											<label for="">End date</label>
+											<input class="form-control" readonly=""
+												value="{{lease.end_date |default:'--------'}}" type="text"
+												id="end_date_card" />
+										</div>
+									</div>
+								</div>
+								<div class="row ">
+									<div class="col-12">
+										<div class="form-group">
+											<label for="">Signature</label>
+											<input class="form-control" readonly="" value="{{lease.signed}}" type="text"
+												id="lease_sign_card" />
+										</div>
+									</div>
+
+								</div>
+								<div class="row show_document mb-5">
+                                    <div class="p-4 col-12 border d-flex justify-content-around"
+                                        style="background-color: #FFFFE0;">
+                                        <div class="text-secondary">
+                                            <div class=" px-3 form-desc  display-7sm fancy_text3 p-2"
+                                                style="line-height: 150%;font-size:18px;">
+                                                <a href="{{lease.document.url}}" download class="fancy_text5 text-primary" id="view_document"
+                                                    style="border-bottom:2px solid #3B4CB8"> Click to view lease</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+							</div>
+							{% else %}
+							<div class="card-body">
+
+								
+								<div class="row ">
+									<div class="col-12 col-md-6">
+										<div class="form-group">
+											<label for="">Sold for</label>
+											<input class="form-control" readonly="" value="{{lease.purchase_price}}" type="text"
+												id="lease_sign_card" />
+										</div>
+									</div>
+
+								</div>
+								<div class="row ">
+									<div class="col-12 col-md-6">
+										<div class="form-group">
+											<label for="">Paid through</label>
+											<input class="form-control" readonly="" value="{{lease.paid_through}}" type="text"
+												id="lease_sign_card" />
+										</div>
+									</div>
+									<div class="col-12 col-md-6">
+										<div class="form-group">
+											<label for="">Ref no</label>
+											<input class="form-control" readonly="" value="{{lease.ref_no}}" type="text"
+												id="lease_sign_card" />
+										</div>
+									</div>
+
+								</div>
+
+								<div class="row ">
+									<div class="col-12">
+										<div class="form-group"><label class='' for="">Sold on
+												</label>
+											<div class="input-group mb-2 mb-sm-0">
+
+												<input class="form-control " value="{{lease.start_date}}" type="text"
+													id='start_date_card'>
+											</div>
+										</div>
+									</div>
+								
+								</div>
+								<div class="row show_document mb-5">
+                                    <div class="p-4 col-12 border d-flex justify-content-around"
+                                        style="background-color: #FFFFE0;">
+                                        <div class="text-secondary">
+                                            <div class=" px-3 form-desc  display-7sm fancy_text3 p-2"
+                                                style="line-height: 150%;font-size:18px;">
+                                                <a href="{{lease.document.url}}" download class="fancy_text5 text-primary" id="view_document"
+                                                    style="border-bottom:2px solid #3B4CB8"> Click to view receipt</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+								
+							</div>
+							
+							
+							{% endif %}
+					
+						</div>
+					</div>
+					<div id="navpills-2" class="tab-pane">
+						<div class="card col-12 px-3">
+							<div class="card-header">
+								<h4 class="card-title fancy_text4">About the property</h4>
+							</div>
+							<div class="card-body">
+								<div class="table-responsive recentOrderTable">
+									<div class="row">
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label for="">Name</label>
+												<input class="form-control property_type unit_name" readonly=""
+													type="text" />
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label for="">Category</label>
+												<input class="form-control unit_category" readonly="" type="text" />
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label for="">Type</label>
+												<input class="form-control unit_type" readonly="" type="text" />
+											</div>
+										</div>
+									</div>
+								
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="form-group">
+												<label> description</label><textarea readonly=""
+													placeholder="Example: Property description ..."
+													class="form-control text-left description" rows="4">
+                                            </textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="navpills-3" class="tab-pane">
+						<div class="card col-12 px-3">
+							<div class="card-header">
+								<h4 class="card-title fancy_text4">About the {{person}}</h4>
+							</div>
+							<div class="card-body">
+								<div class="table-responsive recentOrderTable">
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="form-group">
+												<label for="" class="step-text">Name</label>
+												<input class="form-control tenant_name required required-1"
+													placeholder="Example: Mariga Waithera" type="text" />
+											</div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-6">
+											<div class="form-group"><label class='' for="">Phone number</label>
+												<div class="input-group mb-2 mb-sm-0">
+													<div class="input-group-append">
+														<div class="input-group-text tenant_calling_code_card">1</div>
+													</div>
+													<input class="form-control tenant_phone" maxlength="10"
+														placeholder="Example: 720425412" type="phone">
+												</div>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="form-group">
+												<label for="">Email</label>
+												<input class="form-control tenant_emai" readonly=""
+													placeholder="Example: test@gmail.com" type="text" name="email" />
+											</div>
+										</div>
+									</div>
+
+
+									<div class="row">
+										<div class="col-6">
+											<div class="form-group">
+												<label for="">Nationality</label>
+												<input class="form-control tenant_nationality" readonly=""
+													placeholder="Example: Indian" type="text" />
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="form-group">
+												<label for="" class="step-text tenant_national_type">National
+													ID</label>
+												<input
+													class="form-control tenant_name required required-1 tenant_national"
+													placeholder="Example: Mariga Waithera" type="text" />
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="navpills-4" class="tab-pane">
+
+						<div class="card col-12 px-3">
+
+							<div class="card">
+								{% comment %} <div class="card-header">
+									<h4 class="card-title fancy_text4 "><span id="link_name">{{charges}} </span> </h4>
+								</div> {% endcomment %}
+								{% if lease.lease_group == "purchase"  %}
+								<div class="col-12">
+									<div class="widget-stat card">
+										<div class="card-body col-12  p-4 d-flex justify-content-start" style="border-bottom: 3px solid #dbdef3;border-right: 3px solid #dbdef3;">
+											<div class="media ai-icon pb-2 pl-2 col-6" style="border:none" >
+												<span class="me-3 bgl-primary text-primary">
+													<svg id="icon-revenue" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign">
+														<line x1="12" y1="1" x2="12" y2="23"></line>
+														<path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+													</svg>
+												</span>
+												<div class="media-body text-center fancy_text4 d-flex justify-content-around">
+													<h2 class="mb-1 display-7 fancy_text4">Property was sold for:</h2>
+													<h5 class="mb-0 display-8 fancy_text5 text-primary">{{lease.purchase_price|intcomma}} </h5>
+												
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								{% else %}
+								<div class="card-body">
+									<div class="row mb-2 d-none">
+										<div class="d-flex justify-content-between mb-5">
+											<button
+												class="btn btn-primary justify-content-end px-5 py-2 mr-sm-4 text-white add_charges_button"
+												type="button">
+												<span>Click to add</span>
+											</button>
+										</div>
+									</div>
+
+									<div class="table-responsive" style="cursor: pointer">
+									
+										<table   class="table table-borderd table-heading display responsive dataTable no-footer" width="100%">
+											<thead>
+												<tr>
+													
+													<th class="text-left"></th>
+													<th class="text-left">Charge</th>
+													<th class="text-left">Amount</th>
+													<th class="text-left">Notify the tenant with</th>
+													<th class="text-left">Duration</th>
+												</tr>
+											</thead>
+											<tbody class="text-left">
+												{% for row in rent_charges %}
+												<tr>
+	
+													<td>
+														<strong class="text-primary"> {{ forloop.counter }}.</strong>
+													</td>
+													<td>
+														<strong>{{row.name}}</strong>
+													</td>
+													<td>
+														{{row.amount|intcomma}}
+													</td>
+													<td>
+														-------
+													</td>
+													<td>
+														{% if row.duration == "monthly" %}
+														{{row.duration}} (on the {{row.month_date|ordinal }} of every month)
+														
+														{% elif row.duration == "annually" %}
+														{{row.duration}} (on {{row.year_date}})
+														
+														{% elif row.duration == "once" %}
+														{{row.duration}} (on {{row.once_date}})
+														{% elif row.duration == "weekly" %}
+														{{row.duration}} (on {{row.week_date}})
+														
+														{% endif %}
+														
+													</td>
+													{% comment %} <td>
+														{{row.reported_on|timesince}} ago
+													</td> {% endcomment %}
+													
+													
+												</tr>
+												{% endfor %}
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+								{% endif %}
+
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% block scripts %} {% include 'partials/_select_options.html' %} {% include 'partials/_date.html' %}
+<script>
+	$(document).ready(function () {
+		unit = "{{lease.unit.id}}";
+		tenant = "{{lease.tenant.id}}";
+		fetch_unit(unit);
+		fetch_tenant(tenant);
+	});
+
+	function fetch_unit(unit) {
+		var unit = unit;
+		$.ajax({
+			url: "{% url 'property:units-rud' id=123456 %}".replace(/123456/, unit).toString(),
+			method: "GET",
+			dataType: "json",
+			success: function (data) {
+				$('#unit_id').val(data.id);
+				$('.unit_name').val(data.unit_name);
+				$('.unit_category').val(data.unit_category);
+				$('.unit_type').val(data.unit_type);
+				$('.size').val(data.size);
+				$('.is_furnished').val(data.is_furnished);
+				$('.baths').val(data.baths);
+				$('.description').val(data.description);
+				unit_charges_table(data.unit_charges);
+
+			}
+		})
+	}
+
+	function fetch_tenant(tenant) {
+		var tenant = tenant;
+		$.ajax({
+			url: "{% url 'tenant:tenant-rud' id=12345 %}".replace(/12345/, tenant).toString(),
+			method: "GET",
+			dataType: "json",
+			success: function (data) {
+				$('#tenant_id').val(data.id);
+
+				$('.tenant_name').val(data.name);
+				$('.tenant_status').val(data.is_active);
+				$('.tenant_phone').val(data.phone_number);
+				$('.tenant_calling_code').text(data.calling_code);
+				$('.tenant_email').val(data.email);
+				$('.tenant_nationality').val(data.nationality);
+				$('.tenant_national_type').text(data.proof_by);
+				$('.tenant_national').val(data.proof_number);
+
+			}
+		})
+	}
+
+	function unit_charges_table(id_list) {
+		url_data = '{% url "finance:charges-listcreate" %}';
+		data_table = JSON.stringify(id_list);
+		$('#unit_charges_table').DataTable({
+			//processing: true,
+			//serverSide: true,
+
+			"destroy": true,
+			"bAutoWidth": false,
+			"bFilter": false,
+			"bPaginate": false,
+			"bFilter": false,
+			"bInfo": false,
+			"oLanguage": {
+				"sEmptyTable": "No charges added"
+			},
+			"ajax": {
+				"url": url_data,
+				"data": {
+					"data_table": JSON.stringify(id_list),
+
+				}
+			},
+			"order": [
+				[0, 'asc']
+			],
+			"columnDefs": [
+			{
+				"visible": false,
+				"targets": 0,
+			},
+			
+			
+			],
+			"rowGroup": {
+				"dataSrc": 0
+			},
+			"bPaginate": false,
+			"pageLength": 10,
+
+		});
+		jQuery('#people_table').wrap(' <div class="dataTables_scroll" /> ');
+
+	}
+	$(document).on('click', '#add_lease_button', function () {
+		$('#the_signed_lease_notes').text(
+			"As soon as you have signed the lease, come back and upload the document.");
+		$("#lease_file").val('');
+		$(".lease_start").val('');
+		$(".lease_end").val('');
+		$('#file_option').val('yes').change();
+		$("#lease_sent").val('no').change();
+		$("#lease_sign").val('no').change();
+		$('.lease_action').val("add");
+		select_option.vacant_units('#search_units', 'none');
+
+		$('#tenant_lease_modal').modal('show');
+
+	});
+
+	$(document).on('change', '#lease_type', function () {
+		var lease_type = $('#lease_type').val();
+		if (lease_type == 'month-to-month') {
+			$('#end_date').addClass("d-none");
+			$('#notification_fixed_term').addClass("d-none");
+		}
+		if (lease_type == 'fixed period') {
+			$('#end_date').removeClass("d-none");
+			$('#notification_fixed_term').removeClass("d-none");
+		}
+		$('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+	});
+	$(document).on('change', '#lease_sign', function () {
+		var option = $('#lease_sign').val();
+
+
+		if (option == "yes") {
+			$(".image_available").removeClass("d-none");
+			$('#the_signed_lease_notes').text("Kindly upload a signed lease document.");
+
+		}
+		if (option == "no") {
+			$(".image_available").addClass("d-none");
+			$('#the_signed_lease_notes').text(
+				"As soon as you have signed the lease, come back and upload the document.");
+		}
+	});
+	$(document).on('change', '#file_option', function () {
+		var option = $('#file_option').val();
+		if (option == "yes") {
+			$(".div_upload_file").removeClass("d-none");
+			$(".div_download_file").addClass("d-none");
+		}
+		if (option == "select_download_file") {
+			$(".div_upload_file").addClass("d-none");
+			$(".div_download_file").removeClass("d-none");
+		}
+		if (option == "select_no_all") {
+			$(".div_upload_file").addClass("d-none");
+			$(".div_download_file").addClass("d-none");
+		}
+		$('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+	});
+
+
+	$(document).on('click', '.lease-link', function () {
+		link_name = $(this).text();
+		$('#link_name').text(link_name);
+	});
+</script>
+{% endblock scripts %} {% endblock content %}

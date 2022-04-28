@@ -1,0 +1,53 @@
+{% extends "account_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+
+{% if form.errors %}
+<div class="row mb-3">
+  <h3 class="display-8 text-center text-danger fancy_text5 col-12">error</h3>
+  <div class="border border-danger border-right-0 border-left-0 p-4 col-10 mx-auto">
+    {% for field in form %} {% for error in field.errors %}
+    <h5 class="text-center fancy_text3">{{ error|escape }}</h5>
+    {% endfor %} {% endfor %}
+  </div>
+</div>
+{% else %}
+<h3 class="text-center fancy_text5 mb-5">{% trans "Create a new account" %}</h3>
+{% endif %}
+
+
+<form class="signup mt-4" id="signup_form" method="post" action="{% url 'account_signup' %}">
+  {% csrf_token %}
+  
+    
+    <div class="form-group">
+        <label class="mb-1"><strong>Email</strong></label>
+        <input type="email" name="email" class="form-control" placeholder="hello@example.com">
+    </div>
+    <div class="form-group">
+        <label class="mb-1"><strong>Password</strong></label>
+        <input type="password" name="password1" class="form-control" placeholder="Enter Password">
+    </div>
+    <div class="form-group">
+        <label class="mb-1"><strong>Password</strong></label>
+        <input type="password" name="password2" class="form-control" placeholder="Confirm Password">
+    </div>
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary btn-block">Sign me up</button>
+    </div>
+
+
+
+ 
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+
+</form>
+<p class="fancy_text4">{% blocktrans %}Already have an account? Then please <a class="fancy_text5 text-primary font-w600" href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+
+{% endblock %}

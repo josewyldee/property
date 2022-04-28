@@ -1,0 +1,235 @@
+<div aria-hidden="true" data-backdrop="static" data-tab="sub_modal" class="onboarding-modal modal fade animated sub_modal" style='z-index:1060 !important' id="edit_photos_modal" role="dialog" tabindex="-1">
+	<div class="modal-dialog modal-centered " role="document">
+		<form method="POST" id='edit_photos_form'>
+			<div class="modal-content">
+				<button aria-label="Close" class="close" data-dismiss="modal" type="button"><span class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+				<div class="onboarding-slider-w sub_modal">
+					<div class="onboarding-slide" >
+						<div class="onboarding-content with-gradient">
+							<h4 class="onboarding-title display-10 fancy_text4 lead text-left">Features </h4>
+							<hr>
+							<input type="hidden1" id="edit_photos_id" name="id">
+						
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group ">
+										<label class="control-label">Feature name</label>
+										<input class="form-control editable" type="text" placeholder="Example:Pool" name="name" id="edit_photo_name">
+									</div>
+								</div>
+							</div>
+						</div>
+						<br><br><br>
+					</div>
+				
+					<div class="onboarding-slide">
+						
+						<div class="onboarding-content with-gradient">
+							<input type="hidden1" name="unit_create_numbers" id="unit_create_numbers_photos">
+							<input type="hidden1" name="action" id="photo_update_add">
+							<input type="hidden1" value="add" id="photo_action_type">
+							<input type="hidden1" name="created_at" id="created_at_photos">
+							<input type="hidden1" id="photos_right_now">
+							<input type="text" name="id_list" id="id_list_photo">
+							<h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+							<div class="form-buttons-w d-flex flex-row justify-content-end">
+								<button class="btn btn-primary p-3" id="submit_edit_photo" type="submit">Upload
+									records</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+
+
+<script>
+
+$('#edit_photos_table').css('min-height', '200px');
+$('#edit_photos_table').css('wdith', '100%');
+function edit_photos_table(id_list) {
+    url_data = '{% url "finance:photos-listcreate" %}';
+    data_table=JSON.stringify(id_list);
+    $('#edit_photos_table').DataTable({
+        //processing: true,
+        //serverSide: true,
+        "destroy": true,
+        "bAutoWidth": false,
+        "bFilter": false,
+        "bPaginate": false,
+        "bFilter": false,
+        "bInfo": false,
+        "oLanguage": {
+            "sEmptyTable": "No photo added"
+        },
+        "ajax": {
+            "url": url_data,
+            "data": {
+                "data_table": JSON.stringify(id_list),
+                
+            }
+        },
+        "order": [
+            [0, 'asc']
+        ],
+        "columnDefs": [{
+                "visible": false,
+                "targets": 0,
+            },
+        ],
+        "rowGroup": {
+            "dataSrc": 0
+        },
+        "bPaginate": false,
+        "pageLength": 10,
+
+    });
+        jQuery('#edit_photos_table').wrap('<div class="dataTables_scroll" />');
+
+}
+
+
+$(document).on('submit', '#edit_photos_form', function(event) {
+    var action_type=$('#photo_action_type').val()
+    if (action_type =='add'){
+        var method='POST';
+        var url = '{% url "finance:photos-listcreate" %}';
+    }
+    if (action_type =='edit'){
+        var id= $('#edit_photos_id').val();
+        var method='PUT';
+        var url = "{% url 'finance:photos-rud' id=12345 %}".replace(/12345/, id).toString();
+    }
+    var form_data = new FormData(this);
+    event.preventDefault();
+    $.ajax({
+        method: method,
+        url: url,
+        data: form_data,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function() {
+            $('#submit_edit_photo').attr('disabled', 'disabled');
+            $("#submit_edit_photo").html("Please wait");
+        },
+        success: function(data) {
+            $('#submit_edit_photo').attr('disabled', false);
+            $("#submit_edit_photo").html("Upload records");
+            if (data.success) {
+                
+                edit_photos_table(data.id_list);
+
+                $("#id_list_photo").val(data.id_list);
+
+                $('#edit_photos_modal').modal('hide');
+                $('#success_text').text(data.success);
+                $('#success_alert').modal('show');
+               // $('.onboarding-modal .edit_the_photos').slick('slickGoTo', 0);
+                $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+            }
+            if (data.error) {
+                $('#oops_text').text(data.error);
+                $('#oops_alert').modal('show');
+            }
+        },
+        error: function(jqXhr) {
+            $('#submit_edit_photo').attr('disabled', false);
+            $("#submit_edit_photo").html("Upload records");
+            $('#oops_text').text("Something went wrong, try again later");
+            $('#oops_alert').modal('show');
+            $('#edit_photos_modal').modal('hide');
+        }
+
+    });
+});  
+$(document).on('click', '.add_photos_button', function() {
+    $('#edit_photos_modal').modal('show');
+    $('#photo_action_type').val("add");
+});
+$(document).on('click', '.edit_photos_button', function() {
+    //$('.onboarding-modal .edit_the_photos').slick('slickGoTo', 0);
+    var photo_id = $(this).attr("id");
+    $('input.form-control').val("");
+    $('input.textarea').val("");
+    $.ajax({
+        url : "{% url 'finance:photos-rud' id=12345 %}".replace(/12345/, photo_id).toString(),
+        method: "GET",
+        dataType: "json",
+        success: function(data) {
+            $(".invoice_for").removeClass("d-none");
+            if (data.created_at==$('#photos_right_now').val()){
+                $('#photo_update_add').val('update');
+            }else{
+                $('#photo_update_add').val('add');
+
+            }
+           
+            $('#edit_photos_id').val(data.id);
+            $('#edit_photo_name').val(data.name);
+     
+
+            var category = data.category;
+        
+            if (category != "custom") {
+                $(".photo_name").addClass("d-none");
+            }
+            if (category != "custom") {
+                $(".photo_name").addClass("d-none");
+            }
+            $("#edit_payments_duration").val(data.duration).change();
+            $('#photo_action_type').val("edit");
+            $('.general_photos_title').text(data.name + " in this property");
+            $('.general_photos_desc').text("");
+            edit_changed_category(data.category);
+            $('#edit_photos_modal').modal('show');
+        }
+    })
+});  
+$(document).on('click', '.delete_photos_button', function() {
+    var data = $(this).attr("id");
+    var data_split = data.split(",");
+    var name = data_split[0];
+    var id = data_split[1];
+    var created_at= data_split[2];
+    var photos_right_now= $("#photos_right_now").val();
+    if (created_at==photos_right_now){
+        var action="update";
+    }else{
+        var action="add";
+    }
+    $('#confirm_title').text("Just confirming...");
+    $('#confirm_text').text("Confirming the delete of " + name + ".");
+    $('#confirm_extra').text("Do you really want to delete " + name + "?");
+    $('#confirm_button').text("Confirm delete");
+    $('#confirm_alert').modal('show');
+    $('#confirmYes').one('click', function() {
+        $.ajax({
+            url :"{% url 'finance:photos-rud' id=12345 %}".replace(/12345/, id).toString(),
+            method: "DELETE",			
+            dataType: "json",
+            data: {
+                unit_create_numbers: $("#unit_create_numbers").val(),
+                action: $("#photo_update_add").val(),
+                id_list: $("#id_list_photo").val(),
+                photo_id: id,
+            },
+            success: function(data) {
+                edit_photos_table(data.id_list);
+                $('#success_text').text("Charge removed.");
+                $('#confirm_alert').modal('hide');
+                $('#success_alert').modal('show');
+            }
+        });
+
+    });
+    $("#confirmNo").click(function() {
+        $('#confirm_alert').modal('hide');
+    });
+
+});
+</script>

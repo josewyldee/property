@@ -1,0 +1,64 @@
+<link href =
+"https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+  rel = "stylesheet">
+<style>
+    
+.ui-widget-header {
+    border: 1px solid #32409b !important;
+    background: #32409b url(images/ui-bg_gloss-wave_35_f6a828_500x100.png) 50% 50% repeat-x !important;
+    color: #ffffff;
+    font-weight: bold;
+}
+</style>
+<script src = 
+"https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script>
+    $(".past_date").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        maxDate: 0,
+        dateFormat: 'yy-m-d',
+    });
+	$(".ahead_date").datepicker({
+		changeMonth: true,
+		changeYear: true,
+		minDate: 0,
+		dateFormat: 'yy-m-d',
+	});
+	$(".all_date").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy-m-d',
+    });
+
+    $(".month_date").datepicker({
+        changeYear: false,
+        changeMonth: false,
+        stepMonths: 0,
+        dateFormat: 'dd',
+        onChangeMonthYear: function(year, month, inst) {
+            $(this).val($.datepicker.formatDate('M yy', new Date(year, month - 1, 1)));
+        },
+
+    })
+    .focus(function() {
+        $(".ui-datepicker-year").hide();
+        $(".ui-datepicker-month").hide();
+        $(".ui-datepicker-prev, .ui-datepicker-next").remove();
+    });
+
+    $(".month_day_date").datepicker({
+        dateFormat: 'dd,MM',
+        changeMonth: true,
+        changeYear: false,
+        showButtonPanel: true,
+        onChangeMonthYear: function(year, month, inst) {
+            $(this).val($.datepicker.formatDate('M yy', new Date(year, month - 1, 1)));
+        },
+
+    })
+    .focus(function() {
+        $(".ui-datepicker-year").hide();
+        $(".ui-datepicker-prev, .ui-datepicker-next").remove();
+    });
+</script>

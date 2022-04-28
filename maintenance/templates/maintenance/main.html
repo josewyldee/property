@@ -1,0 +1,108 @@
+<div aria-hidden="true" data-backdrop="static" style='z-index:2000' class="onboarding-modal modal fade animated" id="create_request_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <form method="POST" id='create_request_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w">
+                  
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-10 text-left fancy_text5 request_title">Let's begin</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Select a unit</label>
+                                        <select id='unit_maintenance' name="unit" required class=" form-control selectpicker show-tick form-control-sm1" data-live-search="true" data-size="4">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                            <input type="hidden1" id="request_data_id" name="id">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Kindly select the category</label>
+                                        <select class="form-control selectpicker" required="required" name="category" id="request_data_category">
+                                            <option selected disabled>Select a category</option>
+                                            <option value="plumbing" data-subtext="(Tiolets, sinks, showers, leaks)" class="display-7sm">Plumbing</option>
+                                            <option value="appliances" data-subtext="(Refrigirator, oven, water heater, cooling fans)" class="display-7sm">Appliances</option>
+                                            <option value="electrical" data-subtext="(Power outlets, fuse, bulbs, Alarms, Internet,Doorbell)" class=" display-7sm">Electrical</option>
+                                            <option value="pest control" data-subtext="(Ants,termites, rodents)" class="display-7sm">Pest control</option>
+                                            <option value="house hold" data-subtext="(Doors,windows,ceiling,floor,cabinets)" class="display-7sm">House hold</option>
+                                            <option value="outdoor" data-subtext="(Landscape,fencing,garbage,parking,pool)" class="display-7sm">Outdoor</option>
+                                            <option value="Cleaning services" data-subtext="(General cleaning,Builders’ Clean,End of Tenancy Clean,windows)" class="display-7sm">Cleaning services</option>
+                                            <option value="other" class="display-7sm">Others</option>
+                                        </select> </div>
+                                </div>
+                            </div>
+                            <div class="row d-none custom_label">
+                                <div class="col-sm-12">
+                                    <div class="form-group  ">
+                                        <label for=""> What type of issue is this?</label>
+                                        <div><input autocomplete="off" class="form-control" placeholder="Example: Loud noise" type="text" name="name" id="request_data_custom"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group "><label>Describe the issue </label><textarea placeholder="Example: My toilet is leaking" class="form-control" rows="5" name="description" id="request_data_desc"></textarea></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <br>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 text-center"></h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group  ">
+                                        <label for=""> When was this issue reported?</label>
+                                        <div class="date-input"><input autocomplete="off" class="date_with_end form-control editable" placeholder="Select date" type="text" name="reported_on" id="request_data_date"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Has the maintenance issue been completed?</label>
+                                        <select class="form-control" required="required" name="status" id="request_data_solved">
+                                            <option value="solved">Yes</option>
+                                            <option  value="in progeress">In progress</option>
+                                            <option selected value="not started">Not yet</option>
+                                        </select> </div>
+                                </div>
+                            </div>
+                            <div class="row class_data_solved_date d-none">
+                                <div class="col-sm-12">
+                                    <div class="form-group  ">
+                                        <label for=""> When it completed?</label>
+                                        <div class="date-input"><input autocomplete="off" class="date_with_end form-control editable" value="<?php echo date("Y-n-j"); ?>" placeholder="Select date" type="text" name="solved_on" id="request_data_solved_date"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br></br>
+                        </div>
+                    </div>
+                  
+                    <div class="onboarding-slide">
+                        <div class="onboarding-media"><img alt="" src="<?php echo base_url(); ?>/img/images/payment.webp" width="80px">
+                        </div>
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden1" value="add" id="action_type" name="action_type">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary px-5 py-2" type="submit" id="submit_request">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

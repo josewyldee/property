@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load static %}
+
+{% block title %} {{tenant.property_name}} {% endblock title %}
+
+
+{% block content %}
+<style>
+    .form-control{
+        background-color:#f5f1f1 !important;
+    }
+</style>
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="form-head page-titles d-flex  align-items-center">
+            <div class="mr-auto  d-lg-block">
+                <h2 class="text-black font-w600">{{tenant.name}}</h2>
+                {% comment %} <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Propert</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Reviews</a></li>
+                </ol> {% endcomment %}
+            </div>
+            {% comment %} <a href="#" class="btn btn-primary rounded light mr-3">Refresh</a>
+            <a href="#" class="btn btn-primary rounded"><i class="flaticon-381-settings-2 mr-0"></i></a> {% endcomment %}
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <ul class="nav nav-pills justify-content-start review-tab mb-4">
+                    <li class=" nav-item">
+                        <a href="#navpills-1" class="nav-link active" data-toggle="tab" aria-expanded="false">My profile </a>
+                    </li>
+               
+                </ul>
+                <div class="tab-content pt-4 bg-white">
+                    <div id="navpills-1" class="tab-pane active">
+                            <div class="card col-12 " >
+                            <div class="card-body">
+                                <div class="row">
+                                <div class="col-sm-6 ">
+                                    <div class="form-group">
+                                        <label for="">Tenant</label>
+                                        <input class="form-control " value="{{tenant.name}}" readonly=""  type="text" >
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="row">
+                                <div class="col-sm-6 ">
+                                    <div class="form-group">
+                                        <label for="">Property</label>
+                                        <input class="form-control " value="{{lease.unit.unit_property.property_name}}" readonly=""  type="text" >
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 ">
+                                        <div class="form-group">
+                                            <label for="">Unit</label>
+                                            <input class="form-control " readonly=""value="{{lease.unit.unit_name}}"  type="text" >
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 ">
+                                        <div class="form-group">
+                                            <label for="">Unit type</label>
+                                            <input class="form-control  " readonly="" value="{{lease.unit.unit_type}}"  type="text" name="property_type">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Lease type</label>
+                                            <input class="form-control property_country" readonly=""  value="{{lease.lease_type}}" type="text" value="Kenya" name="property_country">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Start date</label>
+                                            <input class="form-control property_country" readonly=""  value="{{lease.start_date}}" type="text" value="Kenya" name="property_country">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">End date</label>
+                                            <input class="form-control property_city" readonly=""  value="{{lease.end_date}}" type="text" value="Kenya" name="property_city">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                               
+                               
+                                <br>
+                                <!-- <hr> -->
+                              
+                        </div>
+                        </div>  
+                    </div>
+             
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block scripts %}
+
+
+
+{% endblock scripts %}
+
+
+
+{% endblock content %}

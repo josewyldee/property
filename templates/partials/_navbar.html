@@ -1,0 +1,216 @@
+{% load static %}
+{% if request.user.is_syestem_admin %}
+
+<div class="deznav no-print" style=" box-shadow: 10px 10px 5px #aaaaaa;">
+    <div class="deznav-scroll mm-acdtive ps ps--active-y ps--scrolling-y">
+        <ul class="metismenu" id="menu">
+
+            <li {% if "property" in request.path %} class="mm-active" {% endif %} {% if request.path ==  "/" %}
+                class="mm-active" {% endif %}><a class="has-arrow ai-icon " aria-expanded="false">
+                    <i class="flaticon-381-home-1"></i>
+                    <span class="nav-text">Property </span>
+                </a>
+                <ul aria-expanded="false">
+                    <li {% if request.path ==  "/" %} class="mm-active" {% endif %}><a
+                            href="{% url 'property:dashboard' %}" {% if request.path ==  "/" %} class="mm-active"
+                            {% endif %}>Dashboard</a></li>
+                    <li><a href="{% url 'property:property' %}">Property list</a></li>
+                    {% comment %} <li><a href="{% url 'property:units' %}">Unit list</a></li> {% endcomment %}
+                    <li class="li_left pe-auto" role="button"><a class="has-arrow" aria-expanded="false">Lease your
+                            units</a>
+                        <ul aria-expanded="false" class="mm-collapse mx-4" style="border-radius:0px 40px">
+                            <li><a href="{% url 'tenant:tenants' %}">Add tenants</a></li>
+                            <li><a href="{% url 'tenant:lease' %}">Lease agreements</a></li>
+                            <li><a href="{% url 'tenant:terminate' %}">Termination of lease</a></li>
+                        </ul>
+                    </li>
+                    <li class="li_left " role="button"><a class="has-arrow" aria-expanded="false">Sell your units</a>
+                        <ul aria-expanded="false" class="mm-collapse mx-4" style="border-radius:0px 40px">
+                            <li><a href="{% url 'tenant:buyers' %}">Add buyers</a></li>
+                            <li><a href="{% url 'tenant:purchase' %}">Purchase agreements</a></li>
+
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            {% comment %} <li {% if "tenants" in request.path %} class="mm-active " {% endif %}><a
+                    class="has-arrow ai-icon" aria-expanded="false">
+                    <i class="flaticon-381-user-7"></i>
+                    <span class="nav-text">Tenants & Leases</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'tenant:tenants' %}">All of the tenants</a></li>
+                    <li><a href="{% url 'tenant:lease' %}">Leases</a></li>
+                    <li><a href="{% url 'tenant:terminate' %}">Lease termination</a></li>
+                </ul>
+            </li> {% endcomment %}
+
+            <li {% if "maintenance" in request.path %} class="mm-active" {% endif %}><a class="has-arrow ai-icon"
+                    aria-expanded="false">
+                    <i class="flaticon-381-settings-4"></i>
+                    <span class="nav-text">Maintenance</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'maintenance:index' %}">Maintenance requests</a></li>
+
+                </ul>
+            </li>
+<br>
+            <li {% if "communications" in request.path %} class="mm-active" {% endif %}><a class="has-arrow ai-icon"
+                    aria-expanded="false">
+                    <i class="flaticon-381-phone-call"></i>
+                    <span class="nav-text">Communications</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'communications:email' %}">Emails</a></li>
+
+                </ul>
+            </li>
+
+            <li {% if "finance" in request.path %} class="mm-active" {% endif %}><a style="border:2p solid red"
+                    class="has-arrow ai-icon " aria-expanded="false">
+                    <i class="fa fa-money" aria-hidden="true"></i>
+                    <span class="nav-text">Financials</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a class="has-arrow" aria-expanded="false">Invoices</a>
+                        <ul aria-expanded="false" class="mm-collapse">
+                            <li><a href="{% url 'finance:invoice' %}">Create</a></li>
+                            <li><a href="{% url 'finance:creditnote' %}">Cancel</a></li>
+
+                        </ul>
+                    </li>
+                    <li><a class="has-arrow" aria-expanded="false">Payments</a>
+                        <ul aria-expanded="false" class="mm-collapse">
+                            <li><a href="{% url 'finance:payments' %}">Collect</a></li>
+
+                            <li><a href="{% url 'finance:debitnote' %}">Cancel</a></li>
+                            <li><a href="{% url 'finance:payment_options' %}">Payment options</a></li>
+
+
+                        </ul>
+                    </li>
+                    <li><a class="has-arrow" aria-expanded="false">Expenses and Tax</a>
+                        <ul aria-expanded="false" class="mm-collapse">
+                            <li><a href="{% url 'finance:expenses' %}">Add tax and expenses</a></li>
+                            {% comment %} <li><a href="{% url 'finance:expense_payments' %}">payments</a></li>
+                            {% endcomment %}
+                            <li><a href="{% url 'finance:payee' %}">Add payees</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{% url 'finance:balances' %}">Outstanding balances</a></li>
+
+                    {% comment %} <li><a href="{% url 'finance:invoice' %}"> Invoices</a></li>
+                    <li><a href="{% url 'finance:payments' %}"> Payments</a></li> {% endcomment %}
+
+                </ul>
+            </li>
+            <br>
+
+            <li {% if "reports" in request.path %} class="mm-active" {% endif %}><a class="has-arrow ai-icon"
+                    aria-expanded="false">
+                    <i class="flaticon-381-notepad"></i>
+                    <span class="nav-text">Reports</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'reports:income_summary' %}">Income summary</a></li>
+                    <li><a href="{% url 'reports:statements' %}">Statements</a></li>
+                    <li><a href="{% url 'reports:occupancy' %}">Occupancy report</a></li>
+                    <li><a href="{% url 'reports:maintenance_summary' %}">Maintenace summary</a></li>
+                    <li><a href="{% url 'reports:percentage_earnings' %}">Percentage of earnings</a></li>
+                </ul>
+            </li>
+            <li {% if "customAuth" in request.path %} class="mm-active" {% endif %}><a class="has-arrow ai-icon"
+                    aria-expanded="false">
+                    <i class="flaticon-381-padlock"></i>
+                    <span class="nav-text">Users</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'customAuth:admin' %}">Admin credentials</a></li>
+                    <li><a href="{% url 'customAuth:employee' %}">Staff credentials</a></li>
+                    {% comment %} <li><a href="{% url 'customAuth:tenant' %}">Tenants credentials</a></li>
+                    {% endcomment %}
+                </ul>
+            </li>
+
+
+
+            <br><br><br><br>
+        </ul>
+        {% comment %} <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps__rail-y" style="top: 0px; right: 0px; height: 575px;">
+            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 316px;"></div>
+        </div> {% endcomment %}
+        <div class="disraeli">
+            <p></p>
+        </div>
+    </div>
+
+</div>
+
+
+{% elif request.user.is_employee %}
+<div class="deznav no-print">
+    <div class="deznav-scroll mm-acdtive ps ps--active-y ps--scrolling-y">
+        <ul class="metismenu" id="menu">
+
+            <li {% if "payments" in request.path %} class="mm-active" {% endif %}><a href="{% url 'finance:payments' %}"
+                    class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-money"></i>
+                    <span class="nav-text">Collect payments</span>
+                </a>
+            </li>
+
+            <li {% if "expenses" in request.path %} class="mm-active" {% endif %}><a href="{% url 'finance:expenses' %}"
+                    class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-money"></i>
+                    <span class="nav-text">Expenses</span>
+                </a>
+            </li>
+
+
+        </ul>
+        <div class="disraeli">
+            <p></p>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+
+<div class="deznav no-print">
+    <div class="deznav-scroll mm-acdtive ps ps--active-y ps--scrolling-y">
+        <ul class="metismenu" id="menu">
+            <li {% if "tenant" in request.path %} class="mm-active" {% endif %}><a
+                    href="{% url 'tenant_dashboard:dashboard' %}" class="has-arrow ai-icon " aria-expanded="false">
+                    <i class="flaticon-381-home-1"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+
+            </li>
+
+            <li {% if "maintenance" in request.path %} class="mm-active" {% endif %}><a
+                    href="{% url 'maintenance:index' %}" class="ai-icon" aria-expanded="false">
+                    <i class="flaticon-381-settings-4"></i>
+                    <span class="nav-text">Maintenance</span>
+                </a>
+            </li>
+
+            <li {% if "profile" in request.path %} class="mm-actidve" {% endif %}><a
+                    href="{% url 'tenant_dashboard:profile' %}" class="has-arrow ai-icon" aria-expanded="false">
+                    <i class="flaticon-381-user-7"></i>
+                    <span class="nav-text">Profile</span>
+                </a>
+
+            </li>
+        </ul>
+        <div class="disraeli">
+            <p></p>
+        </div>
+    </div>
+</div>
+{% endif %}

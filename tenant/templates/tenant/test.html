@@ -1,0 +1,100 @@
+<div class="table-responsive" style="cursor: pointer;">
+
+    <div id="apply_payments_table_wrapper" class="dataTables_wrapper">
+        <div id="apply_payments_table_filter" class="dataTables_filter"><label>Search:<input type="search" class=""
+                    placeholder="" aria-controls="apply_payments_table" tabindex="0"></label></div>
+        <div id="apply_payments_table_processing" class="dataTables_processing" style="display: none;">Processing...
+        </div>
+        <div class="dataTables_scroll">
+            <div class="dataTables_scrollHead" style="overflow: hidden; position: relative; border: 0px; width: 100%;">
+                <div class="dataTables_scrollHeadInner"
+                    style="box-sizing: content-box; width: 0px; padding-right: 0px;">
+                    <table class="table display responsive table-heading dataTable" width="100%" role="grid"
+                        style="margin-left: 0px; width: 0px;">
+                        <thead>
+                            <tr role="row">
+                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 50px;">Account</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 0px;">Balance</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 0px;">Amount</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="dataTables_scrollBody"
+                style="position: relative; overflow: auto; max-height: 300px; width: 100%;">
+                <table id="apply_payments_table" class="table display responsive table-heading dataTable" width="100%"
+                    role="grid" style="width: 100%;">
+                    <thead>
+                        <tr role="row" style="height: 0px;">
+                            <th class="sorting_disabled" rowspan="1" colspan="1"
+                                style="width: 50px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                <div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Account</div>
+                            </th>
+                            <th class="sorting_disabled" rowspan="1" colspan="1"
+                                style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 0px;">
+                                <div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Balance</div>
+                            </th>
+                            <th class="sorting_disabled" rowspan="1" colspan="1"
+                                style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 0px;">
+                                <div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Amount</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tfoot style="min-width: 700px;">
+                        <tr style="height: 0px;">
+                            <th rowspan="1" colspan="1"
+                                style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 0px;">
+                                <div class="dataTables_sizing" style="height: 0px; overflow: hidden;"><span
+                                        class=" text-default  border-none"> Total
+                                        in ksh:</span> </div>
+                            </th>
+                            <th class="text-left" rowspan="1" colspan="1"
+                                style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 0px;">
+                                <div class="dataTables_sizing" style="height: 0px; overflow: hidden;">
+                                    <span id="previous_month">-25,500</span></div>
+                            </th>
+                            <th style="border-right: none; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 0px;"
+                                class="text-left" rowspan="1" colspan="1">
+                                <div class="dataTables_sizing" style="height: 0px; overflow: hidden;">
+                                    <span id="carried">-6,850</span></div>
+                            </th>
+                        </tr>
+                    </tfoot>
+
+                    <tbody class="text-left">
+                        <tr role="row" class="odd">
+                            <td>Pet deposit</td>
+                            <td>2000</td>
+                            <td>560</td>
+                        </tr>
+                        <tr role="row" class="even">
+                            <td>rent</td>
+                            <td>3050</td>
+                            <td>0</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+            <div class="dataTables_scrollFoot" style="overflow: hidden; border: 0px; width: 100%;">
+                <div class="dataTables_scrollFootInner" style="width: 0px;padding-right: 0px;min-width: 700px;">
+                    <table class="table display responsive table-heading dataTable" role="grid"
+                        style="margin-left: 0px; width: 0px;" d="100%">
+                        <tfoot style="/* min-width: 700px !important; */">
+                            <tr>
+                                <th rowspan="1" colspan="1" style="width: 0px;"><span
+                                        class=" text-default  border-none"> Total
+                                        in ksh:</span> </th>
+                                <th class="text-left" rowspan="1" colspan="1" style="width: 0px;">
+                                    <span id="previous_month">-25,500</span></th>
+                                <th style="border-right: none; width: 0px;" class="text-left" rowspan="1" colspan="1">
+                                    <span id="carried">-6,850</span></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

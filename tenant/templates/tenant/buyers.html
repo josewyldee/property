@@ -1,0 +1,556 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Tenant list {% endblock title %}
+
+{% block modal %}
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated"
+    id="open_single_tenant_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered m"  role="document">
+        <form method="POST" id='create_tenant'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w tenant_slides">
+              
+                    <div class="onboarding-slide normal_slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text5 lead text-left" >
+                                <span >About the buyer</span></h4>
+                                <div class="row">
+                                    <div class="col-sm-12 ">
+                                        <div class=" form-group ">
+                                            <label for="" class="step-text">Name</label>
+                                            <input class="form-control tenant_name required required-1"
+                                                placeholder="Example: Mariga Waithera" type="text" id='tenant_name'
+                                                name="name">
+                                        </div>
+                                    </div>
+                                </div>
+                            {% include 'partials/_calling_code.html' with name="calling_code" id="tenant_calling_code" class="tenant_calling_code" %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group"><label class='' for="">Phone Number</label>
+                                        <div class="input-group mb-2 mb-sm-0">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text the_calling">1</div>
+                                            </div>
+                                            <input class="form-control tenant_phone required" maxlength="10"
+                                                placeholder="Example: 720425412" type="phone" id='tenant_phone'
+                                                name="phone_number">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group"> <label class='' for="">Email address</label>
+                                        <div class="input-group mb-2 mb-sm-0">
+                                            <input class="form-control" placeholder="joseph@kakamkubwa.com" type="email"
+                                                name="email" id="tenant_email">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide normal_slide">
+                        <div class="onboarding-content with-gradient ">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Identification info</h4>
+                            <hr>
+                            {% include 'partials/_nationality.html' with name="nationality" id="tenant_nationality" class="tenant_nationality" %}
+                            <div class="row">
+                                <div class=" form-group col-12">
+                                    <label for="">How will you provide their identity</label>
+                                    <select class=" form-control tenant_national_type" id='tenant_national_type'
+                                        name="proof_by">
+                                        <option selected value="National id">Based on national ID</option>
+                                        {% comment %} <option value="Huduma number">Based on huduma number</option> {% endcomment %}
+                                        <option value="Passport number">Based on passport number</option>
+                                        <option value="Drivers license">Based on drivers lincense</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="identification_type" for="">Enter the national ID</label>
+                                        <input class="form-control tenant_national"
+                                            placeholder="Kindly enter the national id " type="number"
+                                            id='tenant_national' name="proof_number">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %} <div class="onboarding-slide normal_slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Status info</h4>
+                            <hr>
+                            <div class="row mb-4">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Current status</label>
+                                        <select id='tenant_status' name="is_active"
+                                            class="form-control selectpicker form-control-sm tenant_status">
+                                            <option disabled>------------</option>
+                                            <option value="Active">Active</option>
+                                            <option value="Not active">Not active</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4 mb-4 alpha_active border" style="background-color: #FFFFE0;">
+                                <h5 class="alert-heading1 display-6 text-primar1y fancy_text3">Active tenants.</h5>
+                                <div class="text-secondary">
+                                    <div class="px-3 form-desc d-flex justify-content-between  display-8sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        <div class="1 col-12 bg-light1 p-1">
+                                            <div class="row">
+                                                <ul class="col-12 ">
+                                                    <li>They can receive automated invoices and receipts. </li>
+                                                    <li>If there's any automated invoices or receipts, a digital
+                                                        invoice/receipt will be sent to the tenant. </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4 mb-4 alpha_notactive border d-none" style="background-color: #FFFFE0;">
+                                <h5 class="alert-heading1 display-6 text-primar1y fancy_text3">Inactive tenants.</h5>
+                                <div class="text-secondary">
+                                    <div class="px-3 form-desc d-flex justify-content-between  display-8sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        <div class="1 col-12 bg-light1 p-1">
+                                            <div class="row">
+                                                <ul class="col-12 ">
+                                                    <li>They will not receive automated invoices and receipts. </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+        
+
+                        </div>
+                    </div> {% endcomment %}
+                   {% comment %} <div class="onboarding-slide credentials_slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Credentials</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12">
+                                <div class="form-group">
+                                    <label for="">Create credentials for tenant?</label>
+                                    <select class="form-control  border-rounded border-primary"  name="allocate_credentials" id='allocate_credentials'>
+                                        <option selelected value="not_active">
+                                            No thank you
+                                        </option>   
+                                        <option value="is_active">
+                                                Yes please
+                                            </option>
+                                          
+                                    </select>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="yes_active d-none mb-2 col-12 bg-brown p-3">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group"> <label class='' for="">Enter an email</label>
+                                            <div class="input-group mb-2 mb-sm-0">
+                                                <input class="form-control" placeholder="joseph@kakamkubwa.com" type="email"
+                                                    name="email_credential" id="email_credential">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group"> <label  for="">Enter a <span class="font-w600">strong</span> password</label>
+                                            <div class="input-group mb-2 mb-sm-0">
+                                                <input class="form-control" placeholder="password" type="password"
+                                                    name="password_credential1" id="password_credential">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group"> <label  for="">Enter a <span class="font-w600">strong</span> password</label>
+                                            <div class="input-group mb-2 mb-sm-0">
+                                                <input class="form-control" placeholder="password" type="password"
+                                                    name="password_credential2" id="password_credential2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br> <br> <br>
+                        </div>
+                    </div>  {% endcomment %}
+                    <div class="onboarding-slide normal_slide">
+                        
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" value="not_active" id="allocate_credentials" name="allocate_credentials">
+                            <input type="hidden" id="action_type" name="action_type">
+                            <input type="hidden" name="id" id="tenant_id">
+                            <input type="hidden" name="tenant_type" id="tenant_type">
+                            <input type="hidden"value="Not active" name="tenant_status" id="tenant_status">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end ">
+                                <button class="btn btn-primary py-2 px-5 submit" type="submit" id="submit_tenant">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="success_added_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <div class="modal-content">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            
+            <div class="onboarding-content with-gradient">
+                <h4 class="onboarding-title lead display-8 text-center"><span
+                        class="onboarding-title display-4 fancy_text3 lead">Good job!</span></h4>
+                <h4 class="onboarding-title text-muted lead display-8 text-center"><span
+                        class="onboarding-title text-muted display-7 fancy_text3 lead "><span
+                            id="success_added_text">You have successfully uploaded your records. </span><span
+                            id="success_added_text_sub"> Do you want to sell the property now?</span></span>
+                    <span><br></span>
+                </h4>
+                <div class='form-buttons-w d-flex flex-row justify-content-around'> <a data-dismiss="modal"
+                        class="btn btn-outline-primary col-sm-41 px-5 py-2"><span>Maybe later</span></a> <a
+                        href='{% url "tenant:lease" %}'
+                        class="btn btn-primary  col-sm-41 px-5 py-2"><span class="answer ">Yes
+                            please </span></a></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock modal %}
+{% block content %}
+
+<div class="content-body" style="min-height: 828px;">
+    <!-- row -->
+    <div class="container-fluid">
+            <div class="card mx-3">
+                <div class="card-header d-block mx-3 text-center">
+                    <h5 class="card-titles display-4 custom-card-title ">Buyers list</h5>
+                </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="col-12">
+                
+                        <div class="card px-3">
+                                {% include 'partials/_table_extra.html' with button_class="" button_id="add_tenant_button" button_text="Click to add" total_class="total_tenants" total_text="buyers"  %}
+
+                            {% comment %} <div class="table-extra my-2">
+                                <div class="row my-4 mx-3 pt-47 d-flex justify-content-end">
+                                    <button class="btn btn-primary  py-2 px-5 btn-rounded" type="button"
+                                        id="add_tenant_button"><span>Click to add</span></button> 
+                                </div>
+                                <div class="row my-3 mx-4 pt-47 d-flex justify-content-start">
+                                    <h4 class="card-title"><span class="display-4 total_tenants">Please wait</span> tenants</h4>
+                                </div> 
+    
+                            </div> {% endcomment %}
+                   
+       {% comment %} <div class="row col-12 bg-dadnger d-flex justify-content-start">
+           <div class="col-3 d-flex justify-content-start">
+               <div class="btn-group mb-1">
+                   <button type="button" class="btn btn-outline-primary btn-rounded light dropdown-toggle v px-5 py-2"
+                       data-toggle="dropdown">Export <span class="caret m-l-5"></span>
+                   </button>
+                   <div class="dropdown-menu"> <a class="dropdown-item" href="javascript: void(0);">Mark as
+                           Unread</a> <a class="dropdown-item" href="javascript: void(0);">Add to Tasks</a>
+                       <a class="dropdown-item" href="javascript: void(0);">Add Star</a> <a class="dropdown-item"
+                           href="javascript: void(0);">Mute</a>
+                   </div>
+               </div>
+           </div>
+       </div> {% endcomment %}
+                        {% comment %} <div class="card-header">
+                            <h4 class="card-title"><span class="display-4">17</span>Buildings</h4>
+                        </div> {% endcomment %}
+                     
+                          
+                        <div class="card-body">
+                            <div class="table-responsive">
+                              
+                                <table id="tenant_table" class="display min-w850">
+                                    <thead >
+                                        <tr>
+                                            <th>Buyer's name</th>
+                                            <th>Phone</th>
+                                            <th>Email</th>
+                                            
+                                            <th>status	</th>
+                                         
+                                            <th> </th>
+                                    </thead>
+                                    <tbody>
+                                      
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% block scripts %}
+
+<script>
+
+
+ 
+
+    $(document).on('click', '#add_tenant_button', function () {
+        $('.onboarding-modal .tenant_slides').slick('slickUnfilter', '.onboarding-slide').slick('refresh');
+        $('.onboarding-modal .tenant_slides').slick('slickFilter', '.onboarding-slide').slick('refresh');    
+        
+        $('#create_tenant')[0].reset();
+      
+        $('.tenant_name_title').text("Add a tenant");
+        $("#action_type").val("add");
+        $("#tenant_type").val("buyer");
+        $("#tenant_status").val("Not active");
+        $("#allocate_credentials").val("not_active");
+        $('#open_single_tenant_modal').modal('show');
+
+    });
+
+    $(document).on('change', '#tenant_national_type', function () {
+        var the_data = $('#tenant_national_type').val();
+        if (the_data == 'National id') {
+            $('.identification_type').text("Enter the national ID");
+            $("#tenant_national").attr("placeholder", "Enter the national id");
+        }
+        if (the_data == 'Huduma number') {
+            $('.identification_type').text("Enter the huduma number");
+            $("#tenant_national").attr("placeholder", "Enter the huduma number");
+        }
+        if (the_data == 'Passport number') {
+            $('.identification_type').text("Enter the passport number");
+            $("#tenant_national").attr("placeholder", "Enter the passport number");
+        }
+        if (the_data == 'Drivers license') {
+            $('.identification_type').text("Enter the drivers license");
+            $("#tenant_national").attr("placeholder", "Enter the drivers license");
+        }
+        $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+        $("#tenant_national").val("");
+    });
+    $(document).on('change', '#p_calling_code', function () {
+        var the_data = $('#p_calling_code').val();
+        $('.per_calling').text(the_data);
+    });
+    $(document).on('change', '#g_calling_code', function () {
+        var the_data = $('#g_calling_code').val();
+        $('.gur_calling').text(the_data);
+    });
+    $(document).on('change', '#tenant_calling_code', function () {
+        var the_data = $('#tenant_calling_code').val();
+        $('.the_calling').text(the_data);
+    });
+
+
+ //Tenant------------------------------------------------------------------------------------------------ 
+$(document).on('click', '.tenant_delete', function () {
+    var data = $(this).attr("id");
+    var data_split = data.split(",");
+    var tenant = data_split[0];
+    var tenant_name = data_split[1];
+    $('#confirm_title').text("Just confirming...");
+    $('#confirm_text').text("Confirming the removal of " + tenant_name + " as a buyer");
+    $('#confirm_extra').text("Do you really want to remove " + tenant_name + "?");
+    $('#confirm_button').text("Confirm removal");
+    $('#confirm_alert').modal('show');
+    $('#confirmYes').one('click', function () {
+
+        // var res_id = null;
+
+        $.ajax({
+            url :"{% url 'tenant:tenant-rud' id=12345 %}".replace(/12345/, tenant).toString(),
+            method: "DELETE",
+            success: function (data) {
+                tenant_table.ajax.reload();
+                $('#success_text').text("Buyer removed.");
+                $('#confirm_alert').modal('hide');
+                $('#success_alert').modal('show');
+            }
+        });
+
+    });
+    $("#confirmNo").click(function () {
+        $('#confirm_alert').modal('hide');
+    });
+
+});
+
+$(document).on('click', '.tenant_info', function () {
+    var data = $(this).attr("id");
+    var data_split = data.split(",");
+    var tenant = data_split[0];
+    var step = data_split[1];
+    //$('.onboarding-modal .onboarding-slider-w').slick('slickGoTo', step);
+    $('input.form-control').val("");
+    $("#property_name").attr("readonly", false);
+    $('.onboarding-modal .tenant_slides').slick('slickFilter', '.normal_slide').slick('refresh');
+
+    $.ajax({
+        url: "{% url 'tenant:tenant-rud' id=12345 %}".replace(/12345/, tenant).toString(),
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            $('#tenant_id').val(data.id);
+            $('.tenant_name_title').text(data.name);
+            $('#tenant_name').val(data.name);
+            $('.tenant_status').val(data.is_active).change();
+            $('#tenant_phone').val(data.phone_number);
+            $('#tenant_calling_code').val(data.calling_code).change();
+            $('.the_calling').text(data.calling_code);;
+            $('#tenant_email').val(data.email);
+            $('#tenant_nationality').val(data.nationality).change();
+            $('#tenant_national_type').val(data.proof_by).change();
+            $('#tenant_national').val(data.proof_number);
+            if (data.image){
+                $('#imageUpload').attr("src", data.image).change();
+                $('#imagePreview').css('background-image','url('+data.image+')');
+            }else{
+                $('#imageUpload').attr("src", "/media/profile/no_profile2.png").change();
+                $('#imagePreview').css('background-image','url(/media/profile/no_profile2.png)');
+            }
+  
+            $("#action_type").val("edit");
+            $('#open_single_tenant_modal').modal('show');
+            $('.open_single_tenant_title').text("You can edit");
+
+        }
+    })
+});
+var tenant_table = $("#tenant_table").DataTable({
+    processing: true,
+    serverSide: true,
+    ordering:false,
+        info: "Shoffffwing _START_ to _END_ of _TOTAL_ entries",
+"oLanguage": {
+"sEmptyTable": "No buyer added",
+"sStripClasses": "",
+"sSearch": "",
+"sSearchPlaceholder": "search...",
+"sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+    '<option value="10">10</option>' +
+    '<option value="20">20</option>' +
+    '<option value="30">30</option>' +
+    '<option value="40">40</option>' +
+    '<option value="50">50</option>' +
+    '<option value="50">100</option>' +
+   
+    '</select></div>'
+},
+    ajax: {
+        url: '{% url "tenant:tenant-listcreate" %}',
+        "data": {
+            "type": 'buyer',
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        }
+    },
+    "fnDrawCallback": function() {
+        //console.log(this.fnSettings().json.total_sum);
+        $('.total_tenants').text(this.fnSettings().fnRecordsTotal());
+    }
+});
+$(document).on('submit', '#create_tenant', function (event) {
+    var action_type = $('#action_type').val();
+    var tenant= $('#tenant_id').val();
+    if (action_type =='add'){
+        var method='POST';
+        var url = '{% url "tenant:tenant-listcreate" %}';
+    }
+    if (action_type =='edit'){
+        var method='PUT';
+        var url = "{% url 'tenant:tenant-rud' id=12345 %}".replace(/12345/, tenant).toString();
+    }
+
+    var form_data = new FormData(this);
+   
+    event.preventDefault();
+    $.ajax({
+        method: method,
+        url: url,
+        data: form_data,
+        contentType:false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function () {
+            $('#submit_tenant').attr('disabled', 'disabled');
+            $("#submit_tenant").html("Please wait");
+        },
+        success: function (data) {
+            
+            $('#submit_tenant').attr('disabled', false);
+            $("#submit_tenant").html("Upload records");
+            if (data.error) {
+                $('#oops_text').text(data.error);
+                $('#oops_alert').modal('show');
+            }
+            if (data.success) {
+                //$('.onboarding-modal .income_slick_modal').slick('slickGoTo', 0);
+                if (method == "POST") {
+                    $('#success_text').text("Buyer has been added");
+                    $('#success_alert').modal('show');
+                 
+                } else {
+                    $('#success_text').text("Buyer has been updated");
+                    $('#success_alert').modal('show');
+                }
+                tenant_table.ajax.reload();
+                $('#open_single_tenant_modal').modal('hide');
+            }
+        },
+        error: function (error) {
+       
+            $('#submit_tenant').attr('disabled', false);
+            $("#submit_tenant").html("Upload records");
+            $('#oops_text').text("Something went wrong, try again later");
+            $('#oops_alert').modal('show');
+        }
+    });
+});
+
+
+</script>
+
+{% endblock scripts %}
+
+
+
+{% endblock content %}
+
+
+<!--**********************************
+    Content body end
+***********************************-->

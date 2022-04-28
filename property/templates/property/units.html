@@ -1,0 +1,2218 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{request.path}} {% endblock title %}
+
+{% block modal %}
+<div aria-hidden="true" data-backdrop="static" data-tab="sub_modal"
+    class="onboarding-modal modal fade animated sub_modal" style='z-index:1060 !important' id="edit_photos_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered " role="document">
+        <form method="POST" id='edit_photos_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w sub_modal">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-10 fancy_text4 lead text-left">Photos </h4>
+                            <hr>
+                            <input type="hidden" id="edit_photos_id" name="id">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Name</label>
+                                        <input class="form-control editable" type="text" placeholder="Example:Kitchen"
+                                            name="name" id="edit_photo_name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="div_upload_file file mt-4">
+                                <label for="" style="font-size:15px"
+                                    class='text-center col-sm-12  fancy_text3 text-black '>
+                                    <span class='fancy_text4 text-primary font-w600'>Select a file to upload </span>
+                                </label>
+                                <input type="file" name='photo'
+                                    class="form-control-file btn-rounded btn btn-outline-primary px-5 py-2" id="photo">
+                            </div>
+                        </div>
+                        <br><br><br>
+                    </div>
+
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" name="property_create_number" id="property_create_number_photos">
+                            <input type="hidden" name="unit_create_numbers" id="unit_create_numbers_photos">
+                            <input type="hidden" name="action" id="photo_update_add">
+                            <input type="hidden" value="add" id="photo_action_type">
+                            <input type="hidden" name="created_at" id="created_at_photos">
+                            <input type="hidden" id="photos_right_now">
+                            <input type="hidden" name="id_list" id="id_list_photo">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary p-3" id="submit_edit_photo" type="submit">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div aria-hidden="true" data-backdrop="static" data-tab="sub_modal"
+    class="onboarding-modal modal fade animated sub_modal" style='z-index:1060 !important' id="edit_features_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered " role="document">
+        <form method="POST" id='edit_features_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w sub_modal">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-10 fancy_text4 lead text-left">Features </h4>
+                            <hr>
+                            <input type="hidden" id="edit_features_id" name="id">
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Feature name</label>
+                                        <input class="form-control editable" type="text" placeholder="Example:Pool"
+                                            name="name" id="edit_feature_name">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br><br><br>
+                    </div>
+
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" name="property_create_number" id="property_create_number_features">
+                            <input type="hidden" name="unit_create_numbers" id="unit_create_numbers_features">
+                            <input type="hidden" name="action" id="feature_update_add">
+                            <input type="hidden" value="add" id="feature_action_type">
+                            <input type="hidden" name="created_at" id="created_at_features">
+                            <input type="hidden" id="features_right_now">
+                            <input type="hidden" name="id_list" id="id_list_feature">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary p-3" id="submit_edit_feature" type="submit">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div aria-hidden="true" data-backdrop="static" data-tab="sub_modal"
+    class="onboarding-modal modal fade animated sub_modal" style='z-index:1060 !important' id="edit_charges_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered " role="document">
+        <form method="POST" id='edit_charges_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w sub_modal">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-media"><img alt="" src="<?php echo base_url(); ?>/img/images/keys.webp"
+                                width="105px">
+                        </div>
+                        <div class="onboarding-content with-gradient">
+
+                            <h4 class="onboarding-title display-10 text-center fancy_text5">Rent and other charges
+                            </h4>
+                           
+                            <!-- <h4 class="onboarding-title display-8 text-center general_charges_title fancy_text3">Charges by the building</h4> -->
+                            <hr>
+                            <!-- <div class="font-desc text-secondary1 display-7sm fancy_text3 text-center general_charges_desc" style="line-height:28px;color:#797D7F ;">Please wait</div> -->
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Let's begin</h4>
+                            <hr>
+                            <input type="hidden" id="edit_payments_id" name="id">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">Charge name</label>
+                                        <select class="form-control payments_category" required="required"
+                                            name="category" id="edit_payments_category">
+                                            <option value="rent">Rent</option>
+                                            <option value="water">Water</option>
+                                            <option value="service charge">service charge</option>
+                                            <option value="custom">custom</option>
+                                        </select> </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 d-none charge_name">
+                                    <div class="form-group ">
+                                        <label class="control-label">Custom charge</label>
+                                        <input class="form-control editable" type="text"
+                                            placeholder="Example:pet Deposit" name="name" id="edit_payments_name">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br><br><br>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Invoicing</h4>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label amount_description">Amount</label>
+                                        <input class="form-control editable" type="text" placeholder="Example: 7000"
+                                            name="amount" id="edit_payments_amount">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">When will this be invoiced?</label>
+                                        <select class="form-control payments_duration" required="required"
+                                            name="duration" id="edit_payments_duration">
+                                            <option value="once">Just once</option>
+                                            <option value="weekly">Weekly</option>
+                                            <option selected value="monthly">Monthly</option>
+                                            <option value="annually">Annually</option>
+                                        </select> </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required d-none display_date display_">
+                                        <label for=""> Date</label>
+                                        <div class="date-input"><input autocomplete="off"
+                                                class="ahead_date form-control payments_once editable"
+                                                placeholder="Select date" type="text" name="once_date"
+                                                id="edit_payments_once"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required d-none display_week display_">
+                                        <label class="control-label">Day of the week</label>
+                                        <div class="date-input">
+                                            <select class="form-control payments_week" name="week_date"
+                                                id="edit_payments_week">
+                                                <option value="Sunday">Sunday</option>
+                                                <option value="Monday">Monday</option>
+                                                <option value="Tuesday">Tuesday</option>
+                                                <option value="Wednesday">Wednesday</option>
+                                                <option value="Thursday">Thursday</option>
+                                                <option value="Friday">Friday</option>
+                                                <option value="Saturday">Saturday</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required d-none display_month display_">
+                                        <label for=""> Day of the month</label>
+                                        <div class="date-input"><input autocomplete="off"
+                                                class="month_date form-control payments_month editable"
+                                                placeholder="Select day of the month" type="number" name="month_date"
+                                                id="edit_payments_month"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required d-none display_year display_">
+                                        <label for=""> Month and day</label>
+                                        <div class="date-input"><input autocomplete="off"
+                                                class="month_day_date form-control payments_year editable"
+                                                placeholder="Select the month and day" type="text" name="year_date"
+                                                id="edit_payments_year"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-7 fancy_text4 lead text-left">Late Fees</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">Does this invoice have a late fee?</label>
+                                        <select class="form-control " required="required" name="deadline"
+                                            id="payments_deadline">
+                                            <option value="yes">Yes</option>
+                                            <option selected value="no">No</option>
+                                        </select> </div>
+                                </div>
+                            </div><br>
+                            <div class="row p_d_d d-none">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Select the type of late Fee</label>
+                                        <select class="form-control general_fees selectpicker dropup"
+                                            data-dropup-auto="false" data-size="5" data1-live-search="true"
+                                            required="required" name="late_fee_type" id="late_fee_type">
+                                            <option disabled class="disabled_latefee" selected>Select type</option>
+                                            <optgroup label="One time late fee">
+                                                <option value="one_time_fixed">A fixed amount (Once)</option>
+                                                <option value="one_time_percent_unpaid">A percentage of only the
+                                                    outstanding invoice (Once)
+                                                </option>
+                                                <option value="one_time_percent_entire">A percentage of the
+                                                    total
+                                                    invoice (Once)
+                                                </option>
+                                            </optgroup>
+                                            <optgroup label="Daily late fee">
+                                                <option value="daily_time_fixed">A fixed amount (Daily)</option>
+                                                <option value="daily_time_percent_unpaid">A percentage of only the
+                                                    outstanding invoice
+                                                    (Daily)</option>
+                                                <option value="daily_time_percent_entire">A percentage of the
+                                                    total
+                                                    invoice (Daily)
+                                                </option>
+                                            </optgroup>
+                                            <!-- <optgroup label="Custom late fee">
+                                                <option value="daily_time_fixed">A fixed amount</option>
+                                            </optgroup> -->
+                                        </select> </div>
+                                </div>
+                            </div>
+                            <div class="row class_late d-none">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label class_late_amount_desc">How much is the late
+                                            fee?</label>
+                                        <input class="form-control editable general_fees" type="text"
+                                            placeholder="Example:" name="late_fee_amount" id="late_fee_amount">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row class_late d-none class_late_grace">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">How many days does the tenant have to make
+                                            full
+                                            payments before we
+                                            start invoicing the late fees? (Grace period)</label>
+                                        <input class="form-control editable general_fees" type="text"
+                                            placeholder="Example: 9" name="late_fee_grace" id="late_fee_grace">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row class_late d-none">
+                                <div class="col-sm-12 class_late_max">
+                                    <div class="form-group ">
+                                        <label class="control-label">What is the maximum amount of late fees that
+                                            can be
+                                            charged for this
+                                            invoice?</label>
+                                        <input class="form-control editable general_fees" type="text"
+                                            placeholder="Example: 9500" name="late_fee_max" id="late_fee_max">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-7 fancy_text4 lead text-left">Late fee description
+                            </h4>
+                            <hr>
+                            <div class="p-4 mb-4 border" style="background-color: #FFFFE0;">
+                                <div class="text-secondary">
+                                    <div class="no_late_fee px-3 form-desc  display-7sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        This charge has no late fee
+                                    </div>
+                                    <div class="has_empty_late_fee px-3 form-desc text-danger display-7sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">Kindly select the late fee type</li>
+                                            <li class="list-group-item">How much is the late fee?</li>
+                                            <li class="list-group-item">How long before the late fee begins?</li>
+                                            <li class="list-group-item">What is the maximum amount that can be
+                                                charges
+                                                as late fee?</li>
+
+                                        </ul>
+                                    </div>
+                                    <div class="has_late_fee d-none px-3 form-desc   display-7sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        The tenant has <span class="class_fee_days">Please wait</span> to fully
+                                        settle
+                                        <span class="class_fee_name">the charge</span>. After this period is over,
+                                        <span class="class_fee_type">Please wait</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Communication</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">How do you want to notify the tenant?</label>
+                                        <select class="form-control" required="required" name="notify"
+                                            id="edit_payments_communication">
+                                            {% comment %} <option value="sms">SMS</option> {% endcomment %}
+                                            <option value="email">Email (with a digital invoice)</option>
+                                            {% comment %} <option selected value="both">Both email and SMS</option>
+                                            {% endcomment %}
+                                            <option selected value="none">No notification</option>
+                                        </select> </div>
+                                </div>
+                            </div><br><br><br>
+                        </div><br>
+                    </div>
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" name="property_create_number" id="property_create_number">
+                            <input type="hidden" name="unit_create_numbers" id="unit_create_numbers">
+                            <input type="hidden" name="action" id="charge_update_add">
+                            <input type="hidden" value="add" id="charge_action_type">
+                            <input type="hidden" name="created_at" id="created_at">
+                            <input type="hidden" id="charges_right_now">
+                            <input type="hidden" name="id_list" id="id_list">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary px-4 py-2" id="submit_edit_charge" type="submit">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="create_new_units_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <form method="POST" id='create_new_units_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-media "></div>
+                <div class="onboarding-content with-gradient">
+                    <div class="fancy_text4 display-8 text-primary mb-3"><span
+                            class="display-4  text-primary unit_buildings">Please wait</span> units</div>
+                    <input type="hidden" id="unit_buildings">
+                    <div class="table-responsive" style="cursor: pointer;">
+                        <table id='add_units_table' class="table table-heading display " data-turbolinks="false"
+                            style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">Building</th>
+                                    <th class="text-left"></th>
+                                    <th class="text-left"></th>
+                                    <th class="text-left"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-left">
+                            </tbody>
+                        </table>
+
+                        {% comment %} <input type="hidden" name="the_unit_create_type" id="the_unit_create_type">
+                        <input type="hidden" name="the_unit_type" id="the_unit_type"> {% endcomment %}
+
+                        <div class=" d-flex flex-row justify-content-end">
+                            <button class="btn btn-primary pulse-button d-flex flex-row py-3 px-5 step-button"
+                                id="create_new_units_button" type="submit"><span>Create the units</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="add_unit_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <div class="modal-content">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <form method="POST" id='add_unit_form'>
+                <div class="onboarding-slider-w">
+
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title1 text-black1 display-10 font-w600 fancy_text5 text-left mb-0">
+                                Add units</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Select a property</label>
+                                        <select id='search_property_units' name="property_data" required
+                                            class=" form-control selectpicker show-tick form-control-sm1"
+                                            data-live-search="true" data-size="4">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">How many units do you want to create?</label>
+                                        <input class="form-control editable" required placeholder="Example: 7" min="1"
+                                            name="total_units" id="total_units" type="number">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Unit labels</h4>
+                            <hr>
+                            <div class="row mt-3 bg-light1">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Are your units labelled numerically or
+                                            alphabetically?</label>
+                                        <select class="form-control " name="unit_create_type" id="unit_create_type">
+                                            <option selected value="numbers">In a numerical order</option>
+                                            <option value="alphabets">In an alphabetical order</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3 bg-light1">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">What do you use to label your units?</label>
+                                        <select class="form-control " name="unit_create_name" id="unit_create_name">
+                                            <option selected value="unit">unit</option>
+                                            <option value="house">house</option>
+                                            <option value="stall">stall</option>
+                                            <option value="storage space">storage space</option>
+                                            <option value="parking space">parking space</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="px-4 pt-4 mb-2 border" style="background-color: #FFFFE0;">
+                                <h5 class="alert-heading1 display-6 text-primar1y fancy_text5">Example:</h5>
+                                <div class="text-secondary">
+                                    <div class="form-desc px-3 d-flex justify-content-between  display-7sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        <div class="1 col-12 bg-light1 p-1">
+                                            <div class="row unit_numericals">
+                                                <ul class="col-sm-3 col-6 ">
+                                                    <li><span class="unit_decision_type">Unit </span>1</li>
+                                                    <li><span class="unit_decision_type">Unit </span>2</li>
+                                                    <li><span class="unit_decision_type">Unit </span>3</li>
+                                                </ul>
+                                                <ul class="col-sm-3 col-6 ">
+                                                    <li><span class="unit_decision_type">Unit </span>4</li>
+                                                    <li><span class="unit_decision_type">Unit </span>5</li>
+                                                    <li><span class="unit_decision_type">Unit </span>6</li>
+                                                </ul>
+                                                <ul class="col-sm-3 col-6 ">
+                                                    <li><span class="unit_decision_type">Unit </span>7</li>
+                                                    <li><span class="unit_decision_type">Unit </span>8</li>
+                                                    <li><span class="unit_decision_type">Unit </span>9</li>
+                                                </ul>
+                                                <ul class="col-sm-3 col-6 ">
+                                                    <li><span class="unit_decision_type">Unit </span>11</li>
+                                                    <li><span class="unit_decision_type">Unit </span>12</li>
+                                                    <li><span class="unit_decision_type">Unit </span>13</li>
+                                                </ul>
+
+                                            </div>
+                                            <div class="row d-none unit_alphabets">
+                                                <ul class="col-sm-3 col-6 ">
+                                                    <li><span class="unit_decision_type">Unit </span>A</li>
+                                                    <li><span class="unit_decision_type">Unit </span>B</li>
+                                                    <li><span class="unit_decision_type">Unit </span>C</li>
+                                                </ul>
+                                                <ul class="col-sm-3 col-6 ">
+                                                    <li><span class="unit_decision_type">Unit </span>D</li>
+                                                    <li><span class="unit_decision_type">Unit </span>E</li>
+                                                    <li><span class="unit_decision_type">Unit </span>F</li>
+                                                </ul>
+                                                <ul class="col-sm-3 col-6 ">
+                                                    <li><span class="unit_decision_type">Unit </span>G</li>
+                                                    <li><span class="unit_decision_type">Unit </span>H</li>
+                                                    <li><span class="unit_decision_type">Unit </span>I</li>
+                                                </ul>
+                                                <ul class="col-sm-3 col-6 ">
+                                                    <li><span class="unit_decision_type">Unit </span>J</li>
+                                                    <li><span class="unit_decision_type">Unit </span>K</li>
+                                                    <li><span class="unit_decision_type">Unit </span>L</li>
+                                                </ul>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary px-5 py-3 " type="buttom" id="submit_unit">Continue
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="edit_unit_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <div class="modal-content">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <form method="POST" id='edit_unit_form'>
+                <div class="onboarding-slider-w">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text5 text-left mb-0 edit_form_title">About the
+                                units you've added </h4>
+                            <hr>
+
+                            <div class="row name_unit d-none">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="">Unit name</label>
+                                        <input class="form-control editable" placeholder="Example: house A" type="text"
+                                            name="unit_name_false" id="unit_name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="">Unit category</label>
+                                        <select class="form-control" name="unit_category" id="unit_category">
+                                            <option selected="" value="Residential">Residential</option>
+                                            <option value="Commercial">Commercial</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="">Unit type</label>
+                                        <select class="form-control selectpicker" data-dropup-auto="false"
+                                            name="unit_type" data-live-search="true" data-size="4" id="unit_type">
+
+                                            <optgroup label="Residential">
+                                                <option class="residential" value="studio">Studio/bedsitters</option>
+                                                <option class="residential" value="single rooms">Single rooms</option>
+                                                <option class="residential" value="one-bedroom">One-bedroom </option>
+                                                <option class="residential" value="two-bedroom">Two-bed room </option>
+                                                <option class="residential" value="three-bedroom">Three-bed room
+                                                </option>
+                                                <option class="residential" value="four-bedroom">Four-bed room
+                                                    apartments</option>
+                                                <option class="residential" value="five-bedroom">Five-bed room
+                                                    apartments</option>
+                                                <option class="residential" value="six-bedroom">Six-bed room apartments
+                                                </option>
+                                                <option class="residential" value="seven-bedroom">Seven-bed room
+                                                    apartments</option>
+                                                <option class="residential" value="other">Other</option>
+                                            </optgroup>
+                                            <optgroup label="Commercial">
+                                                <option class="commercial" value="shops">Shops</option>
+                                                <option class="commercial" value="stalls">Stalls</option>
+                                                <option class="commercial" value="rooms">Rooms</option>
+                                                <option class="commercial" value="spaces(sections of a floor)">
+                                                    Spaces(sections of a floor)</option>
+                                                <option class="commercial" value="floor(an entire floor)">Floor(an
+                                                    entire floor)</option>
+                                                <option class="commercial" value="Parking space">Parking space</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="">Unit size (sqft)</label>
+                                        <input class="form-control editable" placeholder="Example: 5600" type="number"
+                                            name="size" id="size">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="">Are the units furnished?</label>
+                                        <select class="form-control " name="is_furnished" id="is_furnished">
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="">Bathrooms</label>
+                                        <select class="form-control " name="baths" id="baths">
+                                            <option value="communal">communal</option>
+                                            <option value="1">1</option>
+                                            <option value="1.5">1.5</option>
+                                            <option value="2">2</option>
+                                            <option value="2.5">2.5</option>
+                                            <option value="3">3</option>
+                                            <option value="3.5">3.5</option>
+                                            <option value="4">4</option>
+                                            <option value="4.5">4.5</option>
+                                            <option value="5">5+</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-7 fancy_text4 text-left mb-0">Unit description</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group"><label class="control-label">Description</label><textarea
+                                            class="form-control editable"
+                                            placeholder="Example: Freshly painted home with new appliances and carpeting. Easy walking to public transit and a great neighborhood."
+                                            rows="4" id="description" name="description"></textarea></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient my-5">
+                            <h4 class="onboarding-title display-10 text-center fancy_text5">Rent and other charges</h4>
+                           
+                            <h4 class="onboarding-title text-grey display-7 text-center fancy_text3">(Only for rentable units)</h4>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+
+                            <div class="row mb-5 mt-2">
+                                <div class="d-flex justify-content-end col-12">
+                                    <button
+                                        class="btn btn-primary btn-rounded px-5 py-2 mr-sm-4 text-white add_charges_button"
+                                        type='button'><span>Click to add</span></button>
+                                </div>
+                            </div>
+                            <div class="table-responsive" style="cursor: pointer;">
+                                <table id='unit_charges_table' class="table display responsive table-heading dataTable"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">Ignore me</th>
+                                            <th class="text-left">Charge</th>
+                                            <th class="text-left">Amount</th>
+                                            <th class="text-left">Notify the tenant with</th>
+                                            <th class="text-left"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-left">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient my-5">
+                            <h4 class="onboarding-title display-10 text-center fancy_text5"> Features and amenities</h4>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+
+                            <div class="row mb-5 mt-2">
+                                <div class="d-flex justify-content-end col-12">
+                                    <button
+                                        class="btn btn-primary btn-rounded px-5 py-2 mr-sm-4 text-white add_features_button"
+                                        type='button'><span>Click to add</span></button>
+                                </div>
+                            </div>
+                            <div class="table-responsive" style="cursor: pointer;">
+                                <table id='edit_features_table' class="table display responsive table-heading dataTable"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">Name</th>
+
+                                            <th class="text-left"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-left">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient my-5">
+                            <h4 class="onboarding-title display-10 text-center fancy_text5">Photos</h4>
+                            <h4 class="onboarding-title text-grey display-7 text-center fancy_text3">(Optional)</h4>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+
+                            <div class="row mb-5 mt-2">
+                                <div class="d-flex justify-content-end col-12">
+                                    <button
+                                        class="btn btn-primary btn-rounded px-5 py-2 mr-sm-4 text-white add_photos_button"
+                                        type='button'><span>Click to add</span></button>
+                                </div>
+                            </div>
+                            <div class="table-responsive" style="cursor: pointer;">
+                                <table id='edit_photos_table' class="table display responsive table-heading dataTable"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">Image</th>
+                                            <th class="text-left">Name</th>
+                                            <th class="text-left"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-left">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+
+                            {% comment %} <input type="hidden" id="unit_id" name="id"> {% endcomment %}
+                            <input type="hidden" class="details_based_on" name="details_based_on">
+                            <input type="hidden" class="details_based_id" name="details_based_id">
+                            <input type="hidden" id="details_based_unit_list" name="unit_list">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary px-5 py-3 " type="buttom" id="submit_edit_details">Click
+                                    to upload
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
+{% block content %}
+
+<div class="content-body" style="min-height: 828px;">
+    <!-- row -->
+    <div class="container-fluid">
+
+        {% comment %} <div class="row border-primary p-4 col-12">
+            <input type="text" id="test_array">
+
+        </div> {% endcomment %}
+        {% comment %} <div class="row mx-1 d-flex justify-content-start d-none">
+
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="media align-items-center">
+                            <div class="media-body">
+                                <h2 class="fs-36 text-black font-w600 total_units_title">Please wait</h2>
+                                <span class="fs-18 text-black">Total units</span>
+                            </div>
+                            <span class="bg-primary rounded p-3">
+                                <svg width="38" height="38" viewBox="0 0 38 38" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M15.1208 37.6042H1.97909C1.10825 37.6042 0.395752 36.8917 0.395752 36.0208V14.1708C0.395752 13.775 0.554085 13.3 0.870752 13.0625L14.0124 0.791659C14.4874 0.395825 15.1208 0.237492 15.6749 0.474992C16.3083 0.791659 16.6249 1.34583 16.6249 1.97916V36.1C16.6249 36.8917 15.9124 37.6042 15.1208 37.6042ZM3.48325 34.5167H13.5374V5.54166L3.48325 14.8833V34.5167Z"
+                                        fill="white" />
+                                    <path
+                                        d="M36.0208 37.6042H15.0416C14.1708 37.6042 13.4583 36.8917 13.4583 36.0208V17.4167C13.4583 16.5458 14.1708 15.8333 15.0416 15.8333H36.0208C36.8916 15.8333 37.6041 16.5458 37.6041 17.4167V36.1C37.6041 36.8917 36.8916 37.6042 36.0208 37.6042ZM16.6249 34.5167H34.5166V18.9208H16.6249V34.5167Z"
+                                        fill="white" />
+                                    <path
+                                        d="M28.5791 37.6042H22.4832C21.6124 37.6042 20.8999 36.8917 20.8999 36.0208V26.3625C20.8999 25.4917 21.6124 24.7792 22.4832 24.7792H28.5791C29.4499 24.7792 30.1624 25.4917 30.1624 26.3625V36.0208C30.1624 36.8917 29.4499 37.6042 28.5791 37.6042ZM24.0666 34.5167H27.0749V27.9458H24.0666V34.5167Z"
+                                        fill="white" />
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> {% endcomment %}
+
+        <div class="card mx-3">
+            <div class="card-header d-block mx-3 text-center">
+                <h5 class="card-titles display-4 custom-card-title ">Unit list</h5>
+
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-xl-12">
+                <div class="col-12">
+                    <div class="card px-3">
+                        {% include 'partials/_table_extra.html' with button_class="" button_id="add_unit_button" button_text="Click to add" total_class="total_units_title" total_text="units"  %}
+
+                        {% comment %} <div class="table-extra my-2">
+                            <div class="row my-4 mx-3 pt-47 d-flex justify-content-end">
+                                <button class="btn btn-primary  py-2 px-5 btn-rounded" type="button"
+                                    id="add_unit_button"><span>Click to add</span></button>
+                            </div>
+                            <div class="row my-3 mx-4 pt-47 d-flex justify-content-start">
+                                <h4 class="card-title"><span class="display-4 total_units_title"> Please wait</span>
+                                    units</h4>
+                            </div>
+                        </div> {% endcomment %}
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="unit_table" class="display min-w850">
+                                    <thead>
+                                        <tr>
+                                            <th>Building</th>
+                                            <th>Unit</th>
+                                            <th>Type</th>
+                                            <th>Current status</th>
+                                            <th></th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% block scripts %}
+{% include 'partials/_select_options.html' %}
+{% include 'partials/_date.html' %}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.1.1/css/rowGroup.dataTables.min.css">
+<script src="https://cdn.datatables.net/rowgroup/1.1.1/js/dataTables.rowGroup.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var property="all"
+        {% if property.id %}
+       
+        var property= {{property.id}};
+        {% endif %} 
+        select_option.property_units('#search_property_units',property);
+    });
+
+   {% if property.id %}
+
+   $('#add_unit_modal').modal('show');
+   {% endif %}
+   
+
+    var ids = [];
+   
+
+    $(document).on('click', '#test_array_button', function () {
+        ids.push("a");
+        $('#test_array').val(ids);
+
+    });
+    $(document).on('click', '#test_array_button', function () {
+        ids.push("b");
+        $('#test_array').val(ids);
+
+    });
+    $(document).on('click', '#add_unit_button', function () {
+     
+        $('#add_unit_modal').modal('show');
+
+    });
+    $(document).on('click', '#edit_unit_button', function () {
+        $('#edit_unit_modal').modal('show');
+
+    });
+    $(document).on('click', '#test', function () {
+       
+        $('#create_new_units_modal').modal('show');
+
+    });
+
+    $(document).on('change', '#unit_create_type', function() {
+		var floor_type = $('#unit_create_type').val();
+		if (floor_type == 'alphabets') {
+			$('.property_unit_create_title1').text("Alphabetical order");
+			$('.unit_alphabets').removeClass("d-none");
+			$('.unit_numericals').addClass("d-none");
+		}
+		if (floor_type == 'numbers') {
+			$('.property_unit_create_title1').text("Numerical order");
+			$('.unit_alphabets').addClass("d-none");
+			$('.unit_numericals').removeClass("d-none");
+		}
+
+	});
+	$(document).on('change', '#unit_create_name', function() {
+		var unit_type = $('#unit_create_name').val();
+		$('.unit_decision_type').text(unit_type + " ");
+
+	});
+    	$(document).on('submit', '#add_unit_form', function(event) {
+		var form_data = new FormData(this);
+		event.preventDefault();
+		$.ajax({
+			method: 'POST',
+			url: '{% url "property:prepare-unit" %}',
+			data: form_data,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+			beforeSend: function() {
+				$(".third-floated-btn").addClass('d-none');
+				$(".floated-customizer-panel2").removeClass('active');
+				$('#submit_unit').attr('disabled', 'disabled');
+				$("#submit_unit").html("Please wait");
+			},
+			success: function(data) {
+                 $('#edit_unit_form')[0].reset();
+				if (data.error) {
+					$('#submit_unit').attr('disabled', false);
+					$("#submit_unit").html("Continue");
+					$('#oops_text').text(data.error);
+					$('#oops_alert').modal('show');
+
+				} else {
+					if ($(window).width() > 700) {
+                       
+						var this_table = $('#add_units_table').DataTable({
+							"destroy": true,
+							'paging': false,
+                            
+							"oLanguage": {
+								"sEmptyTable": "No units found"
+							},
+
+							"bPaginate": false,
+							"bInfo": false,
+							"language": {
+								search: ""
+							},
+							"columnDefs": [
+								{
+									"visible": false,
+									"targets": 0,
+								},
+							],
+
+							"autoWidth": false,
+							"bAutoWidth": true,
+							"ordering": false,
+							"data": data.aaData,
+                           // "responsive": true,
+							"bPaginate": true,
+							"bProcessing": true,
+							"pageLength": 10,
+							//"scrollX": true,
+							"scrollY": "300px",
+							//"scrollCollapse": true,
+							"paging": false,
+
+							"order": [
+								[0, 'asc']
+							],
+
+							"rowGroup": {
+								"dataSrc": 0
+							},
+							"fnDrawCallback": function() {
+								$('.unit_buildings').text(this.fnSettings().fnRecordsTotal());
+								$('#unit_buildings').val(this.fnSettings().fnRecordsTotal());
+							}
+
+
+						});
+					} else {
+						var this_table = $('#add_units_table').DataTable({
+							"destroy": true,
+							'paging': false,
+							"oLanguage": {
+								"sEmptyTable": "No units found"
+							},
+
+							"bPaginate": false,
+							"bInfo": false,
+							"language": {
+								search: ""
+							},
+							"columnDefs": [
+								{
+									"visible": false,
+									"targets": 0,
+								},
+							],
+							"order": [
+								[0, 'asc']
+							],
+
+							"rowGroup": {
+								"dataSrc": 0
+							},
+							"autoWidth": true,
+							"bAutoWidth": true,
+							"ordering": false,
+                             "responsive": true,
+							"data": data.aaData,
+							"bPaginate": true,
+							"bProcessing": true,
+							"pageLength": 10,
+							"scrollX": true,
+							"scrollY": "300px",
+						    "scrollCollapse": true,
+							"paging": false,
+							"fnDrawCallback": function() {
+								$('.unit_buildings').text(this.fnSettings().fnRecordsTotal());
+								$('#unit_buildings').val(this.fnSettings().fnRecordsTotal());
+							}
+
+						});
+					}
+					$(".fcp-group-contents").addClass('d-none');
+					$(".third-floated-btn").addClass('d-none');
+					$('#submit_unit').attr('disabled', false);
+					$("#submit_unit").text("Create the units");
+					$('#add_unit_modal').modal('hide');
+					$('#create_new_units_modal').modal('show');
+                    $('#details_based_unit_list').val(data.unit_list);
+
+
+
+                    $('#unit_create_numbers').val(data.unit_list);
+                    $('#property_create_number').val(data.property_create_number);
+                    $('#charge_update_add').val("update");
+                    $('#created_at').val("property");
+                    $('#unit_create_numbers_features').val(data.unit_list);
+                    $('#property_create_number_features').val(data.property_create_number);
+                    $('#feature_update_add').val("update");
+                    $('#created_at_features').val("property");
+                    $('#unit_create_numbers_photos').val(data.unit_list);
+                    $('#property_create_number_photos').val(data.property_create_number);
+                    $('#photo_update_add').val("update");
+                    $('#created_at_photos').val("property");
+                    //$('.onboarding-modal .onboarding-slider-w').slick('slickGoTo', 0);
+					// $('#add_units_table').css('min-height', '350px');
+				//	$('#add_units_table').css('wdith', '100%');
+				}
+			},
+			error: function(jqXhr) {
+				$('#submit_unit').attr('disabled', false);
+				$("#submit_unit").text("Create the units");
+				$('#oops_text').text("Something went wrong, try again later");
+				$('#oops_alert').modal('show');
+			}
+		});
+
+	});
+    $(document).on('submit', '#edit_unit_form', function(event) {
+        var action_type = $('#action_type').val();
+            var method='PUT';
+            var url = "{% url 'property:update-units' %}";
+          
+              var form_data = new FormData(this);
+              event.preventDefault();
+              $.ajax({
+                  method: method,
+                  url:url,
+                  data: form_data,
+                  contentType: false,
+                  processData: false,
+                  dataType: "json",
+                  beforeSend: function() {
+                    $('#submit_edit_details').attr('disabled', 'disabled');
+                    $("#submit_edit_details").html("Please wait");
+                },
+                success: function(data) {
+                    $('#submit_edit_details').attr('disabled', false);
+                    $("#submit_edit_details").html("Click to confirm");
+                    if (data.success) {
+                        $(".fcp-group-contents").addClass('d-none');
+                        $(".create_units_record").removeClass('d-none');
+                        $(".third-floated-btn").removeClass('d-none');
+                            $('#success_text').text(data.success);
+                            $('#success_alert').modal('show');
+                            //$('.onboarding-modal .onboarding-slider-w').slick('slickGoTo', 0);
+                            $('#edit_unit_modal').modal('hide');
+                            unit_table.ajax.reload();
+                    }
+                    if (data.error) {
+                        $('#oops_text').text(data.error);
+                        $('#oops_alert').modal('show');
+                    }
+                },
+                error: function(jqXhr) {
+                    $('#submit_edit_details').attr('disabled', false);
+                    $("#submit_edit_details").html("Click to confirm");
+                    $('#oops_text').text("Something must have gone wrong.");
+                    $('#oops_alert').modal('show');
+                    $('#edit_unit_modal').modal('hide');
+                }
+              });
+          });
+
+	$(document).on('submit', '#create_new_units_form', function(event) {
+		var form_data = new FormData(this);
+        url_data = '{% url "property:units-listcreate" %}'
+		event.preventDefault();
+		$.ajax({
+			method: 'POST',
+			url: url_data,
+			data: form_data,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+			beforeSend: function() {
+				$('#create_new_units_button').attr('disabled', 'disabled');
+				$("#create_new_units_button").html("Please wait");
+			},
+			success: function(data) {
+				$('#create_new_units_button').attr('disabled', false);
+				$("#create_new_units_button").html("Click to confirm");
+				if (data.success) {
+					$('#create_new_units_modal').modal('hide');
+					$(".fcp-group-contents").addClass('d-none');
+					$(".third-floated-btn").addClass('d-none');
+					var based_id = data.unit_property;				
+					
+					$('.details_based_on').val("unit_property");
+					$('.details_based_id').val(based_id);
+					
+					jQuery('#unit_charges_table').wrap('<div class="dataTables_scroll" />');
+					$('#charge_action_type').val('add');
+					$('#charges_right_now').val('property');
+                    
+					jQuery('#edit_features_table').wrap('<div class="dataTables_scroll" />');
+					$('#feature_action_type').val('add');
+					$('#features_right_now').val('property');
+
+					jQuery('#edit_photos_table').wrap('<div class="dataTables_scroll" />');
+					$('#photo_action_type').val('add');
+					$('#photos_right_now').val('property');
+
+                    unit_table.ajax.reload();
+					unit_charges_table([]);
+					edit_features_table([]);
+					edit_photos_table([]);
+                
+					$('.edit_form_title').text("About the units you've added");
+                    $('#unit_name').attr("name","unit_name_false");
+                    $('.name_unit').addClass("d-none");
+					$('#edit_unit_modal').modal('show');
+				}
+				if (data.error) {
+					$('#oops_text').text(data.error);
+					$('#oops_alert').modal('show');
+				}
+			},
+			error: function(jqXhr) {
+				$('#create_new_units_button').attr('disabled', false);
+				$("#create_new_units_button").html("Click to confirm");
+				$('#oops_text').text("Something must have gone wrong, check your property to confirm if your units were created.");
+				$('#oops_alert').modal('show');
+				//$('#create_new_units_modal').modal('hide');
+			}
+		});
+	});
+    $(document).on('change', '.unit_upload_decision', function() {
+		var changed_value = $(this).val();
+		var data = $(this).attr('data-tab');
+		var previous_total = $('#unit_buildings').val();
+		var previous_floor_units = $('.' + data + '_units').val();
+		if (changed_value == "upload") {
+			var new_total = parseFloat(previous_total) + 1;
+			var new_floor_units = parseFloat(previous_floor_units) + 1;
+		}
+		if (changed_value == "no upload") {
+			var new_total = parseFloat(previous_total) - 1;
+			var new_floor_units = parseFloat(previous_floor_units) - 1;
+		}
+		$('.unit_buildings').text(new_total);
+		$('#unit_buildings').val(new_total);
+		$('.' + data).text('(' + new_floor_units + ' units)');
+		$('.' + data + '_units').val(new_floor_units);
+	});
+
+
+
+    var unit_table=$("#unit_table").DataTable({
+        processing: true,
+        serverSide: true,
+
+        "oLanguage": {
+        "sEmptyTable": "No units added",
+        "sStripClasses": "",
+        "sSearch": "",
+        "sSearchPlaceholder": "search...",
+        "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+            '<option value="10">10</option>' +
+            '<option value="20">20</option>' +
+            '<option value="30">30</option>' +
+            '<option value="40">40</option>' +
+            '<option value="50">50</option>' +
+            '<option value="50">100</option>' +
+
+            '</select></div>'
+        },
+        ajax: {
+          url: '{% url "property:units-listcreate" %}',
+          {% if property.id %}
+          "data": {
+           "property_id": {{property.id}},
+       },
+          {% endif %} 
+        },
+ 
+    
+      
+         
+        "columnDefs": [{
+            "visible": false,
+            "targets": 0,
+        },
+      
+    ],
+    "rowGroup": {
+        "dataSrc": 0
+    },
+
+    "aaSorting": [
+        [0, 'asc'],
+    ],
+    
+    "fnDrawCallback": function() {
+       // console.log(this.fnSettings().json.total_sum); 
+
+        $('.total_units_title').text(this.fnSettings().fnRecordsTotal());
+    }
+      });
+
+      $(document).on('click', '.edit_units_button', function() {
+        //$('.onboarding-modal .onboarding-slider-w').slick('slickGoTo', 0);
+        $('#unit_name').attr("name","unit_name");
+        $('.name_unit').removeClass("d-none");
+        var the_id = $(this).attr("id");
+        $('input.form-control').val("");
+        $('input.textarea').val("");
+        $.ajax({
+            url :"{% url 'property:units-rud' id=123456 %}".replace(/123456/, the_id).toString(),
+            method: "GET",
+            dataType: "json",
+            success: function(data) {
+                $('#details_based_unit_list').val(data.create_nos);
+                $('#unit_create_numbers').val(data.create_nos);
+                $('#unit_create_numbers_features').val(data.create_nos);
+                $('#unit_create_numbers_photos').val(data.create_nos);
+
+                $('#property_create_number').val(data.unit_property);
+                $('#property_create_number_features').val(data.unit_property);
+                $('#property_create_number_photos').val(data.unit_property);
+
+                $('.details_based_id').val(data.unit_property);
+                $('#id_list').val(data.unit_charges);
+                $('#id_list_feature').val(data.unit_features);
+                $('#id_list_photo').val(data.unit_photos);
+                $('#unit_name').val(data.unit_name);
+                $('#charges_right_now').val('unit');
+                $('#features_right_now').val('unit');
+                $('#photos_right_now').val('unit');
+
+                $('#unit_category').val(data.unit_category);
+                $('#unit_type').val(data.unit_type).change();
+                $('#unit_category').val(data.unit_category).change();
+                $('#size').val(data.size);
+                $('#is_furnished').val(data.is_furnished);
+                $('#baths').val(data.baths).change();
+                $('#description').val(data.description);
+
+                $(".edit_form_title").text("About "+data.unit_name);
+            
+                $('#edit_unit_modal').modal('show');
+                
+                unit_charges_table(data.unit_charges);
+                edit_features_table(data.unit_features);
+                edit_photos_table(data.unit_photos);
+
+            }
+        })
+    });
+    $(document).on('click', '.delete_units_button', function() {
+        var data = $(this).attr("id");
+        var data_split = data.split(",");
+        var unit_name = data_split[0];
+        var id = data_split[1];
+        $('#confirm_title').text("Just confirming...");
+        $('#confirm_text').text("Confirming the delete of " + unit_name + " as a unit");
+        $('#confirm_extra').text("Do you really want to delete " + unit_name + "?");
+        $('#confirm_button').text("Confirm delete");
+        $('#confirm_alert').modal('show');
+        $('#confirmYes').one('click', function() {
+            $.ajax({
+                url :"{% url 'property:units-rud' id=12345 %}".replace(/12345/, id).toString(),
+                method: "DELETE",			
+                dataType: "json",
+                success: function(data) {
+                    unit_table.ajax.reload();
+                    $('#success_text').text("Unit removed.");
+                    $('#confirm_alert').modal('hide');
+                    $('#success_alert').modal('show');
+                }
+            });
+
+        });
+        $("#confirmNo").click(function() {
+            $('#confirm_alert').modal('hide');
+        });
+
+    });
+
+
+//----------------------------------------------------------------------------------------------------
+
+$('#unit_charges_table').css('min-height', '200px');
+$('#unit_charges_table').css('wdith', '100%');
+function unit_charges_table(id_list) {
+    url_data = '{% url "finance:charges-listcreate" %}';
+    data_table=JSON.stringify(id_list);
+    $('#unit_charges_table').DataTable({
+        //processing: true,
+        //serverSide: true,
+        
+        "destroy": true,
+        "bAutoWidth": false,
+        "bFilter": false,
+        "bPaginate": false,
+        "bFilter": false,
+        "bInfo": false,
+
+
+       "oLanguage": {
+       "sEmptyTable": "No charges added",
+       "sStripClasses": "",
+       "sSearch": "",
+       "sSearchPlaceholder": "search...",
+       "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+           '<option value="10">10</option>' +
+           '<option value="20">20</option>' +
+           '<option value="30">30</option>' +
+           '<option value="40">40</option>' +
+           '<option value="50">50</option>' +
+           '<option value="50">100</option>' +
+
+           '</select></div>'
+       },
+        "ajax": {
+            "url": url_data,
+            "data": {
+                "data_table": JSON.stringify(id_list),
+                
+            }
+        },
+        "order": [
+            [0, 'asc']
+        ],
+        "columnDefs": [{
+                "visible": false,
+                "targets": 0,
+            },
+        ],
+        "rowGroup": {
+            "dataSrc": 0
+        },
+        "bPaginate": false,
+        "pageLength": 10,
+
+    });
+        jQuery('#people_table').wrap('<div class="dataTables_scroll" />');
+
+}
+
+$(document).on('change', '#edit_payments_category', function() {
+    //$('#edit_payments_amount').val("");
+    category = $(this).val();
+    edit_changed_category(category);
+})
+$(document).on('submit', '#edit_charges_form', function(event) {
+    var action_type=$('#charge_action_type').val()
+    if (action_type =='add'){
+        var method='POST';
+        var url = '{% url "finance:charges-listcreate" %}';
+    }
+    if (action_type =='edit'){
+        var id= $('#edit_payments_id').val();
+        var method='PUT';
+        var url = "{% url 'finance:charges-rud' id=12345 %}".replace(/12345/, id).toString();
+    }
+    var form_data = new FormData(this);
+    event.preventDefault();
+    $.ajax({
+        method: method,
+        url: url,
+        data: form_data,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function() {
+            $('#submit_edit_charge').attr('disabled', 'disabled');
+            $("#submit_edit_charge").html("Please wait");
+        },
+        success: function(data) {
+            $('#submit_edit_charge').attr('disabled', false);
+            $("#submit_edit_charge").html("Upload records");
+            if (data.success) {
+                
+                unit_charges_table(data.id_list);
+
+                $("#id_list").val(data.id_list);
+                $(".add_payment_button").addClass("d-none");
+                $('.update_payment_button').removeClass("d-none");
+                $('#edit_charges_modal').modal('hide');
+                $('#success_text').text(data.success);
+                $('#success_alert').modal('show');
+               // $('.onboarding-modal .edit_the_charges').slick('slickGoTo', 0);
+                $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+            }
+            if (data.error) {
+                $('#oops_text').text(data.error);
+                $('#oops_alert').modal('show');
+            }
+        },
+        error: function(jqXhr) {
+            $('#submit_edit_charge').attr('disabled', false);
+            $("#submit_edit_charge").html("Upload records");
+            $('#oops_text').text("Something went wrong, try again later");
+            $('#oops_alert').modal('show');
+            $('#edit_charges_modal').modal('hide');
+        }
+
+    });
+});  
+ 
+$(document).on('click', '.add_charges_button', function() {
+    $('#edit_charges_modal').modal('show');
+    $(".display_").addClass("d-none");
+      // $('#payments_deadline').val('');
+       $('#payments_deadline').val("no").change();
+       $('.p_d_d').addClass("d-none");
+  
+    $(".display_month").removeClass("d-none");
+    $("#edit_payments_duration").val("monthly").change();
+    $("#edit_payments_communication").val("none").change();
+    $("#edit_payments_week").val("Sunday").change();
+    $("#edit_payments_amount").val("");
+    $("#edit_payments_month").val("");
+    $(".invoice_for").addClass("d-none");
+    $('#charge_action_type').val("add");
+});
+  $(document).on('change', '#payments_deadline', function () {
+            var deadline = $(this).val();
+            if (deadline == 'yes') {
+            $('.p_d_d').removeClass("d-none");
+            $('.no_late_fee').addClass("d-none");
+            $('.has_empty_late_fee').removeClass("d-none");
+            $('.has_late_fee').addClass("d-none");
+             select_option.late_fee_types('#late_fee_type');
+            }
+            if (deadline == 'no') {
+               
+            $('.general_fees').val("");
+            $('.no_late_fee').removeClass("d-none");
+            $('.has_empty_late_fee').addClass("d-none");
+            $('.has_late_fee').addClass("d-none");
+            $('.disabled_latefee').prop("disabled", false);
+            $('.disabled_latefee').prop("selected", true);
+            $('.disabled_latefee').prop("disabled", true);
+            $('.p_d_d').addClass("d-none");
+            $(".class_late_amount, .class_late_percent, .class_late").addClass("d-none");
+            }
+            $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+  });
+    $(document).on('change', '#late_fee_type', function () {
+    var type = $(this).val();
+    var array_late_fee = ["one_time_fixed", "one_time_percent_unpaid", "one_time_percent_entire",
+    "daily_time_fixed",
+    "daily_time_percent_unpaid", "daily_time_percent_entire"
+    ];
+    $("#late_fee_amount, #late_fee_grace, #late_fee_max").val(0);
+    if (array_late_fee.includes(type)) {
+    if (type == 'one_time_fixed' || type == 'daily_time_fixed') {
+    $('.class_late').removeClass("d-none");
+    $('.class_late_amount_desc').text("How much is the fixed amount");
+    } else {
+    $('.class_late').removeClass("d-none");
+    $('.class_late_amount_desc').text("What is the percent?");
+    }
+    if (type == 'one_time_fixed' || type == 'one_time_percent_unpaid' || type ==
+    'one_time_percent_entire') {
+    $('.class_late_max').addClass("d-none");
+    } else {
+    $('.class_late_max').removeClass("d-none");
+    }
+
+    } else {
+    $('.class_late').addClass("d-none");
+    $('.class_late_grace').removeClass("d-none");
+    }
+    $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+    });
+     $(document).on('change', '.general_fees', function () {
+     var late_fee_type = $('#late_fee_type').val();
+     var late_fee_amount = $('#late_fee_amount').val();
+     var late_fee_grace = $('#late_fee_grace').val();
+     var array_late_fee = ["one_time_fixed", "one_time_percent_unpaid", "one_time_percent_entire",
+     "daily_time_fixed",
+     "daily_time_percent_unpaid", "daily_time_percent_entire"
+     ];
+     if (array_late_fee.includes(late_fee_type)) {
+     if (late_fee_type == 'one_time_fixed' || late_fee_type == 'one_time_percent_unpaid' ||
+     late_fee_type ==
+     'one_time_percent_entire') {
+     var late_fee_max = $('#late_fee_amount').val();
+     } else {
+     var late_fee_max = $('#late_fee_max').val();
+     }
+     if ($('#late_fee_type').val() && $('#late_fee_amount').val() && $('#late_fee_grace').val() &&
+     late_fee_max) {
+
+     if (late_fee_type == "one_time_fixed") {
+     var description = "a one time late fee of " + late_fee_amount + " will be invoiced. "
+     }
+     if (late_fee_type == "one_time_percent_unpaid") {
+     var description = "a one time late fee of " + late_fee_amount +
+     "% of the total unpaid invoice will be invoiced."
+     }
+     if (late_fee_type == "one_time_percent_entire") {
+     var description = "a one time late fee of " + late_fee_amount +
+     "% of the entire invoice (both paid and not paid)will be invoiced."
+     }
+     if (late_fee_type == "daily_time_fixed") {
+     var description = "a daily late fee of " + late_fee_amount +" will be invoiced until the tenant’s balance for this invoice is positive.However,if the total late fees charged for this invoice amounts to " +late_fee_max + ", thelate fees won't be posted"
+     }
+     if (late_fee_type == "daily_time_percent_unpaid") {
+     var description = "a daily late fee of " + late_fee_amount +" % of the total unpaid invoice will be invoiced untilthe tenant’ s balance for this invoice is positive.However,if the total late fees chargedfor this invoice amounts to " + late_fee_max + ", the late fees won 't be posted"
+     }
+     if (late_fee_type == "daily_time_percent_entire") {
+     var description = "a daily late fee of " + late_fee_amount +" % of the entire invoice (both paid and not paid) will be invoiced until the tenant’ s balance for this invoice is positive.However, if the total late fees charged for this invoice amounts to " + late_fee_max + ", the late fees won 't be posted"
+     }
+     $('#late_fee_payment_type').val("generic");
+
+     $('.class_fee_days').text(late_fee_grace + " days");
+     $('.class_fee_type').text(description);
+     $('.no_late_fee').addClass("d-none");
+     $('.has_late_fee').removeClass("d-none");
+     $('.has_empty_late_fee').addClass("d-none");
+     } else {
+     $('.no_late_fee').addClass("d-none");
+     $('.has_late_fee').addClass("d-none");
+     $('.has_empty_late_fee').removeClass("d-none");
+     }
+     } else {
+     if ($('#late_fee_type').val() && $('#late_fee_grace').val()) {
+     var description = "Your customized late fee will be invoiced. ";
+     $('#late_fee_payment_type').val("custom");
+     $('.class_fee_days').text(late_fee_grace + " days");
+     $('.class_fee_type').text(description);
+     $('.no_late_fee').addClass("d-none");
+     $('.has_late_fee').removeClass("d-none");
+     $('.has_empty_late_fee').addClass("d-none");
+     } else {
+     $('.no_late_fee').addClass("d-none");
+     $('.has_late_fee').addClass("d-none");
+     $('.has_empty_late_fee').removeClass("d-none");
+     }
+
+     }
+     });
+
+$(document).on('click', '.edit_charges_button', function() {
+    //$('.onboarding-modal .edit_the_charges').slick('slickGoTo', 0);
+    var charge_id = $(this).attr("id");
+    //$('input.form-control').val("");
+    //$('input.textarea').val("");
+    // $("#payments_deadline").val('yes').change();
+    $.ajax({
+        url : "{% url 'finance:charges-rud' id=12345 %}".replace(/12345/, charge_id).toString(),
+        method: "GET",
+        dataType: "json",
+        success: function(data) {
+            $(".invoice_for").removeClass("d-none");
+            if (data.created_at==$('#charges_right_now').val()){
+                $('#charge_update_add').val('update');
+            }else{
+                $('#charge_update_add').val('add');
+
+            }
+         //   alert(data.created_at);
+          //  alert($('#charges_right_now').val());
+            $('#edit_payments_id').val(data.id);
+            $('#edit_payments_name').val(data.name);
+            $("#edit_payments_communication").val(data.notify);
+            $("#edit_payments_amount").val(data.amount);
+            $("#edit_payments_category").val(data.category).change();
+            $("#edit_payments_duration").val(data.duration).change();
+            $("#edit_payments_once").val(data.once_date);
+            $("#edit_payments_week").val(data.week_date).change();
+            $("#edit_payments_month").val(data.month_date);
+            $("#edit_payments_year").val(data.year_date);
+            
+            $("#payments_deadline").val(data.deadline).change();
+            if (data.deadline=="yes"){
+                $("#late_fee_type").val(data.late_fee_type).change();
+                $("#late_fee_amount").val(data.late_fee_amount);
+                $("#late_fee_grace").val(data.late_fee_grace);
+                $("#late_fee_max").val(data.late_fee_max);
+            }
+           else{
+               $("#late_fee_amount, #late_fee_grace, #late_fee_max").val(0);
+
+           }
+            var category = data.category;
+        
+            if (category != "custom") {
+                $(".charge_name").addClass("d-none");
+            }
+            if (category != "custom") {
+                $(".charge_name").addClass("d-none");
+            }
+            
+            $('#charge_action_type').val("edit");
+            $('.general_charges_title').text(data.name + " in this property");
+            $('.general_charges_desc').text("");
+            edit_changed_category(data.category);
+            $('#edit_charges_modal').modal('show');
+        }
+    })
+});  
+$(document).on('click', '.delete_charges_button', function() {
+    var data = $(this).attr("id");
+    var data_split = data.split(",");
+    var name = data_split[0];
+    var id = data_split[1];
+    var created_at= data_split[2];
+    var charges_right_now= $("#charges_right_now").val();
+    if (created_at==charges_right_now){
+        var action="update";
+    }else{
+        var action="add";
+    }
+    $('#confirm_title').text("Just confirming...");
+    $('#confirm_text').text("Confirming the delete of " + name + ".");
+    $('#confirm_extra').text("Do you really want to delete " + name + "?");
+    $('#confirm_button').text("Confirm delete");
+    $('#confirm_alert').modal('show');
+    $('#confirmYes').one('click', function() {
+        $.ajax({
+            url :"{% url 'finance:charges-rud' id=12345 %}".replace(/12345/, id).toString(),
+            method: "DELETE",			
+            dataType: "json",
+            data: {
+                unit_create_numbers: $("#unit_create_numbers").val(),
+                property_create_number: $("#property_create_number").val(),
+               action: action,
+                id_list: $("#id_list").val(),
+                charge_id: id,
+            },
+            success: function(data) {
+                unit_charges_table(data.id_list);
+                 $("#id_list").val(data.id_list);
+                $('#success_text').text("Charge removed.");
+                $('#confirm_alert').modal('hide');
+                $('#success_alert').modal('show');
+            }
+        });
+
+    });
+    $("#confirmNo").click(function() {
+        $('#confirm_alert').modal('hide');
+    });
+
+});
+$(document).on('change', '#edit_payments_duration', function() {
+    var duration = $(this).val();
+    if (duration == "lease") {
+        $(".display_").addClass("d-none");
+    }
+    if (duration == "once") {
+        $(".display_").addClass("d-none");
+        $(".display_date").removeClass("d-none");
+    }
+    if (duration == "weekly") {
+        $(".display_").addClass("d-none");
+        $(".display_week").removeClass("d-none");
+    }
+    if (duration == "monthly") {
+        $(".display_").addClass("d-none");
+        $(".display_month").removeClass("d-none");
+    }
+    if (duration == "annually") {
+        $(".display_").addClass("d-none");
+        $(".display_year").removeClass("d-none");
+    }
+});
+
+function edit_changed_category(category) {
+    if (category == "custom") {
+        $(".charge_name").removeClass("d-none ");
+        $(".amount_description").text("How much do you charge?");
+        $("#edit_payments_amount").attr("placeholder", "Example: 15000");
+    }
+    if (category != "custom") {
+        $(".charge_name").addClass("d-none");
+        if (category == "water22") {
+            $(".amount_description").text("What is the rate per unit?");
+            $("#edit_payments_amount").attr("placeholder", "Example: 2.4");
+        } else {
+            $(".amount_description").text("How much do you charge?");
+            $("#edit_payments_amount").attr("placeholder", "Example: 15000");
+        }
+    }
+    $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+}
+
+
+
+$('#edit_features_table').css('min-height', '200px');
+$('#edit_features_table').css('wdith', '100%');
+function edit_features_table(id_list) {
+    url_data = '{% url "property:features-listcreate" %}';
+    data_table=JSON.stringify(id_list);
+    $('#edit_features_table').DataTable({
+        //processing: true,
+        //serverSide: true,
+        "destroy": true,
+        "bAutoWidth": false,
+        "bFilter": false,
+        "bPaginate": false,
+        "bFilter": false,
+        "bInfo": false,
+       "oLanguage": {
+       "sEmptyTable": "No feature added",
+       "sStripClasses": "",
+       "sSearch": "",
+       "sSearchPlaceholder": "search...",
+       "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+           '<option value="10">10</option>' +
+           '<option value="20">20</option>' +
+           '<option value="30">30</option>' +
+           '<option value="40">40</option>' +
+           '<option value="50">50</option>' +
+           '<option value="50">100</option>' +
+
+           '</select></div>'
+       },
+        "ajax": {
+            "url": url_data,
+            "data": {
+                "data_table": JSON.stringify(id_list),
+                
+            }
+        },
+       
+        "bPaginate": false,
+        "pageLength": 10,
+
+    });
+        jQuery('#edit_features_table').wrap('<div class="dataTables_scroll" />');
+
+}
+
+
+$(document).on('submit', '#edit_features_form', function(event) {
+    var action_type=$('#feature_action_type').val()
+    if (action_type =='add'){
+        var method='POST';
+        var url = '{% url "property:features-listcreate" %}';
+    }
+    if (action_type =='edit'){
+        var id= $('#edit_features_id').val();
+        var method='PUT';
+        var url = "{% url 'property:features-rud' id=12345 %}".replace(/12345/, id).toString();
+    }
+    var form_data = new FormData(this);
+    event.preventDefault();
+    $.ajax({
+        method: method,
+        url: url,
+        data: form_data,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function() {
+            $('#submit_edit_feature').attr('disabled', 'disabled');
+            $("#submit_edit_feature").html("Please wait");
+        },
+        success: function(data) {
+            $('#submit_edit_feature').attr('disabled', false);
+            $("#submit_edit_feature").html("Upload records");
+            if (data.success) {
+                
+                edit_features_table(data.id_list);
+
+                $("#id_list_feature").val(data.id_list);
+
+                $('#edit_features_modal').modal('hide');
+                $('#success_text').text(data.success);
+                $('#success_alert').modal('show');
+               // $('.onboarding-modal .edit_the_features').slick('slickGoTo', 0);
+                $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+            }
+            if (data.error) {
+                $('#oops_text').text(data.error);
+                $('#oops_alert').modal('show');
+            }
+        },
+        error: function(jqXhr) {
+            $('#submit_edit_feature').attr('disabled', false);
+            $("#submit_edit_feature").html("Upload records");
+            $('#oops_text').text("Something went wrong, try again later");
+            $('#oops_alert').modal('show');
+            $('#edit_features_modal').modal('hide');
+        }
+
+    });
+});  
+$(document).on('click', '.add_features_button', function() {
+  
+    $('#edit_feature_name').val("");
+    $('#edit_features_modal').modal('show');
+    $('#feature_action_type').val("add");
+});
+$(document).on('click', '.edit_features_button', function() {
+    //$('.onboarding-modal .edit_the_features').slick('slickGoTo', 0);
+    var feature_id = $(this).attr("id");
+    $('input.form-control').val("");
+    $('input.textarea').val("");
+    $.ajax({
+        url : "{% url 'property:features-rud' id=12345 %}".replace(/12345/, feature_id).toString(),
+        method: "GET",
+        dataType: "json",
+        success: function(data) {
+            $(".invoice_for").removeClass("d-none");
+            if (data.created_at==$('#features_right_now').val()){
+                $('#feature_update_add').val('update');
+            }else{
+                $('#feature_update_add').val('add');
+            }
+            $('#edit_features_id').val(data.id);
+            $('#edit_feature_name').val(data.name);
+            var category = data.category;
+            if (category != "custom") {
+                $(".feature_name").addClass("d-none");
+            }
+            if (category != "custom") {
+                $(".feature_name").addClass("d-none");
+            }
+          //  $("#edit_payments_duration").val(data.duration).change();
+            $('#feature_action_type').val("edit");
+            $('.general_features_title').text(data.name + " in this property");
+            $('.general_features_desc').text("");
+            edit_changed_category(data.category);
+            $('#edit_features_modal').modal('show');
+        }
+    })
+});  
+$(document).on('click', '.delete_features_button', function() {
+    var data = $(this).attr("id");
+    var data_split = data.split(",");
+    var name = data_split[0];
+    var id = data_split[1];
+    var created_at= data_split[2];
+    var features_right_now= $("#features_right_now").val();
+    if (created_at==features_right_now){
+        var action="update";
+    }else{
+        var action="add";
+    }
+    $('#confirm_title').text("Just confirming...");
+    $('#confirm_text').text("Confirming the delete of " + name + ".");
+    $('#confirm_extra').text("Do you really want to delete " + name + "?");
+    $('#confirm_button').text("Confirm delete");
+    $('#confirm_alert').modal('show');
+    $('#confirmYes').one('click', function() {
+        $.ajax({
+            url :"{% url 'property:features-rud' id=12345 %}".replace(/12345/, id).toString(),
+            method: "DELETE",			
+            dataType: "json",
+            data: {
+                unit_create_numbers: $("#unit_create_numbers_features").val(),
+                property_create_number: $("#property_create_number_features").val(),
+                action: action,
+                id_list: $("#id_list_feature").val(),
+                feature_id: id,
+            },
+            success: function(data) {
+                edit_features_table(data.id_list);
+                 $("#id_list_feature").val(data.id_list);
+                $('#success_text').text("Charge removed.");
+                $('#confirm_alert').modal('hide');
+                $('#success_alert').modal('show');
+            }
+        });
+
+    });
+    $("#confirmNo").click(function() {
+        $('#confirm_alert').modal('hide');
+    });
+
+});
+
+
+
+$('#edit_photos_table').css('min-height', '200px');
+$('#edit_photos_table').css('wdith', '100%');
+function edit_photos_table(id_list) {
+    url_data = '{% url "property:photos-listcreate" %}';
+    data_table=JSON.stringify(id_list);
+    $('#edit_photos_table').DataTable({
+        //processing: true,
+        //serverSide: true,
+        "destroy": true,
+        "bAutoWidth": false,
+        "bFilter": false,
+        "bPaginate": false,
+        "bFilter": false,
+        "bInfo": false,
+        "oLanguage": {
+        "sEmptyTable": "No photo added",
+        "sStripClasses": "",
+        "sSearch": "",
+        "sSearchPlaceholder": "search...",
+        "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+            '<option value="10">10</option>' +
+            '<option value="20">20</option>' +
+            '<option value="30">30</option>' +
+            '<option value="40">40</option>' +
+            '<option value="50">50</option>' +
+            '<option value="50">100</option>' +
+
+            '</select></div>'
+        },
+        "ajax": {
+            "url": url_data,
+            "data": {
+                "data_table": JSON.stringify(id_list),
+                
+            }
+        },
+      
+        "bPaginate": false,
+        "pageLength": 10,
+
+    });
+        jQuery('#edit_photos_table').wrap('<div class="dataTables_scroll" />');
+
+}
+
+
+$(document).on('submit', '#edit_photos_form', function(event) {
+    var action_type=$('#photo_action_type').val()
+    if (action_type =='add'){
+        var method='POST';
+        var url = '{% url "property:photos-listcreate" %}';
+    }
+    if (action_type =='edit'){
+        var id= $('#edit_photos_id').val();
+        var method='PUT';
+        var url = "{% url 'property:photos-rud' id=12345 %}".replace(/12345/, id).toString();
+    }
+    var form_data = new FormData(this);
+    event.preventDefault();
+    $.ajax({
+        method: method,
+        url: url,
+        data: form_data,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function() {
+            $('#submit_edit_photo').attr('disabled', 'disabled');
+            $("#submit_edit_photo").html("Please wait");
+        },
+        success: function(data) {
+            $('#submit_edit_photo').attr('disabled', false);
+            $("#submit_edit_photo").html("Upload records");
+            if (data.success) {
+                
+                edit_photos_table(data.id_list);
+
+                $("#id_list_photo").val(data.id_list);
+
+                $('#edit_photos_modal').modal('hide');
+                $('#success_text').text(data.success);
+                $('#success_alert').modal('show');
+               // $('.onboarding-modal .edit_the_photos').slick('slickGoTo', 0);
+                $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+            }
+            if (data.error) {
+                $('#oops_text').text(data.error);
+                $('#oops_alert').modal('show');
+            }
+        },
+        error: function(jqXhr) {
+            $('#submit_edit_photo').attr('disabled', false);
+            $("#submit_edit_photo").html("Upload records");
+            $('#oops_text').text("Something went wrong, try again later");
+            $('#oops_alert').modal('show');
+            $('#edit_photos_modal').modal('hide');
+        }
+
+    });
+});  
+$(document).on('click', '.add_photos_button', function() {
+    $('#edit_photo_name').val("");
+    $("#photo").val(null);
+    $('#edit_photos_modal').modal('show');
+    $('#photo_action_type').val("add");
+});
+$(document).on('click', '.edit_photos_button', function() {
+    //$('.onboarding-modal .edit_the_photos').slick('slickGoTo', 0);
+    var photo_id = $(this).attr("id");
+    $('input.form-control').val("");
+    $('input.textarea').val("");
+    $.ajax({
+        url : "{% url 'property:photos-rud' id=12345 %}".replace(/12345/, photo_id).toString(),
+        method: "GET",
+        dataType: "json",
+        success: function(data) {
+            $(".invoice_for").removeClass("d-none");
+            if (data.created_at==$('#photos_right_now').val()){
+                $('#photo_update_add').val('update');
+            }else{
+                $('#photo_update_add').val('add');
+
+            }
+           
+            $('#edit_photos_id').val(data.id);
+            $('#edit_photo_name').val(data.name);
+     
+
+            var category = data.category;
+        
+            if (category != "custom") {
+                $(".photo_name").addClass("d-none");
+            }
+            if (category != "custom") {
+                $(".photo_name").addClass("d-none");
+            }
+           // $("#edit_payments_duration").val(data.duration).change();
+            $('#photo_action_type').val("edit");
+            $('.general_photos_title').text(data.name + " in this property");
+            $('.general_photos_desc').text("");
+            edit_changed_category(data.category);
+            $('#edit_photos_modal').modal('show');
+        }
+    })
+});  
+$(document).on('click', '.delete_photos_button', function() {
+    var data = $(this).attr("id");
+    var data_split = data.split(",");
+    var name = data_split[0];
+    var id = data_split[1];
+    var created_at= data_split[2];
+    var photos_right_now= $("#photos_right_now").val();
+    if (created_at==photos_right_now){
+        var action="update";
+    }else{
+        var action="add";
+    }
+    $('#confirm_title').text("Just confirming...");
+    $('#confirm_text').text("Confirming the delete of " + name + ".");
+    $('#confirm_extra').text("Do you really want to delete " + name + "?");
+    $('#confirm_button').text("Confirm delete");
+    $('#confirm_alert').modal('show');
+    $('#confirmYes').one('click', function() {
+        $.ajax({
+            url :"{% url 'property:photos-rud' id=12345 %}".replace(/12345/, id).toString(),
+            method: "DELETE",			
+            dataType: "json",
+            data: {
+                unit_create_numbers: $("#unit_create_numbers_photos").val(),
+                property_create_number: $("#property_create_number_photos").val(),
+                action: action,
+                id_list: $("#id_list_photo").val(),
+                photo_id: id,
+            },
+            success: function(data) {
+                edit_photos_table(data.id_list);
+                $("#id_list_photo").val(data.id_list);
+                $('#success_text').text("Photo removed.");
+                $('#confirm_alert').modal('hide');
+                $('#success_alert').modal('show');
+            }
+        });
+
+    });
+    $("#confirmNo").click(function() {
+        $('#confirm_alert').modal('hide');
+    });
+
+});
+</script>
+{% endblock scripts %}
+
+
+
+{% endblock content %}
+
+
+<!--**********************************
+    Content body end
+***********************************-->

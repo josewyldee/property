@@ -1,0 +1,743 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Lease {% endblock title %}
+
+{% block modal %}
+<div aria-hidden="true" data-backdrop="static" data-tab="sub_modal"
+    class="onboarding-modal modal fade animated sub_modal" style='z-index:1060 !important' id="edit_document_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered " role="document">
+        <form method="POST" id='edit_document_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w sub_modal">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Let's begin </h4>
+                            <hr>
+                            <input type="hidden" id="edit_photos_id" name="id">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Name</label>
+                                        <input class="form-control editable" type="text" placeholder="Example:Contract"
+                                            name="name">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="div_upload_file mt-4">
+                                <label for="" style="font-size:15px"
+                                    class='text-center col-sm-12  fancy_text3 text-black '>
+                                    <span class='fancy_text4 text-primary font-w600'>Select a file to upload </span>
+                                </label>
+                                <input type="file" name='document'
+                                    class="form-control-file btn-rounded btn btn-outline-primary px-5 py-2"
+                                    id="document">
+                            </div>
+
+
+                        </div>
+                        <br><br><br>
+                    </div>
+
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+
+                            <input type="hidden" name="tenant" id="document_tenant">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary px-5 py-2" id="submit_doc" type="submit">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="tenant_document_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <div class="modal-content">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <form method="post" id="tenant_document_form">
+                <div class="modal-content">
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                            class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                    <div class="onboarding-slider-w ">
+                        <div class="onboarding-slide">
+                            <div class="onboarding-content with-gradient">
+                                <h4 class="onboarding-title display-10 text-left text-primary fancy_text4">Documents
+                                </h4>
+                                <hr>
+                                {% comment %} <div class="row mb-2">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <button
+                                            class="btn btn-primary justify-content-end px-5 py-2 mr-sm-4 text-white add_doc_button"
+                                            type='button'><span>Click to add</span></button>
+                                    </div>
+                                </div> {% endcomment %}
+
+                                <div class="row mb-5">
+                                    <div class="d-flex justify-content-end col-12">
+                                        <button class="btn btn-primary btn-rounded px-5 py-2 mr-sm-4 text-white
+                                              add_doc_button" type='button'><span>Click to add</span></button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive" style="cursor: pointer;">
+                                    <table id='tenant_document_table' class="table display responsive dataTable"
+                                        style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left">Image</th>
+                                                <th class="text-left">Name</th>
+                                                <th class="text-left"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-left">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="onboarding-slide">
+                            <div class="onboarding-content with-gradient">
+                                <h4 class="onboarding-title display-8 text-center fancy_text3">Are you done?</h4>
+
+                                <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                    <!-- <button class="btn btn-primary p-3 submit" type="submit">Continue</button> -->
+                                    <button aria-label="Close" class="btn btn-primary btn-rounded px-5 py-3"
+                                        data-dismiss="modal" type="button">Click to finish</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="tenant_lease_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <div class="modal-content">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <form method="post" id="lease_form">
+                <div class="modal-content">
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                            class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                    <div class="onboarding-slider-w tenant_lease_modal">
+                        <div class="onboarding-slide">
+                            <div class="onboarding-media"><img alt=""
+                                    src="<?php echo base_url(); ?>/img/images/handshake.webp" width="100px">
+                            </div>
+                            <div class="onboarding-content with-gradient">
+                                <h4 class="onboarding-title display-8 text-left text-primary fancy_text5">Add an
+                                    agreement</h4>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class=" form-group">
+                                            <label for=""> Select a unit for sale </label>
+                                            <select class="selectpicker form-control" id='search_units' data-size="4"
+                                                data-live-search="true" name="unit">
+                                                <option selected="" disabled=""> No unit available</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row ">
+                                    <div class="col-sm-12">
+                                        <div class=" form-group">
+                                            <label for=""> Select a buyer </label>
+                                            <select class="selectpicker form-control dropup" data-dropup-auto="false"
+                                                data-size="4" data-live-search="true" id='search_tenants' name="tenant">
+                                                <option selected="" disabled=""> No buyer</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br><br><br>
+                            </div>
+                        </div>
+                   
+                        <div class="onboarding-slide">
+                            <div class="onboarding-content with-gradient">
+                                <h4 class="onboarding-title display-8 text-left text-primary fancy_text5">Payment
+                                </h4>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="">What is the purchase price?</label>
+                                            <input class="form-control " placeholder="Enter amount"
+                                                autocomplete="off" type="number" id='purchase_price'
+                                                name="purchase_price">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div >
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group required">
+                                                <label class="control-label">How was the payment made?</label>
+                                                <select class="form-control" required="required" name="paid_through"
+                                                    id="paid_through">
+                                                    <option selected value="cash">cash</option>
+                                                    <option value="Cashier's check">Cashier's check</option>
+                                                    <option value="Check">Check</option>
+                                                    <option value="Credit card">Credit card</option>
+                                                    <option value="Direct deposit">Direct deposit</option>
+                                                    <option value="Electronic payment">Electronic payment</option>
+                                                    <option value="Money order">Money order</option>
+                                                </select> </div>
+                                        </div>
+                                    </div>
+                                    <div class="reference_row d-none">
+                                        <div class="row">
+
+                                            <div class="col-12">
+                                                <div class="form-group required">
+                                                    <label class="control-label">What was the <span
+                                                            class="reference_title">reference number</span>?
+                                                    </label>
+                                                    <input class="form-control editable" type="text"
+                                                        placeholder="Select reference number" name="ref_no" id="ref_no">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-12">
+                                            <label>When was this paid? </label>
+                                            <div class="date-input "><input type="text" placeholder="Date:"
+                                                    name="start_date" autocomplete="off"
+                                                    class="past_date form-control lease_start date_normal"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row show_document">
+                                        <div class="p-4 col-12 border d-flex justify-content-around"
+                                            style="background-color: #FFFFE0;">
+                                            <div class="text-secondary">
+                                                <div class=" px-3 form-desc  display-7sm fancy_text3 p-2"
+                                                    style="line-height: 150%;font-size:18px;">
+                                                    <a href="#" download class="fancy_text5 text-primary"
+                                                        id="view_document" style="border-bottom:2px solid #3B4CB8">
+                                                        Click to view receipt</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="upload_document file mb-4">
+                                        <label for="" style="font-size:15px"
+                                            class='text-left col-sm-12  fancy_text3 text-black '>
+                                            <span class='fancy_text4 text-primary font-w600'>Attach a receipt</span>
+                                        </label>
+                                        <input type="file" name='document'
+                                            class="form-control-file btn-rounded btn btn-outline-primary px-5 py-2"
+                                            id="lease_document">
+                                    </div>
+                                </div>
+                                {% comment %} <div class="row" id="notification_no_payment">
+                                    <div class="p-4 mb-4 border" style="background-color: #FFFFE0;">
+                                        <div class="text-secondary">
+                                            <div class=" px-3 text-center form-desc  display-7 fancy_text4 p-2"
+                                                style="line-height: 150%;">
+                                                Make sure you comeback to make edits after payment has been made
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> {% endcomment %}
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="onboarding-slide">
+                            <div class="onboarding-content with-gradient">
+                                <h4 class="onboarding-title display-8 text-center fancy_text3">Are you done?</h4>
+                                <input type="hidden" name="id" id="temp_lease_id">
+                                <input type="hidden" value='add' class="this_lease">
+                                <input type="hidden" value='purchase' id="lease_group" name="lease_group">
+                                <input type="hidden" value='no' id="lease_sent">
+
+                                {% comment %} <input type="hidden" name="tenant" class="quick_tenant_id">
+                                <input type="hidden" name="unit" class="quick_unit_id"> {% endcomment %}
+                                <input type="hidden" value="edit" class="lease_action">
+
+                                <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                    <!-- <button class="btn btn-primary p-3 submit" type="submit">Continue</button> -->
+                                    <button class="btn btn-primary px-5 py-2 submit" type="submit"
+                                        id="submit_lease">Upload record</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
+{% block content %}
+<div class="content-body" style="min-height: 828px;">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="card mx-3">
+            <div class="card-header d-block mx-3 text-center">
+                <h5 class="card-titles display-4 custom-card-title text-primary">Purchase agreements</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="col-12">
+                    <div class="card px-3">
+                        {% include 'partials/_table_extra.html' with button_class="" button_id="add_lease_button" button_text="Click to add" total_class="total_lease" total_text="agreements"  %}
+
+                        {% comment %} <div class="table-extra my-2">
+                            <div class="row my-4 mx-3 pt-47 d-flex justify-content-end">
+                                <button class="btn btn-primary  py-2 px-5 btn-rounded" type="button"
+                                    id="add_lease_button"><span>Click to add</span></button>
+                            </div>
+                            <div class="row my-3 mx-4 pt-47 d-flex justify-content-start">
+                                <h4 class="card-title"><span class="display-4 total_lease">Please wait</span> leases
+                                </h4>
+                            </div>
+
+                        </div> {% endcomment %}
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="lease_table" class="display min-w850">
+                                    <thead>
+                                        <tr>
+
+                                            <th>Buyer</th>
+                                            <th>Price</th>
+                                           
+                                            <th>Status</th>
+                                            <th>Date of purchase</th>
+                                            <th></th>
+
+
+                                    </thead>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% block scripts %}
+{% include 'partials/_select_options.html' %}
+{% include 'partials/_date.html' %}
+
+<script>
+    $(document).ready(function () {
+        select_option.buyers('#search_tenants');
+    });
+
+    $(document).on('click', '#add_lease_button', function () {
+       
+     
+        $(".lease_start").val('');
+        $(".lease_end").val('');
+       
+        $("#lease_sent").val('no');
+        $("#lease_sign").val('no').change();
+        $('.lease_action').val("add");
+        $("#lease_document").val(null);
+        $('#paid_through').val("cash").change();
+
+        $(".upload_document").removeClass("d-none");
+        $(".show_document").addClass("d-none");
+        $('#lease_document').attr("name",'document').change();
+        $('#view_document').attr("href", "#").change();
+
+        select_option.sale_units('#search_units', 'none');
+        $("#submit_lease").removeClass("d-none");
+        $('#tenant_lease_modal').modal('show');
+
+    });
+    $(document).on('change', '#paid_through', function () {
+        var payment_option = $(this).val();
+
+        if (payment_option == 'cash') {
+
+            $("#ref_no").attr("placeholder", "(ignore me)");
+            $('.reference_title').text("(ignore me)");
+            $('.reference_row').addClass("d-none");
+
+
+        } else if (payment_option == "Cashier's check" || payment_option == 'Check') {
+            $("#ref_no").attr("placeholder", "Check number");
+            $('.reference_title').text("Check number");
+            $('.reference_row').removeClass("d-none");
+        } else {
+            $("#ref_no").attr("placeholder", "Reference number");
+            $('.reference_title').text("Reference number");
+            $('.reference_row').removeClass("d-none");
+        }
+        $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+    });
+    $(document).on('change', '#is_paid', function () {
+        var lease_type = $('#is_paid').val();
+        if (lease_type == 'yes') {
+            $('#notification_yes_payment').removeClass("d-none");
+            $('#notification_no_payment').addClass("d-none");
+        }
+        if (lease_type == 'no') {
+            $('#notification_yes_payment').addClass("d-none");
+            $('#notification_no_payment').removeClass("d-none");
+        }
+        $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+    });
+   
+
+
+
+
+    //Lease crud-------------------------------------------------------------------------------------------- 
+    $(document).on('submit', '#lease_form', function (event) {
+        var action_type = $('.lease_action').val();
+        var primaryKey = $('#temp_lease_id').val();
+        if (action_type == 'add') {
+            var method = 'POST';
+            var url = '{% url "tenant:lease-listcreate" %}';
+        }
+        if (action_type == 'edit') {
+            var method = 'PUT';
+            var url = "{% url 'tenant:lease-rud' id=12345 %}".replace(/12345/, primaryKey).toString();
+        }
+        event.preventDefault();
+        var form_data = new FormData(this);
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#submit_lease').attr('disabled', 'disabled');
+                $("#submit_lease").html("Please wait");
+            },
+            success: function (data) {
+                $('#submit_lease').attr('disabled', false);
+                $("#submit_lease").html("Click to submit");
+                if (data.success) {
+                    lease_table.ajax.reload();
+                    $('#tenant_lease_modal').modal('hide');
+
+                    if (action_type == 'add') {
+                        $('#document_tenant').val(data.response.tenant);
+                        tenant_document_table();
+                        $('#tenant_document_modal').modal('show');
+                    }
+                    if (action_type == 'edit') {
+                        $('#success_text').text(data.success);
+                        $('#success_alert').modal('show');
+                    }
+
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#submit_lease').attr('disabled', false);
+                $("#submit_lease").html("Click to submit");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#tenant_lease_modal').modal('hide');
+            }
+        });
+
+    });
+
+    $(document).on('click', '.edit_lease', function () {
+        var data = $(this).attr("id");
+        $('#lease_form')[0].reset();
+        $('.lease_action').val("edit");
+
+        //$('.onboarding-modal .guarantor_slick_modal').slick('slickGoTo', 0);
+        $.ajax({
+            url: "{% url 'tenant:lease-rud' id=12345 %}".replace(/12345/, data).toString(),
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+               
+                select_option.sale_units('#search_units', data.unit);
+
+                $(".lease_start").val('');
+                $(".lease_end").val('');
+                $("#lease_sent").val('no');
+                $("#lease_sign").val('no').change();
+                $('#temp_lease_id').val(data.id);
+                $('.lease_type').val(data.lease_type).change();
+                $('.lease_sign').val(data.signed).change();
+                $('.lease_id').val(data.id);
+                $('.lease_start').val(data.start_date);
+                $('.lease_end').val(data.end_date);
+                if (data.sent == "yes" || data.sent == "already") {
+                    $('.lease_sent').val("already").change();
+                }
+                $('#lease_sent_change_option').val(data.sent);
+                $('#lease_sign_change_option').val(data.signed);
+
+              
+                $('#lease_group').val(data.lease_group);
+
+                $('#purchase_price').val(data.purchase_price);
+                $('#is_paid').val(data.is_paid);
+                $('#paid_through').val(data.paid_through);
+                $('#ref_no').val(data.ref_no);
+             
+                $('#search_tenants').val(data.tenant).change();
+                $('#search_units').val(data.unit).change();
+
+                $('.this_lease').val('edit');
+                if (data.is_paid == 'no') {
+                    $('#notification_yes_payment').addClass("d-none");
+                    $('#notification_no_payment').removeClass("d-none");
+              
+                } else if (data.is_paid == 'yes') {
+                    $('#notification_yes_payment').removeClass("d-none");
+                    $('#notification_no_payment').addClass("d-none");
+                } else {
+                    $('#notification_yes_payment').addClass("d-none");
+                    $('#notification_no_payment').addClass("d-none");
+                }
+                $(".upload_document").addClass("d-none");
+                $(".show_document").removeClass("d-none");
+                $('#view_document').attr("src", data.document).change();
+                $('#lease_document').attr("name",'nofile').change();
+                $("#submit_lease").addClass("d-none");
+                
+              
+           
+                //  $("#lease_file").val('');
+                $('#tenant_lease_modal').modal('show');
+            }
+        })
+    });
+    
+    $(document).on('click', '.remove_lease', function () {
+        var id = $(this).attr("id");
+        $('#confirm_title').text("Are you sure?");
+        $('#confirm_extra').text("Confirming the removal of the lease");
+        $('#confirm_button').text("Confirm removal");
+        $('#confirm_alert').modal('show');
+
+        $('#confirmYes').off().on('click', function () {
+            $.ajax({
+                url: "{% url 'tenant:lease-rud' id=12345 %}".replace(/12345/, id).toString(),
+                method: "DELETE",
+                dataType: "json",
+                beforeSend: function () {
+                    $('#confirmYes').attr('disabled', 'disabled');
+                    $("#confirm_button").html("Please wait");
+                },
+                success: function (data) {
+                    $('#confirmYes').attr('disabled', false);
+                    $("#confirm_button").html("Confirm removal");
+                    if (data.success) {
+                        lease_table.ajax.reload();
+                        $('#success_text').text(data.success);
+                        $('#confirm_alert').modal('hide');
+                        $('#success_alert').modal('show');
+                    }
+                    if (data.error) {
+                        $('#oops_text').text(data.error);
+                        $('#oops_alert').modal('show');
+                    }
+                },
+                error: function (jqXhr) {
+                    $('#confirmYes').attr('disabled', false);
+                    $("#confirm_button").html("Confirm removal");
+                    $('#oops_text').text("Something went wrong, try again later");
+                    $('#oops_alert').modal('show');
+                    $('#confirm_alert').modal('hide');
+                }
+            });
+        });
+        $('#confirmNo').off().on('click', function () {
+            $('#confirm_alert').modal('hide');
+        });
+    });
+
+
+    var lease_table = $("#lease_table").DataTable({
+        processing: true,
+        serverSide: true,
+        oLanguage: {
+            sEmptyTable: "No purchase agreements"
+        },
+        ajax: {
+            url: '{% url "tenant:lease-listcreate" %}',
+            "data": {
+                "type": 'purchase',
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            }
+        },
+        "fnDrawCallback": function () {
+            $('.total_lease').html(this.fnSettings().fnRecordsTotal());
+        }
+    });
+
+    //docuemnts---------------------------------------------------------------------------
+    $(document).on('click', '.add_doc_button', function () {
+        
+        $('#edit_document_form')[0].reset();
+        $('#edit_document_modal').modal('show');
+
+    });
+
+    $('#tenant_document_table').css('min-height', '200px');
+    $('#tenant_document_table').css('wdith', '100%');
+
+    function tenant_document_table() {
+        url_data = '{% url "tenant:documents-listcreate" %}';
+        tenant = $('#document_tenant').val();
+        $('#tenant_document_table').DataTable({
+            //processing: true,
+            //serverSide: true,
+            "destroy": true,
+            "bAutoWidth": false,
+            "bFilter": false,
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false,
+            "oLanguage": {
+                "sEmptyTable": "No document added"
+            },
+
+            "ajax": {
+                "url": url_data,
+                "data": {
+                    "tenant": tenant,
+
+                }
+            },
+
+            "bPaginate": false,
+            "pageLength": 10,
+
+        });
+        jQuery('#tenant_document_table').wrap('<div class="dataTables_scroll" />');
+
+    }
+    $(document).on('submit', '#edit_document_form', function (event) {
+        var method = 'POST';
+        var url = '{% url "tenant:documents-listcreate" %}';
+        var form_data = new FormData(this);
+        event.preventDefault();
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#submit_doc').attr('disabled', 'disabled');
+                $("#submit_doc").html("Please wait");
+            },
+            success: function (data) {
+                $('#submit_doc').attr('disabled', false);
+                $("#submit_doc").html("Upload records");
+                if (data.success) {
+
+                    tenant_document_table();
+                    $('#edit_document_modal').modal('hide');
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+                    // $('.onboarding-modal .edit_the_photos').slick('slickGoTo', 0);
+                    $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#submit_doc').attr('disabled', false);
+                $("#submit_doc").html("Upload records");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#edit_document_modal').modal('hide');
+            }
+
+        });
+    });
+    $(document).on('click', '.delete_doc_button', function () {
+        var id = $(this).attr("id");
+
+
+        $('#confirm_title').text("Just confirming...");
+
+        $('#confirm_text').text("Do you really want to delete this document?");
+        $('#confirm_button').text("Confirm delete");
+        $('#confirm_alert').modal('show');
+        $('#confirmYes').one('click', function () {
+            $.ajax({
+                url: "{% url 'tenant:documents-rud' id=12345 %}".replace(/12345/, id)
+                .toString(),
+                method: "DELETE",
+                dataType: "json",
+
+                success: function (data) {
+                    tenant_document_table();
+
+                    $('#success_text').text("Docuemnt removed.");
+                    $('#confirm_alert').modal('hide');
+                    $('#success_alert').modal('show');
+                }
+            });
+
+        });
+        $("#confirmNo").click(function () {
+            $('#confirm_alert').modal('hide');
+        });
+
+    });
+
+
+    $(document).on('click', '.edit_document', function () {
+        var tenant = $(this).attr("id");
+        $('#document_tenant').val(tenant);
+        tenant_document_table();
+        $('#tenant_document_modal').modal('show');
+
+
+    });
+</script>
+
+{% endblock scripts %}
+
+
+
+{% endblock content %}
+
+
+<!--**********************************
+    Content body end
+***********************************-->

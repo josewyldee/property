@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Lease {% endblock title %}
+
+{% block modal %}
+
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="view_notification_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <div class="modal-content">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+
+                <div class="onboarding-slide">
+
+                    <div class="onboarding-content with-gradient">
+                        <h4 class="onboarding-title display-10 text-left text-primary fancy_text3">Notification
+                        </h4>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="">Subject</label>
+                                    <input class="form-control bg-white" type="text" readonly id='title'>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="">Message</label>
+                                    <textarea readonly class="form-control bg-white" rows="4" id="message"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <br><br><br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
+{% block content %}
+<style>
+    .media-danger {
+        background: #ffe5df !important;
+        color: #FF6746 !important;
+    }
+
+    .media-success {
+        background: #d5f5dc !important;
+        color: #37D159 !important;
+    }
+
+    .media {
+        width: 50px;
+        height: 50px;
+        background: #eee;
+        border-radius: 12px;
+        overflow: hidden;
+        font-size: 20px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        align-self: start;
+    }
+
+    th:nth-child(1) {
+        border-bottom: 1px solid #d1b808 !important;
+
+    }
+</style>
+<div class="content-body" style="min-height: 828px;">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="card mx-3">
+            <div class="card-header d-block mx-3 text-center">
+                <h5 class="card-titles display-4 custom-card-title text-primary">Notifications</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="col-12">
+                    <div class="card px-3">
+                        <div class="table-extra my-2">
+                            <div class="row my-3 mx-4 pt-47 d-flex justify-content-start">
+                                <h4 class="card-title  display-8"
+                                    style="letter-spacing:1.6px;color: #7e7e7e!important;"><span
+                                        class="display-4 total_lease fancy_text3">Please wait</span><span
+                                        class="fancy_text4">
+                                        Notifications</span></h4>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="notification_table" class="display min-w850">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Timeline</th>
+                                            <th>From</th>
+                                            <th>Status</th>
+                                            <th></th>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% block scripts %}
+{% include 'partials/_select_options.html' %}
+{% include 'partials/_date.html' %}
+
+<script>
+
+    $(document).on('click', '.view_notification', function () {
+      
+       var id = $(this).attr("id");
+        $.ajax({
+               //url : "{% url 'finance:charges-rud' id=12345 %}".replace(/12345/, id).toString(),
+           url: "{% url 'notifications:notifications-rud' id=12345 %}".replace(/12345/, id).toString(),
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                update_status(data.id);
+                $('#status').val(data.status);
+                $('#title').val(data.title);
+                $('#message').val(data.message);
+                $('#view_notification_modal').modal('show');
+            }
+        })
+    });
+function update_status(id){
+        $.ajax({
+        url :"{% url 'notifications:update_status' id=12345 %}".replace(/12345/, id).toString(),
+        method: "POST",
+        dataType: "json",
+        data: {
+        id: $("#id").val(),
+
+        },
+        success: function (data) {
+         notification_table.ajax.reload();
+        }
+        })
+     
+}
+
+
+    var notification_table = $("#notification_table").DataTable({
+        //processing: true,
+        //  serverSide: true,
+        ordering: false,
+
+        oLanguage: {
+            sEmptyTable: "No notifications"
+        },
+    
+        ajax: {
+            url: '{% url "notifications:notification-listcreate" %}',
+        },
+         
+            "bAutoWidth": false,
+        "fnDrawCallback": function () {
+            $('.total_lease').html(this.fnSettings().fnRecordsTotal());
+        }
+    });
+</script>
+
+{% endblock scripts %}
+
+
+
+{% endblock content %}
+
+
+<!--**********************************
+    Content body end
+***********************************-->

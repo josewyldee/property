@@ -1,0 +1,81 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Property management- {% block title %}App{% endblock title %}</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'css/jqvmap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/LineIcons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+
+</head>
+
+<body>
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+
+    <div id="main-wrapper" >
+
+        {% include 'partials/_navheader.html' %}
+        {% include 'partials/_navbar.html' %}
+        <!--**********************************
+        start content
+    ***********************************-->
+        {% block content %}
+
+        {% endblock content %}
+        <!--**********************************
+        end content
+    ***********************************-->
+    </div>
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    {% comment %} <script src="{% static 'js/google_maps' %}"></script> {% endcomment %}
+
+    <script src="{% static 'js/global.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'js/Chart.bundle.min.js' %}"></script>
+    <script src="{% static 'js/custom.min.js' %}"></script>
+
+    <script src="{% static 'js/deznav-init.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.js' %}"></script>
+
+    <!-- Vectormap -->
+    <script src="{% static 'js/jquery.vmap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.vmap.world.js' %}"></script>
+
+
+    <!-- Chart piety plugin files -->
+    <script src="{% static 'js/jquery.peity.min.js' %}"></script>
+    <!-- Apex Chart -->
+    <script src="{% static 'js/apexchart.js' %}"></script>
+
+
+    <!-- Dashboard 1 -->
+    <script src="{% static 'js/dashboard-1.js' %}"></script>
+    {% block script %}
+ 
+
+ {% endblock script %}
+
+
+
+
+</body>
+
+</html>

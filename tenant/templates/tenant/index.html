@@ -1,0 +1,1388 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Tenant list {% endblock title %}
+
+{% block modal %}
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated"
+    id="open_single_tenant_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered m" role="document">
+        <form method="POST" id='create_tenant'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w tenant_slides">
+                    <div class="onboarding-slide normal_slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text5 lead text-left">
+                                <span class="tenant_name_title">Please wait</span></h4>
+                            <hr>
+                            <div class="row col-12 d-flex justify-content-center">
+                                {% include 'partials/_image.html' with name="image"  %}
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 ">
+                                    <div class=" form-group ">
+                                        <label for="" class="step-text">Tenant name</label>
+                                        <input class="form-control tenant_name required required-1"
+                                            placeholder="Example: Mariga Waithera" type="text" id='tenant_name'
+                                            name="name">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide normal_slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Contact info</h4>
+                            <hr>
+                            {% include 'partials/_calling_code.html' with name="calling_code" id="tenant_calling_code" class="tenant_calling_code" %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group"><label class='' for="">Enter the phone Number</label>
+                                        <div class="input-group mb-2 mb-sm-0">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text the_calling">1</div>
+                                            </div>
+                                            <input class="form-control tenant_phone required" maxlength="10"
+                                                placeholder="Example: 720425412" type="phone" id='tenant_phone'
+                                                name="phone_number">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group"> <label class='' for="">Enter the email address</label>
+                                        <div class="input-group mb-2 mb-sm-0">
+                                            <input class="form-control" placeholder="joseph@kakamkubwa.com" type="email"
+                                                name="email" id="tenant_email">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide normal_slide">
+                        <div class="onboarding-content with-gradient ">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Identification info</h4>
+                            <hr>
+                            {% include 'partials/_nationality.html' with name="nationality" id="tenant_nationality" class="tenant_nationality" %}
+                            <div class="row">
+                                <div class=" form-group col-12">
+                                    <label for="">How will you provide their identity</label>
+                                    <select class=" form-control tenant_national_type" id='tenant_national_type'
+                                        name="proof_by">
+                                        <option selected value="National id">Based on national ID</option>
+                                        {% comment %} <option value="Huduma number">Based on huduma number</option>
+                                        {% endcomment %}
+                                        <option value="Passport number">Based on passport number</option>
+                                        <option value="Drivers license">Based on drivers lincense</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="identification_type" for="">Enter the national ID</label>
+                                        <input class="form-control tenant_national"
+                                            placeholder="Kindly enter the national id " type="number"
+                                            id='tenant_national' name="proof_number">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide normal_slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Status info</h4>
+                            <hr>
+                            <div class="row mb-4">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Current status</label>
+                                        <select id='tenant_status' name="is_active"
+                                            class="form-control selectpicker form-control-sm tenant_status">
+                                            <option disabled>------------</option>
+                                            <option value="Active">Active</option>
+                                            <option value="Not active">Not active</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4 mb-4 alpha_active border" style="background-color: #FFFFE0;">
+                                <h5 class="alert-heading1 display-6 text-primar1y fancy_text3">Active tenants.</h5>
+                                <div class="text-secondary">
+                                    <div class="px-3 form-desc d-flex justify-content-between  display-8sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        <div class="1 col-12 bg-light1 p-1">
+                                            <div class="row">
+                                                <ul class="col-12 ">
+                                                    <li>They can receive automated invoices and receipts. </li>
+                                                    <li>If there's any automated invoices or receipts, a digital
+                                                        invoice/receipt will be sent to the tenant. </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4 mb-4 alpha_notactive border d-none" style="background-color: #FFFFE0;">
+                                <h5 class="alert-heading1 display-6 text-primar1y fancy_text3">Inactive tenants.</h5>
+                                <div class="text-secondary">
+                                    <div class="px-3 form-desc d-flex justify-content-between  display-8sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        <div class="1 col-12 bg-light1 p-1">
+                                            <div class="row">
+                                                <ul class="col-12 ">
+                                                    <li>They will not receive automated invoices and receipts. </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    {% comment %} <div class="onboarding-slide credentials_slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Credentials</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="">Create credentials for tenant?</label>
+                                        <select class="form-control  border-rounded border-primary"
+                                            name="allocate_credentials" id='allocate_credentials'>
+                                            <option selelected value="not_active">
+                                                No thank you
+                                            </option>
+                                            <option value="is_active">
+                                                Yes please
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="yes_active d-none mb-2 col-12 bg-brown p-3">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group"> <label class='' for="">Enter an email</label>
+                                            <div class="input-group mb-2 mb-sm-0">
+                                                <input class="form-control" placeholder="joseph@kakamkubwa.com"
+                                                    type="email" name="email_credential" id="email_credential">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group"> <label for="">Enter a <span
+                                                    class="font-w600">strong</span> password</label>
+                                            <div class="input-group mb-2 mb-sm-0">
+                                                <input class="form-control" placeholder="password" type="password"
+                                                    name="password_credential1" id="password_credential">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group"> <label for="">Enter a <span
+                                                    class="font-w600">strong</span> password</label>
+                                            <div class="input-group mb-2 mb-sm-0">
+                                                <input class="form-control" placeholder="password" type="password"
+                                                    name="password_credential2" id="password_credential2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br> <br> <br>
+                        </div>
+                    </div> {% endcomment %}
+                    <div class="onboarding-slide normal_slide">
+
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" id="allocate_credentials" name="allocate_credentials">
+                            <input type="hidden" id="action_type" name="action_type">
+                            <input type="hidden" name="id" id="tenant_id">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end ">
+                                <button class="btn btn-primary py-2 px-5 submit" type="submit" id="submit_tenant">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="main_guarantor_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <div class="modal-content">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <div class="onboarding-slider-w main_g_slick_modal ">
+                <div class="onboarding-slide">
+                    <div class="onboarding-content with-gradient">
+                        <h4 class=" mt-5 onboarding-title display-10 fancy_text5 lead text-center"
+                            style="color:#B3B6B7;font-size:2.7rem "><span>The gurantor</span></h4>
+                        <legend class='text-center'><span class='display-8 text-center text-primary '> </span> </legend>
+                        <div class="p-4 mb-4 border" style="background-color: #FFFFE0;">
+                            <div class="text-secondary">
+                                <div class=" px-3 form-desc text-center display-8sm fancy_text3 p-2"
+                                    style="line-height: 150%;">
+                                    The Guarantor is someone who agrees to act for the Tenant(s) should he/they fail,
+                                    for any reason, to meet the financial commitments arising from the Tenancy Agreement
+                                    entered into in respect of the Property.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="onboarding-slide">
+                    <div class="onboarding-content with-gradient">
+                        <!-- <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Add gurantors</h4> -->
+                        <hr>
+                        <div class="row mb-2">
+                            <div class="d-flex justify-content-between mb-5">
+                                <button
+                                    class="btn btn-primary justify-content-end px-5 py-2 mr-sm-4 text-white tenant_guarantor"
+                                    type='button'><span>Click to add</span></button>
+                            </div>
+                        </div>
+                        <div class="table-responsive" id='individualTable2' style="cursor: pointer;">
+                            <table id='guarantor_table' class=" table table-lightborder display responsive "
+                                width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Name</th>
+                                        <th class="text-left">Relationship</th>
+                                        <th class="text-left ">Accepted to be guarantor</th>
+                                        <th class="text-left"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-left">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="onboarding-slide">
+                    <div class="onboarding-content with-gradient">
+                        <input type="hidden" id="tenant_main_guarantor" name="tenant">
+                        <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                        <div class="form-buttons-w d-flex flex-row justify-content-end">
+                            <button class="btn btn-primary py-3 px-5" id="finish_guarantor" type="button">Continue
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" data-tab="sub_modal" class="onboarding-modal modal fade animated"
+    id="open_guarantor_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <form method="POST" id='tenant_guarantor_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w guarantor_slick_modal sub_modal">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text5 lead text-left" style="color:#B3B6B7 ">
+                                <span class="tenant_guarantor_title">Add guarantor</span></h4>
+                            <hr>
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="">What is their name?</label>
+                                        <input class="form-control" placeholder="Example: Elon musk" type="text"
+                                            id='g_name' name="name">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <hr>
+                            <div class="row">
+                                <div class=" form-group col-12">
+                                    <label for=""> Are they a family member?</label>
+                                    <select class=" form-control" id='g_relationship_type' name="relationship_type">
+                                        <option selected value="family">Yes</option>
+                                        <option value="non family">no</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class=" form-group col-12">
+                                    <label for="">Who are they?</label>
+                                    <select class=" form-control selectpicker" data-size="4" data-live-search="true"
+                                        id='g_relationship' name="relationship">
+                                        <optgroup class="family">
+                                            <option value="Husband">Husband</option>
+                                            <option value="Wife">Wife</option>
+                                            <option value="Son">Son</option>
+                                            <option value="Daughter">Daughter</option>
+                                        </optgroup>
+                                        <optgroup class="non_family">
+                                            <option value="Roomate">Roomate</option>
+                                            <option value="Friend">Friend</option>
+                                            <option value="Girlfriend">Girlfriend</option>
+                                            <option value="Boyfriend">Boyfriend</option>
+                                        </optgroup>
+                                        <optgroup class="non_family">
+                                            <option value="Employer">Employer</option>
+                                            <option value="Government">Government</option>
+                                            <option value="School">School</option>
+                                            <option value="Other">Other</option>
+                                        </optgroup>
+                                        <optgroup class="family">
+                                            <option value="Father">Father</option>
+                                            <option value="Mother">Mother</option>
+                                            <option value="Sister">Sister</option>
+                                            <option value="Brother">Brother</option>
+                                        </optgroup>
+                                        <optgroup class="family">
+                                            <option value="Uncle">Uncle</option>
+                                            <option value="Aunt">Aunt</option>
+                                            <option value="Cousin">Cousin</option>
+                                            <option value="Other">Other</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+                            {% include 'partials/_calling_code.html' with name="calling_code" id="g_calling_code" class="g_calling_code" %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group"><label class='' for="">What is their phone number?</label>
+                                        <div class="input-group mb-2 mb-sm-0">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text gur_calling">1</div>
+                                            </div>
+                                            <input class="form-control " maxlength="10" placeholder="Example: 720425412"
+                                                type="phone" id='g_phone' name="phone">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 ">
+                                    <div class=" form-group ">
+                                        <label for="" class="step-text">Email</label>
+                                        <input class="bg-white form-control "
+                                            placeholder="Example: Marigawaithera@gmail.com" type="text" id='g_email'
+                                            name="email">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <hr>
+                            <div class="row">
+                                <div class=" form-group col-12">
+                                    <label for=""> Have they accepted to be the gurantor?</label>
+                                    <select class=" form-control" id='g_status' name="has_accepted">
+                                        <option selected value="Not yet">Not yet</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">Notes</label>
+                                        <textarea
+                                            placeholder="Example: They signed a contact that has been attached to the tenant documents"
+                                            class="form-control textarea" rows="4" name="notes" id="g_notes"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" name="id" id="g_id">
+                            <input type="hidden" name="guarantor_action" id="guarantor_action">
+                            <input type="hidden" name="tenant" id="tenant_id_guarantor">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary py-2 px-5 submit" type="submit"
+                                    id="submit_guarantor">Click to submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="main_people_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <div class="modal-content">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <div class="onboarding-slider-w main_slick_modal ">
+                <div class="onboarding-slide">
+                    <div class="onboarding-content with-gradient">
+                        <h4 class=" mt-5 onboarding-title display-10 font-w600 col-12 fancy_text5 lead text-center"
+                            style="color:#B3B6B7;font-size:2.7rem "><span class="col-sm-9">Emergency contact</span></h4>
+                        <legend class='text-center'><span class='display-8 text-center text-primary '> </span> </legend>
+                        <!-- <div class="p-4 mb-4 border" style="background-color: #FFFFE0;">
+                            <div class="text-secondary">
+                                <div class=" px-3 form-desc text-center display-8sm fancy_text3 p-2" style="line-height: 150%;">
+                                    The Guarantor is someone who agrees to act for the Tenant(s) should he/they fail, for any reason, to meet the financial commitments arising from the Tenancy Agreement entered into in respect of the Property.
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="onboarding-slide">
+                    <div class="onboarding-content with-gradient">
+                        <!-- <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Who else will be living with this tenant?</h4> -->
+                        <hr>
+                        <div class="row mb-2">
+                            <div class="d-flex justify-content-between mb-5">
+                                <button
+                                    class="btn btn-primary justify-content-end px-5 py-2 mr-sm-4 text-white tenant_person"
+                                    type='button'><span>Click to add</span></button>
+                            </div>
+                        </div>
+                        <div class="table-responsive" id='individualTable2' style="cursor: pointer;">
+                            <table id='people_table' class=" table table-lightborder display responsive " width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Name</th>
+                                        <th class="text-left">Relationship</th>
+                                        <th class="text-left">Contact</th>
+                                        <th class="text-left"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-left">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="onboarding-slide">
+                    <div class="onboarding-content with-gradient">
+                        <input type="hidden" id="tenant_main_person" name="tenant_id">
+                        <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                        <div class="form-buttons-w d-flex flex-row justify-content-end">
+                            <button class="btn btn-primary py-3 px-5" id="finish_everything" type="button">Finish
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" data-tab="sub_modal" class="onboarding-modal modal fade animated"
+    id="open_person_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <form method="POST" id='tenant_person_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w person_slick_modal sub_modal">
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-9 fancy_text5 lead text-left" style="color:#B3B6B7 ">
+                                <span class="tenant_person_title">Add emergency contact</span></h4>
+                            <hr>
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="">What is their name?</label>
+                                        <input class="form-control" placeholder="Example: Jeff Bezos" type="text"
+                                            id='p_name' name="name">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <hr>
+
+                            <div class="row">
+                                <div class=" form-group col-12">
+                                    <label for=""> Are they a family member?</label>
+                                    <select class=" form-control" id='p_relationship_type' name="relationship_type">
+                                        <option selected value="family">Yes</option>
+                                        <option value="non family">no</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class=" form-group col-12">
+                                    <label for="">Who are they?</label>
+                                    <select class=" form-control selectpicker" data-size="4" data-live-search="true"
+                                        id='p_relationship' name="relationship">
+                                        <optgroup class="family">
+                                            <option value="Husband">Husband</option>
+                                            <option value="Wife">Wife</option>
+                                            <option value="Son">Son</option>
+                                            <option value="Daughter">Daughter</option>
+                                        </optgroup>
+                                        <optgroup class="non_family">
+                                            <option value="Roomate">Roomate</option>
+                                            <option value="Friend">Friend</option>
+                                            <option value="Girlfriend">Girlfriend</option>
+                                            <option value="Boyfriend">Boyfriend</option>
+                                        </optgroup>
+                                        <optgroup class="family">
+                                            <option value="Father">Father</option>
+                                            <option value="Mother">Mother</option>
+                                            <option value="Sister">Sister</option>
+                                            <option value="Brother">Brother</option>
+                                        </optgroup>
+                                        <optgroup class="family">
+                                            <option value="Uncle">Uncle</option>
+                                            <option value="Aunt">Aunt</option>
+                                            <option value="Cousin">Cousin</option>
+                                            <option value="Other">Other</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+                            {% include 'partials/_calling_code.html' with name="calling_code" id="p_calling_code" class="p_calling_code" %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group"><label class='' for="">What is their phone number?</label>
+                                        <div class="input-group mb-2 mb-sm-0">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text per_calling">1</div>
+                                            </div>
+                                            <input class="form-control " maxlength="10" placeholder="Example: 720425412"
+                                                type="phone" id='p_phone' name="phone">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 ">
+                                    <div class=" form-group ">
+                                        <label for="" class="step-text">Email</label>
+                                        <input class="bg-white form-control "
+                                            placeholder="Example: Marigawaithera@gmail.com" type="text" id='p_email'
+                                            name="email">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" name="id" id="p_id">
+                            <input type="hidden" name="person_action" id="person_action">
+                            <input type="hidden" name="tenant" id="tenant_id_person">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary py-2 px-5 submit" type="submit" id="submit_person">Click
+                                    to submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="success_added_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <div class="modal-content">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+
+            <div class="onboarding-content with-gradient">
+                <h4 class="onboarding-title lead display-8 text-center"><span
+                        class="onboarding-title display-4 fancy_text3 lead">Good job!</span></h4>
+                <h4 class="onboarding-title text-muted lead display-8 text-center"><span
+                        class="onboarding-title text-muted display-7 fancy_text3 lead "><span
+                            id="success_added_text">You have successfully uploaded your records. </span><span
+                            id="success_added_text_sub"> Do you want to allocate vacant units?</span></span>
+                    <span><br></span>
+                </h4>
+                <div class='form-buttons-w d-flex flex-row justify-content-around'> <a data-dismiss="modal"
+                        class="btn btn-outline-primary col-sm-41 px-5 py-2"><span>Maybe later</span></a> <a
+                        href='{% url "tenant:lease" %}' class="btn btn-primary  col-sm-41 px-5 py-2"><span
+                            class="answer ">Yes
+                            please </span></a></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock modal %}
+{% block content %}
+
+<div class="content-body" style="min-height: 828px;">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="card mx-3">
+            <div class="card-header d-block mx-3 text-center">
+                <h5 class="card-titles display-4 custom-card-title ">Tenant list</h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="col-12">
+
+                    <div class="card px-3">
+                        {% include 'partials/_table_extra.html' with button_class="" button_id="add_tenant_button" button_text="Click to add" total_class="total_tenants" total_text="tenants"  %}
+
+                        {% comment %} <div class="table-extra my-2">
+                            <div class="row my-4 mx-3 pt-47 d-flex justify-content-end">
+                                <button class="btn btn-primary  py-2 px-5 btn-rounded" type="button"
+                                    id="add_tenant_button"><span>Click to add</span></button>
+                            </div>
+                            <div class="row my-3 mx-4 pt-47 d-flex justify-content-start">
+                                <h4 class="card-title"><span class="display-4 total_tenants">Please wait</span> tenants
+                                </h4>
+                            </div>
+
+                        </div> {% endcomment %}
+
+                        {% comment %} <div class="row col-12 bg-dadnger d-flex justify-content-start">
+                            <div class="col-3 d-flex justify-content-start">
+                                <div class="btn-group mb-1">
+                                    <button type="button"
+                                        class="btn btn-outline-primary btn-rounded light dropdown-toggle v px-5 py-2"
+                                        data-toggle="dropdown">Export <span class="caret m-l-5"></span>
+                                    </button>
+                                    <div class="dropdown-menu"> <a class="dropdown-item"
+                                            href="javascript: void(0);">Mark as
+                                            Unread</a> <a class="dropdown-item" href="javascript: void(0);">Add to
+                                            Tasks</a>
+                                        <a class="dropdown-item" href="javascript: void(0);">Add Star</a> <a
+                                            class="dropdown-item" href="javascript: void(0);">Mute</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> {% endcomment %}
+                        {% comment %} <div class="card-header">
+                            <h4 class="card-title"><span class="display-4">17</span>Buildings</h4>
+                        </div> {% endcomment %}
+
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+
+                                <table id="tenant_table" class="display min-w850">
+                                    <thead>
+                                        <tr>
+                                            <th>Tenant name</th>
+                                            <th>Phone</th>
+                                            <th>Email</th>
+
+                                            <th>Occupancy </th>
+
+                                            <th> </th>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% block scripts %}
+
+<script>
+    $(document).on('change', '#allocate_credentials', function () {
+        var data = $(this).val();
+        var email=$("#tenant_email").val();
+        if (data == "is_active") {
+            if(email) {
+                $("#email_credential").val(email);
+                $('.yes_active').removeClass("d-none");
+               
+          }else{
+            $("#allocate_credentials").val("not_active").change();
+            alert("Kindly enter the tenant's email before we continue");
+           
+          }
+         
+        }else{
+            $('.yes_active').addClass("d-none");
+          }
+          $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+    });
+
+ 
+
+    $(document).on('click', '#add_tenant_button', function () {
+        $('.onboarding-modal .tenant_slides').slick('slickUnfilter', '.onboarding-slide').slick('refresh');
+        $('.onboarding-modal .tenant_slides').slick('slickFilter', '.onboarding-slide').slick('refresh');    
+        
+        $('#create_tenant')[0].reset();
+        $("#allocate_credentials").val("not_active").change();
+        $('.tenant_name_title').text("Add a tenant");
+        $("#action_type").val("add");
+        $('#open_single_tenant_modal').modal('show');
+
+    });
+    $(document).on('change', '#tenant_status', function () {
+        var status = $(this).val();
+        if (status == 'Active') {
+            $('.alpha_active').removeClass("d-none");
+            $('.alpha_notactive').addClass("d-none");
+        }
+        if (status == 'Not active') {
+            $('.alpha_active').addClass("d-none");
+            $('.alpha_notactive').removeClass("d-none");
+        }
+    });
+    $(document).on('change', '#tenant_national_type', function () {
+        var the_data = $('#tenant_national_type').val();
+        if (the_data == 'National id') {
+            $('.identification_type').text("Enter the national ID");
+            $("#tenant_national").attr("placeholder", "Enter the national id");
+        }
+        if (the_data == 'Huduma number') {
+            $('.identification_type').text("Enter the huduma number");
+            $("#tenant_national").attr("placeholder", "Enter the huduma number");
+        }
+        if (the_data == 'Passport number') {
+            $('.identification_type').text("Enter the passport number");
+            $("#tenant_national").attr("placeholder", "Enter the passport number");
+        }
+        if (the_data == 'Drivers license') {
+            $('.identification_type').text("Enter the drivers license");
+            $("#tenant_national").attr("placeholder", "Enter the drivers license");
+        }
+        $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+        $("#tenant_national").val("");
+    });
+    $(document).on('change', '#p_calling_code', function () {
+        var the_data = $('#p_calling_code').val();
+        $('.per_calling').text(the_data);
+    });
+    $(document).on('change', '#g_calling_code', function () {
+        var the_data = $('#g_calling_code').val();
+        $('.gur_calling').text(the_data);
+    });
+    $(document).on('change', '#tenant_calling_code', function () {
+        var the_data = $('#tenant_calling_code').val();
+        $('.the_calling').text(the_data);
+    });
+
+
+ //Tenant------------------------------------------------------------------------------------------------ 
+$(document).on('click', '.tenant_delete', function () {
+    var data = $(this).attr("id");
+    var data_split = data.split(",");
+    var tenant = data_split[0];
+    var tenant_name = data_split[1];
+    $('#confirm_title').text("Just confirming...");
+    $('#confirm_text').text("Confirming the removal of " + tenant_name + " as a tenant");
+    $('#confirm_extra').text("Do you really want to remove " + tenant_name + "?");
+    $('#confirm_button').text("Confirm removal");
+    $('#confirm_alert').modal('show');
+    $('#confirmYes').one('click', function () {
+
+        // var res_id = null;
+
+        $.ajax({
+            url :"{% url 'tenant:tenant-rud' id=12345 %}".replace(/12345/, tenant).toString(),
+            method: "DELETE",
+            success: function (data) {
+                tenant_table.ajax.reload();
+                $('#success_text').text("Tenant removed.");
+                $('#confirm_alert').modal('hide');
+                $('#success_alert').modal('show');
+            }
+        });
+
+    });
+    $("#confirmNo").click(function () {
+        $('#confirm_alert').modal('hide');
+    });
+
+});
+
+$(document).on('click', '.tenant_info', function () {
+    var data = $(this).attr("id");
+    var data_split = data.split(",");
+    var tenant = data_split[0];
+    var step = data_split[1];
+    //$('.onboarding-modal .onboarding-slider-w').slick('slickGoTo', step);
+    $('input.form-control').val("");
+    $("#property_name").attr("readonly", false);
+    $('.onboarding-modal .tenant_slides').slick('slickFilter', '.normal_slide').slick('refresh');
+
+    $.ajax({
+        url: "{% url 'tenant:tenant-rud' id=12345 %}".replace(/12345/, tenant).toString(),
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            $('#tenant_id').val(data.id);
+            $('.tenant_name_title').text(data.name);
+            $('#tenant_name').val(data.name);
+            $('.tenant_status').val(data.is_active).change();
+            $('#tenant_phone').val(data.phone_number);
+            $('#tenant_calling_code').val(data.calling_code).change();
+            $('.the_calling').text(data.calling_code);;
+            $('#tenant_email').val(data.email);
+            $('#tenant_nationality').val(data.nationality).change();
+            $('#tenant_national_type').val(data.proof_by).change();
+            $('#tenant_national').val(data.proof_number);
+            if (data.image){
+                $('#imageUpload').attr("src", data.image).change();
+                $('#imagePreview').css('background-image','url('+data.image+')');
+            }else{
+                $('#imageUpload').attr("src", "/media/profile/no_profile2.png").change();
+                $('#imagePreview').css('background-image','url(/media/profile/no_profile2.png)');
+            }
+  
+            $("#action_type").val("edit");
+            $('#open_single_tenant_modal').modal('show');
+            $('.open_single_tenant_title').text("You can edit");
+
+        }
+    })
+});
+var tenant_table = $("#tenant_table").DataTable({
+    processing: true,
+    serverSide: true,
+    ordering:false,
+        info: "Shoffffwing _START_ to _END_ of _TOTAL_ entries",
+"oLanguage": {
+"sEmptyTable": "No tenant added",
+"sStripClasses": "",
+"sSearch": "",
+"sSearchPlaceholder": "search...",
+"sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+    '<option value="10">10</option>' +
+    '<option value="20">20</option>' +
+    '<option value="30">30</option>' +
+    '<option value="40">40</option>' +
+    '<option value="50">50</option>' +
+    '<option value="50">100</option>' +
+   
+    '</select></div>'
+},
+
+
+
+    ajax: {
+        url: '{% url "tenant:tenant-listcreate" %}',
+        "data": {
+            "type": 'renter',
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        }
+     
+    },
+  
+    "fnDrawCallback": function() {
+        //console.log(this.fnSettings().json.total_sum);
+       
+        $('.total_tenants').text(this.fnSettings().fnRecordsTotal());
+    }
+});
+$(document).on('submit', '#create_tenant', function (event) {
+    var action_type = $('#action_type').val();
+    var tenant= $('#tenant_id').val();
+    if (action_type =='add'){
+        var method='POST';
+        var url = '{% url "tenant:tenant-listcreate" %}';
+    }
+    if (action_type =='edit'){
+        var method='PUT';
+        var url = "{% url 'tenant:tenant-rud' id=12345 %}".replace(/12345/, tenant).toString();
+    }
+
+    var form_data = new FormData(this);
+   
+    event.preventDefault();
+    $.ajax({
+        method: method,
+        url: url,
+        data: form_data,
+        contentType:false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function () {
+            $('#submit_tenant').attr('disabled', 'disabled');
+            $("#submit_tenant").html("Please wait");
+        },
+        success: function (data) {
+            
+            $('#submit_tenant').attr('disabled', false);
+            $("#submit_tenant").html("Upload records");
+            if (data.error) {
+                $('#oops_text').text(data.error);
+                $('#oops_alert').modal('show');
+            }
+            if (data.success) {
+                //$('.onboarding-modal .income_slick_modal').slick('slickGoTo', 0);
+                if (method == "POST") {
+                    $("#property_name").attr("readonly", false);
+                    $('.tenant_name_title').text(data.response.name);
+                  
+                    f_guarantor(data.response.id);
+                    $('#tenant_main_guarantor').val(data.response.id);
+                    $('#main_guarantor_modal').modal('show');
+                 
+                } else {
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+                }
+                tenant_table.ajax.reload();
+                $('#open_single_tenant_modal').modal('hide');
+            }
+        },
+        error: function (error) {
+       
+            $('#submit_tenant').attr('disabled', false);
+            $("#submit_tenant").html("Upload records");
+            $('#oops_text').text("Something went wrong, try again later");
+            $('#oops_alert').modal('show');
+        }
+    });
+});
+
+
+//Emergency contact----------------------------------------------------------------------------------------------- 
+$(document).on('click', '.edit_person_button', function () {
+    var data = $(this).attr("id");
+    f_person(data);
+    $('#tenant_main_person').val(data);
+    $('#main_people_modal').modal('show');
+    });
+$(document).on('click', '#finish_everything', function () {
+    $('#main_people_modal').modal('hide');
+    $('#success_added_text').text("The tenant's records have been added successfully. ");
+    $('#success_added_text_sub').text("Do you want to allocate a vacant unit?");
+    $('#success_added_modal').modal('show');
+});
+$(document).on('click', '.tenant_person', function () {
+    $('.tenant_person_title').text("Add emergency contact");
+    //$('.onboarding-modal .person_slick_modal').slick('slickGoTo', 0);
+    $('#tenant_person_form')[0].reset();
+    $('#tenant_id_person').val($('#tenant_main_person').val());
+    $('#person_action').val("add");
+    $('#open_person_modal').modal('show');
+});
+$(document).on('change', '#p_relationship_type', function () {
+    var the_data = $('#p_relationship_type').val();
+    if (the_data == 'family') {
+        $('.family').removeClass("d-none");
+        $('.non_family').addClass("d-none");
+    }
+    if (the_data == 'non family') {
+        $('.family').addClass("d-none");
+        $('.non_family').removeClass("d-none");
+    }
+    $('#p_relationship').val("");
+    $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+});
+$(document).on('submit', '#tenant_person_form', function (event) {
+    var action_type = $('#person_action').val();
+    var primaryKey= $('#p_id').val();
+    if (action_type =='add'){
+        var method='POST';
+        var url ='{% url "tenant:emergency-listcreate" %}';
+    }
+    if (action_type =='edit'){
+        var method='PUT';
+        var url = "{% url 'tenant:emergency-rud' id=12345 %}".replace(/12345/, primaryKey).toString();
+    }
+    var form_data = new FormData(this);
+    event.preventDefault();
+    $.ajax({
+        method: method,
+        url: url,
+        data: form_data,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function () {
+            $('#submit_person').attr('disabled', 'disabled');
+            $("#submit_person").html("Please wait");
+        },
+        success: function (data) {
+            $('#submit_person').attr('disabled', false);
+            $("#submit_person").html("Click to submit");
+            if (data.success) {
+                f_person($('#tenant_main_person').val());
+                $('#open_person_modal').modal('hide');
+                $('#success_text').text(data.success);
+                $('#success_alert').modal('show');
+            }
+            if (data.error) {
+                $('#oops_text').text(data.error);
+                $('#oops_alert').modal('show');
+            }
+        },
+        error: function (jqXhr) {
+            $('#submit_person').attr('disabled', false);
+            $("#submit_person").html("Click to submit");
+            $('#oops_text').text("Something went wrong, try again later");
+            $('#oops_alert').modal('show');
+            $('#open_person_modal').modal('hide');
+        }
+    });
+
+});
+$(document).on('click', '.edit_person', function () {
+    var data = $(this).attr("id");
+    $('#tenant_person_form')[0].reset();
+    $('#person_action').val("edit");
+    //$('.onboarding-modal .person_slick_modal').slick('slickGoTo', 0);
+    $.ajax({
+        url : "{% url 'tenant:emergency-rud' id=12345 %}".replace(/12345/, data).toString(),
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            $('.tenant_person_title').text(data.relationship);
+            $('#p_name').val(data.name);
+            $('#tenant_id_person').val(data.tenant);
+            $('#p_phone').val(data.phone);
+            $('#p_email').val(data.email);
+            $('#p_calling_code').val(data.calling_code).change();
+            $('#p_relationship').val(data.relationship).change();
+            $('#p_relationship_type').val(data.relationship_type).change();
+
+            $('#p_id').val(data.id);
+            $('#open_person_modal').modal('show');
+
+        }
+    })
+});
+$(document).on('click', '.remove_person', function () {
+    var data = $(this).attr("id");
+    var data_split = data.split(",");
+    var id = data_split[0];
+    var name = data_split[1];
+    var tenant = data_split[2];
+    $('#confirm_title').text("Are you sure?");
+    $('#confirm_extra').text("Confirming the removal of " + name + " as one of the emergency contacts");
+    $('#confirm_button').text("Confirm removal");
+    $('#confirm_alert').modal('show');
+
+    $('#confirmYes').off().on('click', function () {
+        $.ajax({
+            url :"{% url 'tenant:emergency-rud' id=12345 %}".replace(/12345/, id).toString(),
+            method: "DELETE",
+            dataType: "json",
+            beforeSend: function () {
+                $('#confirmYes').attr('disabled', 'disabled');
+                $("#confirm_button").html("Please wait");
+            },
+            success: function (data) {
+                $('#confirmYes').attr('disabled', false);
+                $("#confirm_button").html("Confirm removal");
+                if (data.success) {
+                    f_person(tenant);
+                    $('#success_text').text(data.success);
+                    $('#confirm_alert').modal('hide');
+                    $('#success_alert').modal('show');
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#confirmYes').attr('disabled', false);
+                $("#confirm_button").html("Confirm removal");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#confirm_alert').modal('hide');
+            }
+        });
+    });
+    $('#confirmNo').off().on('click', function () {
+        $('#confirm_alert').modal('hide');
+    });
+});
+
+
+$('#people_table').css('min-height', '200px');
+$('#people_table').css('wdith', '100%');
+function f_person(tenant) {
+    $('#people_table').DataTable({
+        "destroy": true,
+        "bAutoWidth": false,
+        "ordering": false,
+        "scrollCollapse": true,
+        "fixedColumns": true,
+        "bFilter": false,
+        "bInfo": false,
+       "bLengthChange": false,
+         "oLanguage": {
+        "sEmptyTable": "No contact has been added",
+         "sStripClasses": "",
+         "sSearch": "",
+         "sSearchPlaceholder": "search...",
+    
+         },
+        "ajax": {
+            "url": '{% url "tenant:emergency-listcreate" %}',
+            "data": {
+                "tenant": tenant,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            }
+        },
+        "order": [
+            [0, 'asc']
+        ],
+
+        "bPaginate": true,
+        "bProcessing": true,
+        "pageLength": 3,
+
+    });
+    jQuery('#people_table').wrap('<div class="dataTables_scroll" />');
+
+}
+
+
+// Guarantor------------------------------------------------------------------------------------------------
+$(document).on('click', '.edit_guarantor_button', function () {
+var data = $(this).attr("id");
+f_guarantor(data);
+$('#tenant_main_guarantor').val(data);
+$('#main_guarantor_modal').modal('show');
+});
+
+$('#people_table').css('min-height', '200px');
+$('#people_table').css('wdith', '100%');
+$(document).on('click', '.tenant_guarantor', function () {
+    $('.tenant_guarantor_title').text("Add guarantor");
+    //$('.onboarding-modal .guarantor_slick_modal').slick('slickGoTo', 0);
+    $('#tenant_guarantor_form')[0].reset();
+    $('#tenant_id_guarantor').val($('#tenant_main_guarantor').val());
+    $('#guarantor_action').val("add");
+    $('#open_guarantor_modal').modal('show');
+});
+$(document).on('click', '#finish_guarantor', function () {
+    $('#finish_guarantor').attr('disabled', 'disabled');
+    $("#finish_guarantor").html("Please wait");
+    //$('.onboarding-modal .main_slick_modal').slick('slickGoTo', 0);
+    var guarantor = $('#tenant_main_guarantor').val();
+    f_person(guarantor);
+    $('#main_guarantor_modal').modal('hide');
+    $('#tenant_main_person').val(guarantor);
+    jQuery('#people_table').wrap('<div class="dataTables_scroll" />');
+    $('#finish_guarantor').attr('disabled', false);
+    $("#finish_guarantor").html("Continue");
+    $('#main_people_modal').modal('show');
+});
+$(document).on('change', '#g_relationship_type', function () {
+    var the_data = $('#g_relationship_type').val();
+    if (the_data == 'family') {
+        $('.family').removeClass("d-none");
+        $('.non_family').addClass("d-none");
+    }
+    if (the_data == 'non family') {
+        $('.family').addClass("d-none");
+        $('.non_family').removeClass("d-none");
+    }
+    $('#g_relationship').val("");
+    $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+});
+$(document).on('submit', '#tenant_guarantor_form', function (event) {
+    event.preventDefault();
+    var action_type = $('#guarantor_action').val();
+    var primaryKey= $('#g_id').val();
+    if (action_type =='add'){
+        var method='POST';
+        var url ='{% url "tenant:guarantor-listcreate" %}';
+    }
+    if (action_type =='edit'){
+        var method='PUT';
+        var url = "{% url 'tenant:guarantor-rud' id=12345 %}".replace(/12345/, primaryKey).toString();
+    }
+    var form_data = new FormData(this);
+    $.ajax({
+        method: method,
+        url: url,
+        data: form_data,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function () {
+            $('#submit_guarantor').attr('disabled', 'disabled');
+            $("#submit_guarantor").html("Please wait");
+        },
+        success: function (data) {
+            $('#submit_guarantor').attr('disabled', false);
+            $("#submit_guarantor").html("Click to submit");
+            if (data.success) {
+                f_guarantor($('#tenant_main_guarantor').val());
+                $('#open_guarantor_modal').modal('hide');
+                $('#success_text').text(data.success);
+                $('#success_alert').modal('show');
+            }
+            if (data.error) {
+                $('#oops_text').text(data.error);
+                $('#oops_alert').modal('show');
+            }
+        },
+        error: function (jqXhr) {
+            $('#submit_guarantor').attr('disabled', false);
+            $("#submit_guarantor").html("Click to submit");
+            $('#oops_text').text("Something went wrong, try again later");
+            $('#oops_alert').modal('show');
+            $('#open_guarantor_modal').modal('hide');
+        }
+    });
+
+});
+$(document).on('click', '.edit_guarantor', function () {
+    var data = $(this).attr("id");
+    $('#tenant_guarantor_form')[0].reset();
+    $('#guarantor_action').val("edit");
+    //$('.onboarding-modal .guarantor_slick_modal').slick('slickGoTo', 0);
+    $.ajax({
+        url : "{% url 'tenant:guarantor-rud' id=12345 %}".replace(/12345/, data).toString(),
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            $('.tenant_guarantor_title').text(data.relationship_type);
+            $('#g_name').val(data.name);
+            $('#g_relationship_type').val(data.relationship_type).change();
+            $('#g_relationship').val(data.relationship).change();
+            $('#g_calling_code').val(data.calling_code).change();
+            $('#g_status').val(data.has_accepted).change();
+            $('#tenant_id_guarantor').val(data.tenant);
+            $('#g_phone').val(data.phone);
+            $('#g_email').val(data.email);
+            $('#g_notes').val(data.notes);
+            $('#g_id').val(data.id);
+            $('#open_guarantor_modal').modal('show');
+        }
+    })
+});
+$(document).on('click', '.remove_guarantor', function () {
+    var data = $(this).attr("id");
+    var data_split = data.split(",");
+    var id = data_split[0];
+    var name = data_split[1];
+    var tenant = data_split[2];
+    $('#confirm_title').text("Are you sure?");
+    $('#confirm_extra').text("Confirming the removal of " + name + " as one of the guarantors");
+    $('#confirm_button').text("Confirm removal");
+    $('#confirm_alert').modal('show');
+
+    $('#confirmYes').off().on('click', function () {
+        $.ajax({
+            url :"{% url 'tenant:guarantor-rud' id=12345 %}".replace(/12345/, id).toString(),
+            method: "DELETE",
+            dataType: "json",
+            beforeSend: function () {
+                $('#confirmYes').attr('disabled', 'disabled');
+                $("#confirm_button").html("Please wait");
+            },
+            success: function (data) {
+                $('#confirmYes').attr('disabled', false);
+                $("#confirm_button").html("Confirm removal");
+                if (data.success) {
+                    f_guarantor(tenant);
+                    $('#success_text').text(data.success);
+                    $('#confirm_alert').modal('hide');
+                    $('#success_alert').modal('show');
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#confirmYes').attr('disabled', false);
+                $("#confirm_button").html("Confirm removal");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#confirm_alert').modal('hide');
+            }
+        });
+    });
+    $('#confirmNo').off().on('click', function () {
+        $('#confirm_alert').modal('hide');
+    });
+});
+// $('#guarantor_table').css('min-height', '200px');
+$('#guarantor_table').css('wdith', '100%');
+
+
+
+
+function f_guarantor(tenant) {
+    $('#guarantor_table').DataTable({
+        "destroy": true,
+        "bAutoWidth": false,
+        "ordering": false,
+        "bFilter": false,
+        "bInfo": false,
+        // "bPaginate": false,
+        "scrollCollapse": true,
+        "fixedColumns": true,
+        "bLengthChange": false,
+        "oLanguage": {
+        "sEmptyTable": "No gurantor has been added",
+        "sStripClasses": "",
+        "sSearch": "",
+        "sSearchPlaceholder": "search...",
+      
+        },
+        "ajax": {
+            'url': '{% url "tenant:guarantor-listcreate" %}',
+            "data": {
+            "tenant": tenant,
+        }
+        },
+        "order": [
+            [0, 'asc']
+        ],
+        "pageLength": 3,
+
+    });
+
+}
+</script>
+
+{% endblock scripts %}
+
+
+
+{% endblock content %}
+
+
+<!--**********************************
+    Content body end
+***********************************-->

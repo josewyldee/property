@@ -1,0 +1,108 @@
+{% extends "account_base.html" %}
+ {% load widget_tweaks %} 
+ {% load i18n %} 
+{% load account socialaccount %}
+{% block title %}Login {% endblock title %} 
+{% block content %} 
+
+
+ {% comment %} <div  style="border-bottom:1px solid #d1b808" class="text-center my-4"> 
+   <h4 class="text-center mb-4">Sign in your account</h4>
+   <span class="py-2 display-5" style="font-size:1.1rem; line-height: .1em;background: #fff;padding: 0 10px;">together we rise</span>
+  </div>  {% endcomment %}
+     <h4 class="text-center mb-4" style="font-family: 'poppins', sans-serif;">Sign in your account</h4>
+
+{% if form.errors%}
+<div class="row">
+  <h3 class="display-8 text-center text-danger fancy_text5 col-12">error</h3>
+  <div class="border border-danger border-right-0 border-left-0 p-4 col-10 mx-auto">
+    {% for error in field.errors %}
+    <h5 class="text-center fancy_text3">{{error|escape}}</h5>
+    {% endfor %} {% for error in form.non_field_errors %}
+    <h5 class="text-center fancy_text3">{{error|escape}}</h5>
+    {% endfor %}
+  </div>
+</div>
+<h4 class="text-center mb-4">Sign in your account</h4>
+{% endif %}
+
+<form class="login p-3" method="POST" action="{% url 'account_login' %}">
+  {% csrf_token %} 
+
+
+  <div class="form-group">
+    <label class="mb-1"><strong>Email</strong></label>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="hello@example.com"
+      name="login"
+    />
+  </div>
+  <div class="form-group">
+    <label class="mb-1"><strong>Password</strong></label>
+    <input
+    
+      type="password"
+      class="form-control"
+      placeholder="Password"
+      name="password"
+      id="id_password"
+    />
+  </div>
+  <div
+    class="form-row d-flex justify-content-between mt-4 mb-2e"
+  >
+    <div class="form-group">
+      <div class="custom-control custom-checkbox ml-1">
+        <input
+          type="checkbox"
+          class="custom-control-input"
+          id="basic_checkbox_1"
+        />
+        <label
+        onclick="myFunction()"
+          class="custom-control-label"
+          for="basic_checkbox_1"/>
+          Show Password</label
+        >
+      </div>
+    </div>
+    <div class="form-group">
+      <a href="{% url 'account_reset_password' %}">Forgot Password?</a>
+    </div>
+  </div>
+  <div class="text-center py-1">
+    <button type="submit" class="btn btn-primary btn-block">
+      Sign Me In
+    </button>
+  </div>
+
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+
+
+</form>
+<p class="fancy_text4">{% blocktrans %}Don't have an account? Then please <a
+    class="fancy_text5 text-primary font-w600" href="{{ signup_url }}">sign up</a>.{% endblocktrans %}</p>
+
+{% comment %} <div class="new-account mt-3">
+  <p>
+    Don't have an account?
+    <a class="text-primary"  href="{{ signup_url }}"
+      >Sign up</a
+    >
+  </p>
+</div> {% endcomment %}
+<script>
+  function myFunction() {
+    var x = document.getElementById("id_password");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+  }
+</script>
+{% endblock %}

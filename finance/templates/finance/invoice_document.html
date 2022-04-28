@@ -1,0 +1,428 @@
+{% comment %} {% load custom_template_tags %}
+
+{% for row in invoice %}
+{% set_variable row.name as action %}
+{% set_variable row.amount as actionq %}
+
+{{row.name}}
+{{action}}
+{{actionq}}
+{% endfor %} {% endcomment %}
+{% load static %}
+<style type="text/css">
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    div,
+    p,
+    a,
+    li,
+    td {
+        -webkit-text-size-adjust: none;
+    }
+
+    body {
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    html {
+        width: 100%;
+    }
+
+    p {
+        padding: 0 !important;
+        margin-top: 0 !important;
+        margin-right: 0 !important;
+        margin-bottom: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    /* table,
+    th,
+    td {
+        border: 1px solid grey;
+    } */
+</style>
+<style>
+    @font-face {
+        font-family: "fancy_text3";
+        src:
+            url("../../../static/css/fonts/2cd55546-ec00-4af9-aeca-4a3cd186da53.woff2?d44f19a684109620e4841578a690e818bbcc2314dffd09826b89cd425f574a0cbe9fc2a6bc67d3bcc0e3cd0ae27df503557cfc70aa3c604a5f34010d37a0c3eb13038ede03fbb3b4449ae01f2eaf836c5ba14b607323b522df62e7e102c7ae9ec7633cd3ced83efca933fd8956e138&projectId=487b73f1-c2d1-43db-8526-db577e4c822b") format("woff2");
+        font-weight: 300;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: "fancy_text4";
+        src:
+            url("../../../static/css/fonts/627fbb5a-3bae-4cd9-b617-2f923e29d55e.woff2?d44f19a684109620e4841578a690e818bbcc2314dffd09826b89cd425f574a0cbe9fc2a6bc67d3bcc0e3cd0ae27df503557cfc70aa3c604a5f34010d37a0c3eb13038ede03fbb3b4449ae01f2eaf836c5ba14b607323b522df62e7e102c7ae9ec7633cd3ced83efca933fd8956e138&projectId=487b73f1-c2d1-43db-8526-db577e4c822b") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: "fancy_text5d";
+        src: url("../../../static/css/fonts/fancy_text5.woff2") format("woff2");
+        font-weight: 500;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: fancy_text5;
+        src: url({% static 'css/fonts/fancy_text5.woff2' %})
+    }
+
+    * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+
+        box-sizing: border-box;
+    }
+
+    nav a {
+        position: relative;
+        display: inline-block;
+        margin: 15px 25px;
+        outline: none;
+        color: #616A6B;
+        text-decoration: none;
+        /* text-transform: uppercase; */
+        letter-spacing: 1px;
+        font-weight: 400;
+        font-size: 1.05em;
+    }
+
+    nav a:hover,
+    nav a:focus {
+        outline: none;
+    }
+
+
+    /* Effect 5: same word slide in and border bottom */
+    .cl-effect-6 a {
+        margin: 0 10px;
+        padding: 10px 20px;
+    }
+
+    .cl-effect-6 a::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: #616A6B;
+        content: '';
+        -webkit-transition: top 0.3s;
+        -moz-transition: top 0.3s;
+        transition: top 0.3s;
+    }
+
+    .cl-effect-6 a::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1px;
+        height: 1px;
+        background: #616A6B;
+        content: '';
+        -webkit-transition: height 0.3s;
+        -moz-transition: height 0.3s;
+        transition: height 0.3s;
+    }
+
+    .cl-effect-6 a:hover::before {
+        top: 100%;
+        opacity: 1;
+    }
+
+    .cl-effect-6 a:hover::after {
+        height: 100%;
+    }
+
+
+    /* .color-4 {
+         background: #0e83cd;
+     } */
+
+    /* .the_body:before {
+         content: "";
+         position: absolute;
+         z-index: -1;
+         background: -webkit-gradient(linear, left top, right bottom, from(#D7BBEA), to(#65A8F1));
+         background: linear-gradient(to bottom right, #D7BBEA, #65A8F1);
+         top: 0px;
+         left: 0px;
+         bottom: 0px;
+         right: 0px;
+     } */
+</style>
+<table style="width: 90%;margin: 0 auto;">
+    <tbody>
+        <tr style="background-color:#FFFFE0">
+            <td
+                style="width: 32.0318%;font-family:'fancy_text5', sans-serif;font-size:4.3rem;text-align:left;
+                  color:{% if invoice_type == "invoice" %}#4B72FA;{% else %}#D98880;{% endif %};font-weight: 300;line-height: 1.4;padding: 0.9rem !important;padding-top:4rem;">
+                {{invoice_type|capfirst}}</td>
+
+            <td style="text-align:right;width: 66.9682%;">
+                <section>
+                    <nav class="cl-effect-6"
+                        style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#000;padding:10px 0;">
+                        <a href="{% url 'finance:invoice-pdf' statement_invoice  %}">Download
+                            pdf</a>
+                        <a class="printPage" onclick="window.print();" href="#">Print</a>
+                        <!-- <a href="#">Log in as tenant</a> -->
+                    </nav>
+                </section>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 32.0318%;margin-top:0;background-color:#FFFFE0;">
+                <table border=" 0" bgcolor="#FFFFE0" cellspacing="0" cellpadding="0" align="left"
+                    style="width:100%;text-align: left;background-color1:red1;padding-right:2rem;padding-left:2rem;border-bottom1:1px solid #e4e4e4">
+                    <tr>
+                        <td style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;"
+                            align="left">No.</td>
+                        <td
+                            style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B ;text-align: right;">
+                            {{statement_invoice}} </td>
+                    </tr>
+                    <tr>
+                        <td style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;"
+                            align="left">Created on.</td>
+                        <td
+                            style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B ;text-align: right;">
+                            {{created_on}}</td>
+                    </tr>
+                    {% comment %} <tr>
+                        <td style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;"
+                            align="left">Due on.</td>
+                        <td
+                            style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B ;text-align: right;">
+                            <?php echo $invoice_deadline; ?></td>
+                    </tr> {% endcomment %}
+                    <tr bgcolor="white">
+                        <td height="10" colspan="2"></td>
+                    </tr>
+                </table>
+
+            </td>
+            <td
+                style="width: 66.9682%;padding-top:40;border-top:2px solid {% if invoice_type == "invoice" %}#4B72FA;{% else %}#D98880;{% endif %};border-right:1px solid {% if invoice_type == "invoice" %}#4B72FA;{% else %}#D98880;{% endif %}">
+                <table border=" 0" cellspacing="0" cellpadding="0" align="left"
+                    style="width:100%;1page-break-inside:avoid;width:100%;text-align: left;background-color1:red1;padding-right:0.9rem;padding-left:0.9rem;border1: 1px solid #000;">
+                    <tbody style="padding-right:0.9rem;padding-left:0.9rem;">
+                        <tr style="background-color:#FFFFE0;padding:60px 0px">
+                            <th style=" font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0px"
+                                width="52%" align="left">Bill</th>
+                            <th style=" font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0px"
+                                align="left">Amount</th>
+
+                            <th style=" font-family:'fancy_text4', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0px"
+                                align="right">Deadline</th>
+                        </tr>
+                        <tr>
+                            <td height="1" style="background: #bebebe;" colspan="5"></td>
+                        </tr>
+                        <tr>
+                            <td height="10" colspan="5"></td>
+                        </tr>
+                        {% for row in invoice %}
+
+                        <tr>
+                            <td style="font-size: 15px; font-family: 'joseph', sans-serif; color: #616A6B;  line-height: 18px;  vertical-align: top; padding:10px 0;"
+                                class="article">
+                                {{row.name}}
+                            </td>
+                            <td style="font-size: 15px; font-family: 'joseph', sans-serif; color: #616A6B;  line-height: 18px;  vertical-align: top; padding:10px 0;"
+                                align="left">
+                                {{row.amount}}
+                            </td>
+
+                            <td style="font-size: 15px; font-family: 'joseph', sans-serif; color: #616A6B;  line-height: 18px;  vertical-align: top; padding:10px 0;"
+                                align="right">
+                                {{row.deadline_date}}
+                            </td>
+
+
+                        </tr>
+                        <tr>
+                            <td height="1" colspan="5" style="border-bottom:1px solid #e4e4e4"></td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 32.0318%;margin-top:0;background-color:#FFFFE0;">
+                <table border=" 0" bgcolor="#FFFFE0" cellspacing="0" cellpadding="0" align="left"
+                    style="width:100%;text-align: left;padding-right:2rem;padding-left:1.5rem">
+
+
+                    <tr>
+                        <td colspan="2"
+                            style="font-family:'fancy_text4', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;text-transform1: uppercase;"
+                            align="left">(From)</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2"
+                            style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;"
+                            align="left">{{property}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"
+                            style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;"
+                            align="left">{{street}} </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"
+                            style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;"
+                            align="left">{{city}},{{country}}</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2"
+                            style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;"
+                            align="left">{{added_by_email}} </td>
+                    </tr>
+
+                    <tr bgcolor="white">
+                        <td height="10" colspan="2"></td>
+                    </tr>
+                </table>
+
+
+            </td>
+            <td
+                style="width: 66.9682%;border-right:1px solid {% if invoice_type == "invoice" %}#4B72FA;{% else %}#D98880;{% endif %};border-bottom:2px solid {% if invoice_type == "invoice" %}#4B72FA;{% else %}#D98880;{% endif %}">
+
+                <table border=" 0" cellspacing="0" cellpadding=" 0"
+                    style="border-top:1px solid #e4e4e4;border-bottom1:1px solid ;height:100%;width:100%;background-color:white; margin-top:30px">
+                    <tr style="width:100%;">
+                        <td style="width:50%;">
+                            <table border=" 0" cellspacing="0" cellpadding="0" align="left"
+                                style="width:100%;text-align: left;background-color1:red1;padding-right:0.9rem;padding-left:0.9rem;border-righ1t: 1px solid #e4e4e4;">
+                                <tr style="background-color:#FFFFE0;">
+                                    <th style=" font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0; "
+                                        align="left">Notes</th>
+                                </tr>
+                                <tr>
+                                    <td height="10"></td>
+                                </tr>
+                                <tr style="1background-color:#FEF9E7">
+
+                                    <td rowspan="0"
+                                        style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;line-height: 35px;"
+                                        align="left">
+                                        {{description}}
+                                    </td>
+
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width:50%; ">
+                            <table border=" 0" cellspacing="0" cellpadding="0" align="left"
+                                style="width:100%;text-align: left;background-color1:red1;padding-right:0.9rem;padding-left:0.9rem;border-righ1t: 1px solid #e4e4e4;">
+                                <tr style="background-color:#FFFFE0;">
+                                    <th colspan=2
+                                        style=" font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0; "
+                                        align="left">Available payment options</th>
+                                </tr>
+                                <tr>
+                                    <td height="10"></td>
+                                </tr>
+                                {% for row in payment_options %}
+                           
+                                <tr>
+
+                                    <td 
+                                        style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;line-height: 35px;"
+                                        align="left">
+                                        {{row.type}}
+                                    </td>
+                                    <td 
+                                        style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;line-height: 35px;"
+                                        align="left">
+                                            {% if row.category == "bank" %}
+                                            Bank: {{row.name}}<br> Acc: {{row.account_info}}
+                                            {% elif row.category == "custom" %}Acc: {{row.account_info}} {% else%}
+                                            -------{% endif %}
+                                    </td>
+
+                                </tr>
+
+                                {% endfor %}
+
+
+
+
+
+                            </table>
+                        </td>
+
+
+
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 32.0318%;margin-top:0;background-color:#FFFFE0;">
+                <table border=" 0" bgcolor="#FFFFE0" cellspacing="0" cellpadding="0" align="left"
+                    style="width:100%;text-align: left;background-color1:red1;padding-right:0.9rem;padding-left:1.5rem;">
+                    <tr style="background-color1:#FEF9E7">
+                        <td height="20" colspan="2"></td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="2"
+                            style="font-family:'fancy_text4', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;"
+                            align="left">(To)</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"
+                            style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;"
+                            align="left"> {{tenant}} </td>
+                    </tr>
+
+                    
+                    <tr>
+                        <td colspan="2"
+                            style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;"
+                            align="left">{{property}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"
+                            style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;"
+                            align="left">{{email}}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B;padding:10px 0;"
+                            align="left">Phone.</td>
+                        <td
+                            style="font-family:'fancy_text3', sans-serif;font-size:1.0.9rem;color:#616A6B ;text-align: right;">
+                            ({{calling_code}}) {{phone}}</td>
+                    </tr>
+                </table>
+
+            </td>
+
+        </tr>
+        <tr style="background-color1:#FEF9E7">
+            <td height="100" colspan="2"></td>
+
+        </tr>
+    </tbody>
+</table>

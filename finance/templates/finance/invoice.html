@@ -1,0 +1,1194 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{request.path}} {% endblock title %}
+
+{% block modal %}
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" data-tab="sub_modal"
+    id="general_charges_modal" role="dialog" tabindex="-1" style="z-index:2800">
+    <div class="modal-dialog modal-centered" role="document">
+        <form method="POST" id='general_charges_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w sub_modal">
+
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Add a charge</h4>
+                            <hr>
+                            <input type="hidden" id="payments_id" name="payments_id">
+                            <div class="row">
+                                <div class="col-sm-12 ">
+                                    <div class="form-group ">
+                                        <label class="control-label">What is the name of this charge?</label>
+                                        <input class="form-control editable general_name" type="text"
+                                            placeholder="Example:Rent" name="payments_name" id="payments_name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">Amount
+                                            (USD)</label>
+                                        <input class="form-control editable" type="text" placeholder="Example: 7000"
+                                            name="payments_amount" id="payments_amount">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-7 fancy_text4 lead text-left">Late Fees</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">Does this invoice have a late fee?</label>
+                                        <select class="form-control " required="required" name="deadline"
+                                            id="payments_deadline">
+                                            <option value="yes">Yes</option>
+                                            <option selected value="no">No</option>
+                                        </select> </div>
+                                </div>
+                            </div><br>
+                            <div class="row p_d_d d-none">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Select the type of late Fee</label>
+                                        <select class="form-control general_fees selectpicker dropup"
+                                            data-dropup-auto="false" data-size="5" data1-live-search="true"
+                                            required="required" name="late_fee_type" id="late_fee_type">
+                                            <option disabled class="disabled_latefee" selected>Select type</option>
+                                            <optgroup label="One time late fee">
+                                                <option value="one_time_fixed">A fixed amount (Once)</option>
+                                                <option value="one_time_percent_unpaid">A percentage of only the
+                                                    outstanding invoice (Once)
+                                                </option>
+                                                <option value="one_time_percent_entire">A percentage of the total
+                                                    invoice (Once)
+                                                </option>
+                                            </optgroup>
+                                            <optgroup label="Daily late fee">
+                                                <option value="daily_time_fixed">A fixed amount (Daily)</option>
+                                                <option value="daily_time_percent_unpaid">A percentage of only the
+                                                    outstanding invoice
+                                                    (Daily)</option>
+                                                <option value="daily_time_percent_entire">A percentage of the total
+                                                    invoice (Daily)
+                                                </option>
+                                            </optgroup>
+                                            <!-- <optgroup label="Custom late fee">
+                                                <option value="daily_time_fixed">A fixed amount</option>
+                                            </optgroup> -->
+                                        </select> </div>
+                                </div>
+                            </div>
+                            <div class="row class_late d-none">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label class_late_amount_desc">How much is the late
+                                            fee?</label>
+                                        <input class="form-control editable general_fees" type="text"
+                                            placeholder="Example:" name="late_fee_amount" id="late_fee_amount">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row class_late d-none class_late_grace">
+                                <div class="col-sm-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">How many days does the tenant have to make full
+                                            payments before we
+                                            start invoicing the late fees? (Grace period)</label>
+                                        <input class="form-control editable general_fees" type="text"
+                                            placeholder="Example: 9" name="late_fee_grace" id="late_fee_grace">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row class_late d-none">
+                                <div class="col-sm-12 class_late_max">
+                                    <div class="form-group ">
+                                        <label class="control-label">What is the maximum amount of late fees that can be
+                                            charged for this
+                                            invoice?</label>
+                                        <input class="form-control editable general_fees" type="text"
+                                            placeholder="Example: 9500" name="late_fee_max" id="late_fee_max">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-7 fancy_text4 lead text-left">Late fee description</h4>
+                            <hr>
+                            <div class="p-4 mb-4 border" style="background-color: #FFFFE0;">
+                                <div class="text-secondary">
+                                    <div class="no_late_fee px-3 form-desc  display-7sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        This charge has no late fee
+                                    </div>
+                                    <div class="has_empty_late_fee px-3 form-desc text-danger display-7sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">Kindly select the late fee type</li>
+                                            <li class="list-group-item">How much is the late fee?</li>
+                                            <li class="list-group-item">How long before the late fee begins?</li>
+                                            <li class="list-group-item">What is the maximum amount that can be charges
+                                                as late fee?</li>
+
+                                        </ul>
+                                    </div>
+                                    <div class="has_late_fee d-none px-3 form-desc   display-7sm fancy_text3 p-2"
+                                        style="line-height: 150%;">
+                                        The tenant has <span class="class_fee_days">Please wait</span> to fully settle
+                                        <span class="class_fee_name">the charge</span>. After this period is over, <span
+                                            class="class_fee_type">Please wait</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="onboarding-slide">
+                        <div class="onboarding-media"><img alt=""
+                                src="<?php echo base_url(); ?>/img/images/payment.webp" width="80px">
+                        </div>
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" name="late_fee_payment_type" id="late_fee_payment_type">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary btn-rounded px-5 py-2" id="submit_charge"
+                                    type="submit">Upload
+                                    records</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="multiple_tenant_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <div class="modal-content text-center">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <div class="onboarding-content with-gradient">
+                <h4 class="onboarding-title lead display-8 fancy_text5 mb-5 text-left">Tenants in
+                </h4>
+                <input type="hidden" class="select_all okanga" name="select_all" value="tenant">
+                <form method="post" id="tenant_allocate_form">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group ">
+                                <label for="">
+                                    <span class='fancy_text_4 text-muted'>Select property </span>
+                                </label>
+                                <select class="form-control selectpicker select_property" data-header="Select property"
+                                    data-live-search="true" name="select_property" id='select_property' data-size="6"
+                                    multiple data-selected-text-format="count > 2" data-size="4"
+                                    data-actions-box="true">
+                                    <option selected="" disabled value="">
+                                        Choose a property
+                                    </option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group d-none select_unit">
+                                <label for="">
+                                    <span>Select unit </span>
+                                </label>
+                                <select class="form-control selectpicker" multiple title="Choose
+                                    your tenants..." data-live-search="true" name="unit_id" id='select_unit'
+                                    data-size="6" multiple data-selected-text-format="count > 2"
+                                    data-actions-box="true">
+                                    <option selected disabled>
+                                        tenant not found </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-buttons-w d-flex flex-row justify-content-between">
+                        <input type="hidden" class="select_all" name="select_all" value="none">
+                        <input type="hidden" class="select_all_choice" name="select_all_choice">
+                        <div class="cancel-process steps p-2 lead justify-content-start invoice_cancel_button d-none"><a
+                                href="#" aria-label="Close" data-dismiss="modal">Cancel the process</a></div>
+                        <button class="btn btn-primary py-3 px-5 step-button justify-content-end invoice_button d-none"
+                            type="button">Continue</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="select_filter_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <div class="modal-content text-center">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+
+            <div class="onboarding-content with-gradient">
+                <h4 class="onboarding-title lead display-8">Who do you want to invoice?
+                </h4>
+                <div class="form-buttons-w d-flex flex-row justify-content-between">
+                    <button class="mr-2 mb-2 col-sm-5 btn btn-outline-primary single_tenant_button">A single
+                        tenant</button>
+                    <button class=" mb-2 col-sm-5 btn btn-outline-primary multiple_tenant_button">Multiple
+                        tenants</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="single_tenant_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <div class="modal-content text-center">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <div class="onboarding-content with-gradient">
+                <h4 class="onboarding-title lead display-8 fancy_text5 mb-5 text-left">Select a tenant
+                </h4>
+                <input type="hidden" class="select_all okanga" name="select_all">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group select_tenant">
+                            <select class="form-control selectpicker" data-live-search="true" name="tenant_id"
+                                title="Choose a tenant..." id='select_tenant'>
+                                <option selected="" disabled="">Select a tenant</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" class="select_all" name="select_all" value="tenantyy">
+                <input type="hidden" class="select_all_choice" name="select_all_choice">
+                <div class="form-buttons-w d-flex flex-row justify-content-between">
+                    <div class="cancel-process steps p-2 lead justify-content-start invoice_cancel_button d-none"><a
+                            href="#" aria-label="Close" data-dismiss="modal">Cancel the process</a></div>
+                    <button class="btn btn-primary px-5 py-3 step-button justify-content-end invoice_button d-none"
+                        type="button">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="edit_invoice_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <div class="modal-content">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+            <div class="onboarding-slider-w">
+
+                <div class="onboarding-slide">
+                    <div class="onboarding-content with-gradient">
+                        <h4 class="onboarding-title display-8 fancy_text5 text-primary lead text-left">About the invoice
+                        </h4>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <div class=" form-group ">
+                                    <label for="" class="step-text">Invoice No.</label>
+                                    <input class="bg-white form-control required required-1" readonly type="text"
+                                        id='details_id'>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <div class=" form-group ">
+                                    <label for="" class="step-text">Amount:</label>
+                                    <input class="bg-white form-control required required-1" readonly type="text"
+                                        id='details_amount'>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <div class=" form-group ">
+                                    <label for="" class="step-text">Created on:</label>
+                                    <input class="bg-white form-control required required-1" readonly type="text"
+                                        id='details_created_on'>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="">Communication</label>
+                                    <input class="form-control bg-white" type="text" readonly
+                                        id='details_communication'>
+                                </div>
+                            </div>
+                            {% comment %} <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="">Notification (SMS)</label>
+                                    <input class="form-control bg-white" type="text" readonly id='details_sms'>
+                                </div>
+                            </div> {% endcomment %}
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="">Notes</label>
+                                    <textarea readonly class="form-control bg-white" rows="4"
+                                        id="details_description"></textarea></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="onboarding-slide table_slide bulk_slide">
+                    <div class="onboarding-content with-gradient">
+
+                        <div class="table-responsive" style="cursor: pointer;">
+                            <table id='edit_invoice_table' class="table table-heading" width="100%">
+                                <thead class="">
+                                    <tr>
+                                        <th>Charges </th>
+                                        <th>Amount invoiced</th>
+                                        <th>Payment made</th>
+                                        {% comment %} <th>Amount paid</th> {% endcomment %}
+                                        <th>Status</th>
+                                        {% comment %} <th>Late fee</th> {% endcomment %}
+                                    </tr>
+                                </thead>
+                                <tbody class="text-left">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="view_payments_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <div class="modal-content">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                    class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+
+            <div class="onboarding-slide">
+                <div class="onboarding-content with-gradient">
+
+                    <div class="table-responsive" style="cursor: pointer;">
+                        <table id='view_payments_table' class="table table-heading" width="100%">
+                            <thead class="">
+                                <tr>
+                                    <th>Receipt </th>
+                                    <th>Amount</th>
+                                    <th>Paid by</th>
+                                    {% comment %} <th>Amount paid</th> {% endcomment %}
+                                    <th>Paid on</th>
+                                    {% comment %} <th>Late fee</th> {% endcomment %}
+                                </tr>
+                            </thead>
+                            <tbody class="text-left">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated " id="invoice_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <form method="POST" id='invoice_form'>
+            <div class="modal-content">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-slider-w ">
+                    <div class="onboarding-slide">
+
+                        <div class="d-none d-md-block d-lg-block d-xl-block">
+                            <div class="onboarding-content with-gradient">
+                                <h4 class=" mt-5 onboarding-title display-4 fancy_text5 lead text-center"
+                                    style="color:#B3B6B7 "><span>A new invoice</span></h4>
+                                <legend class='text-center'><span class='display-8 text-center text-primary '> </span>
+                                </legend>
+                            </div>
+                        </div>
+                        <div class="d-lg-none d-md-none d-xl-none d-sm-block " style="background-color: #FFFFE0;">
+                            <div class="onboarding-content with-gradient">
+                                <h4 class=" mt-5 onboarding-title display-9 fancy_text5 lead text-center"
+                                    style="color:#B3B6B7 "><span>A new invoice</span></h4>
+                                <legend class='text-center'><span class='display-8 text-center text-primary '> </span>
+                                </legend>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-center">Enter invoice charges
+                            </h4>
+                            <hr>
+                            <div class="row mb-2">
+                                <div class="col-12  mb-2">
+                                    <div class="d-flex justify-content-end">
+                                        <button
+                                            class="btn-rounded btn btn-primary justify-content-end px-5 py-2 mb-3 text-white update_payment_button general_charges_button"
+                                            type='button'><span>Click to add</span></button>
+                                    </div>
+                                    <div class="d-flex justify-content-start">
+                                        <div class="cancel-process lead"><a
+                                                class='clear_table text-danger border-bottom border-danger'>Clear
+                                                the table</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive" style="cursor: pointer;">
+                                <table id='general_charges_table' class="table_needed table " width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Invoice charge</th>
+                                            <th>Amount</th>
+                                            <th>Late fee</th>
+
+                                            <th>Type</th>
+                                            <th>Amount</th>
+                                            <th>Grace</th>
+                                            <th>Max</th>
+                                            <th>late_fee_payment_type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-left">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Communication</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">How do you want to notify the tenant?</label>
+                                        <select class="form-control" required="required" name="communication"
+                                            id="send_ornot">
+                                            {% comment %} <option value="sms">SMS</option> {% endcomment %}
+                                            <option value="email">Email (with a digital invoice)</option>
+                                            {% comment %} <option selected value="both">Both email and SMS</option>
+                                            {% endcomment %}
+                                            <option value="none">No notification</option>
+                                        </select> </div>
+                                </div>
+                            </div><br>
+                            <!-- <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group required">
+                                        <label class="control-label">Do you want to send this invoice?</label>
+                                        <select class="form-control " required="required" name="send_ornot" id="send_ornot">
+                                            <option selected value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select> </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <h4 class="onboarding-title display-8 fancy_text4 lead text-left">Comments</h4>
+                            <hr>
+                            <div class="form-group"><label> footer comments</label><textarea name='description'
+                                    id='invoice_comment' class="form-control" rows="3"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="onboarding-slide">
+                        <div class="onboarding-content with-gradient">
+                            <input type="hidden" class="select_all" name="select_all" value="none">
+                            <input type="hidden" class="unit_list" name="unit_list">
+                            <input type="hidden" class="invoice_duration" value="once" name="invoice_duration">
+                            <h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+                            <div class="form-buttons-w d-flex flex-row justify-content-end">
+                                <button class="btn btn-primary py-3 px-5" type="submit" id="submit_invoice">Create
+                                    invoice
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock modal %}
+{% block content %}
+
+<div class="content-body" style="min-height: 828px;">
+    <!-- row -->
+    <div class="container-fluid">
+
+
+        <div class="card mx-3">
+            <div class="card-header d-block mx-3 text-center">
+                <h5 class="card-titles display-4 custom-card-title ">Invoices created</h5>
+
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-xl-12">
+                <div class="col-12">
+                    <div class="card px-3">
+                        {% include 'partials/_table_extra.html' with button_class="select_filter_button" button_id="select_filter_button" button_text="Create an invoice" total_class="total_invoices" total_text="invoices"  %}
+                        {% comment %}
+                        <div class="table-extra my-2">
+                            <div class="row my-4 mx-3 pt-47 d-flex justify-content-end">
+
+                                <button class="btn btn-primary  py-2 px-5 btn-rounded select_filter_button"
+                                    type="button" id="select_filter_button"><span>Create an
+                                        invoice</span></button>
+                            </div>
+                            <div class="row my-3 mx-4 pt-47 d-flex justify-content-start">
+                                <h4 class="card-title"><span class="display-4 total_invoices"> Please wait</span>
+                                    records</h4>
+                            </div>
+                        </div> {% endcomment %}
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="invoice_table" class="display min-w850">
+                                    <thead>
+                                        <tr>
+                                            <th>Invoice no.</th>
+                                            <th>Amount</th>
+                                            <th>Staus</th>
+                                            <th>Created on</th>
+                                            <th>Tenant</th>
+                                            <th></th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% block scripts %}
+{% include 'partials/_select_options.html' %}
+{% include 'partials/_date.html' %}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.1.1/css/rowGroup.dataTables.min.css">
+<script src="https://cdn.datatables.net/rowgroup/1.1.1/js/dataTables.rowGroup.min.js"></script>
+<script>
+    $(document).ready(function () {
+        invoice_table();
+    });
+
+    $(document).on('click', '.select_filter_button', function () {
+
+        // $("select").val("");
+        $('#select_filter_modal').modal('show');
+    });
+    $(document).on('click', '.single_tenant_button', function () {
+        $('.select_all').val('tenant');
+        $(".select_unit").addClass("d-none");
+        $(".lease_option").addClass("d-none");
+        $('.invoice_button').addClass("d-none");
+        $('.invoice_cancel_button').addClass("d-none");
+        select_option.create_invoice_unit('#select_tenant', 'all');
+        $('.action_type').val("Add");
+        $('#select_filter_modal').modal('hide');
+        $('#single_tenant_modal').modal('show');
+
+
+    });
+    $(document).on('click', '.multiple_tenant_button', function () {
+
+        $(".select_unit").addClass("d-none");
+        $(".lease_option").addClass("d-none");
+        $('.invoice_button').addClass("d-none");
+        $('.invoice_cancel_button').addClass("d-none");
+        $('.action_type').val("Add");
+        $('#select_filter_modal').modal('hide');
+        select_option.create_invoice_property('#select_property');
+        $('#multiple_tenant_modal').modal('show');
+
+    });
+    // ----------------------------------------------------------------------------------------------
+
+    $(document).on('change', '.select_property', function () {
+        $('.select_all').val('unit');
+        $(".select_unit").addClass("d-none");
+        $(".lease_option").addClass("d-none");
+        $('.invoice_button').addClass("d-none");
+        $('.invoice_cancel_button').addClass("d-none");
+        var property = $('#select_property').val();
+        select_option.create_invoice_unit('#select_unit', property);
+        $('.select_unit').removeClass("d-none");
+        $('.invoice_button').addClass("d-none");
+        $('.invoice_cancel_button').addClass("d-none");
+
+    });
+
+    $(document).on('change', '#select_unit', function () {
+        $('.select_all').val('unit');
+        $('#invoice_duration').val('once');
+
+        if ($('#select_unit').val().length === 0) {
+            alert("kindly select atleast one tenant");
+            $('.invoice_button').addClass("d-none");
+            $('.invoice_cancel_button').addClass("d-none");
+        } else {
+
+            unit = $('#select_unit').val();
+            $('.select_all').val('unit');
+            $('.invoice_title').html('tenants in');
+            $('.unit_list').val(unit);
+            $('.invoice_button').removeClass("d-none");
+            $('.invoice_cancel_button').removeClass("d-none");
+        }
+
+    });
+    $(document).on('change', '#select_tenant', function () {
+        $('.select_all').val('tenant');
+        var select_tenant = $(this).val();
+        //  alert(select_tenant);
+        if (select_tenant != null) {
+
+            var unit_id = $('#select_tenant').val();
+            $('.select_all').val('unit');
+            $('.invoice_title').html('');
+            $('.unit_list').val(unit_id);
+
+
+            $('.invoice_button').removeClass("d-none");
+            $('.invoice_cancel_button').removeClass("d-none");
+        }
+    });
+    $(document).on('click', '.invoice_button', function () {
+        general_charges_table.clear().draw();
+
+        $('#multiple_tenant_modal').modal('hide');
+        $('#single_tenant_modal').modal('hide');
+        $('#invoice_comment').val('');
+        $('#payments_deadline').val('');
+        $('#payments_deadline').val("no").change();
+        $('.p_d_d').addClass("d-none");
+        $(".display_").addClass("d-none");
+        $(".display_month").removeClass("d-none");
+        $("#payments_duration").val("monthly").change();
+        $('#invoice_modal').modal('show');
+        jQuery('#general_charges_table').wrap('<div class="dataTables_scroll" />');
+        $('#general_charges_table').dataTable().columns.adjust();
+
+    });
+    $('#general_charges_table').css('min-height', '200px');
+    $('#general_charges_table').css('wdith', '100%');
+    $.fn.dataTable.ext.classes.sPageButton = 'button btn-sm button-secondary ';
+    var general_charges_table = $('#general_charges_table').DataTable({
+        "bAutoWidth": false,
+        // "bLengthChange": false,
+        "bFilter": false,
+        "ordering": false,
+        // "lengthChange": false,
+        "bPaginate": false,
+        // "bLengthChange": false,
+        "bFilter": false,
+        // "scrollY": "200px",
+        // "scrollX": "200px",
+        // "scrollX": true,
+        "scrollCollapse": true,
+        "fixedColumns": true,
+        "bInfo": false,
+        "columnDefs": [{
+                "width": "25%",
+                "targets": 1
+            },
+            {
+                "targets": [5, 6, 7, 8],
+                "className": "hide_column"
+            },
+
+        ],
+        "oLanguage": {
+            "sEmptyTable": "No charges added"
+        },
+        initComplete: function () {
+            var btns = $('.dt-button');
+            btns.removeClass('dt-button');
+        },
+
+        "bProcessing": true,
+        "pageLength": 5,
+
+    });
+
+    $(document).on('click', '.general_charges_button', function () {
+        $('#general_charges_form')[0].reset();
+        $('.p_d_d').addClass("d-none");
+        select_option.late_fee_types('#late_fee_type');
+        $('#payments_deadline').val('');
+        $('#payments_deadline').val("no").change();
+        //$("#late_fee_type").val('one_time_fixed').change();
+ 
+         $("#late_fee_amount, #late_fee_grace, #late_fee_max").val(0);
+        $("#late_fee_payment_type").val('generic');
+        $('#general_charges_modal').modal('show');
+    });
+    $(document).on('submit', '#general_charges_form', function (event) {
+        var form_data = new FormData(this);
+        event.preventDefault();
+        var name = $("#payments_name").val();
+        var amount = $("#payments_amount").val();
+        var deadline = $("#payments_deadline").val();
+     
+        var type = $("#late_fee_type").val();
+        var fee_amount = $("#late_fee_amount").val();
+        var grace = $("#late_fee_grace").val();
+        var late_fee_payment_type = $("#late_fee_payment_type").val();
+        var max = $("#late_fee_max").val();
+            if (deadline=="no"){
+             var max=0;
+             var grace=0;
+             var fee_amount=0;
+             var type="null";
+            // alert("no late fee");
+            
+            }
+        if ($('#payments_name').val() && $('#payments_amount').val() && $('#payments_deadline').val()) {
+            var counter_nos = 1;
+            var counter_nos = general_charges_table.rows().count() + 1;
+            $('#submit_charge').attr('disabled', 'disabled');
+            $("#submit_charge").html("Please wait");
+            general_charges_table.row.add([
+                '<div class="col-sm-6 border-right display-7 text-center fancy_text4">' + counter_nos +
+                '</div>',
+                '<div class="col-sm-12 text-right"><div class="form-group required"><input class="form-control bg-light" readonly type="text" placeholder="Example: Rent" value="' +
+                name + '" name="name" ></div></div>',
+                '<div class="col-sm-12 text-right"><div class="form-group required"><input class="form-control bg-light" readonly type="text" placeholder="Example: 7500" value="' +
+                amount + '" name="amount" ></div> </div>',
+                '<div class="col-sm-12 text-right"><div class="form-group required"><input class="form-control bg-light" readonly type="text" placeholder="Example: Yes" value="' +
+                deadline + '" name="deadline" ></div></div>',
+
+                '<div class="col-sm-12 text-right"><div class="form-group required"><input class="form-control bg-light" readonly type="text" placeholder="Example: Yes" value="' +
+                type + '" name="late_fee_type" ></div></div>',
+                '<div class="col-sm-12 text-right"><div class="form-group required"><input class="form-control bg-light" readonly type="text" placeholder="Example: Yes" value="' +
+                fee_amount + '" name="late_fee_amount" ></div></div>',
+                '<div class="col-sm-12 text-right"><div class="form-group required"><input class="form-control bg-light" readonly type="text" placeholder="Example: Yes" value="' +
+                grace + '" name="late_fee_grace" ></div></div>',
+                '<div class="col-sm-12 text-right"><div class="form-group required"><input class="form-control bg-light" readonly type="text" placeholder="Example: Yes" value="' +
+                max + '" name="late_fee_max" ></div></div>',
+                '<div class="col-sm-12 text-right"><div class="form-group required"><input class="form-control bg-light" readonly type="text" placeholder="Example: Yes" value="' +
+                late_fee_payment_type + '" name="late_fee_category" ></div> </div>',
+
+            ]).draw(false);
+            counter_nos++;
+            $('#submit_charge').attr('disabled', false);
+            $("#submit_charge").html("Upload records");
+            $('#general_charges_modal').modal('hide');
+        } else {
+            $('#oops_text').text("Kindly fill all of the fields");
+            $('#oops_alert').modal('show');
+        }
+
+
+    });
+
+    $(document).on('click', '.clear_table', function () {
+        general_charges_table.clear().draw();
+    });
+
+
+    $(document).on('change', '#payments_deadline', function () {
+        var deadline = $(this).val();
+        if (deadline == 'yes') {
+            $('.p_d_d').removeClass("d-none");
+            $('.no_late_fee').addClass("d-none");
+            $('.has_empty_late_fee').removeClass("d-none");
+            $('.has_late_fee').addClass("d-none");
+        }
+        if (deadline == 'no') {
+            $('.general_fees').val("");
+            $('.no_late_fee').removeClass("d-none");
+            $('.has_empty_late_fee').addClass("d-none");
+            $('.has_late_fee').addClass("d-none");
+            $('.disabled_latefee').prop("disabled", false);
+            $('.disabled_latefee').prop("selected", true);
+            $('.disabled_latefee').prop("disabled", true);
+            $('.p_d_d').addClass("d-none");
+            $(".class_late_amount, .class_late_percent, .class_late").addClass("d-none");
+        }
+        $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+    });
+    $(document).on('change', '#late_fee_type', function () {
+        var type = $(this).val();
+        var array_late_fee = ["one_time_fixed", "one_time_percent_unpaid", "one_time_percent_entire",
+            "daily_time_fixed",
+            "daily_time_percent_unpaid", "daily_time_percent_entire"
+        ];
+        $("#late_fee_amount, #late_fee_grace, #late_fee_max").val(0);
+        if (array_late_fee.includes(type)) {
+            if (type == 'one_time_fixed' || type == 'daily_time_fixed') {
+                $('.class_late').removeClass("d-none");
+                $('.class_late_amount_desc').text("How much is the fixed amount");
+            } else {
+                $('.class_late').removeClass("d-none");
+                $('.class_late_amount_desc').text("What is the percent?");
+            }
+            if (type == 'one_time_fixed' || type == 'one_time_percent_unpaid' || type ==
+                'one_time_percent_entire') {
+                $('.class_late_max').addClass("d-none");
+            } else {
+                $('.class_late_max').removeClass("d-none");
+            }
+
+        } else {
+            $('.class_late').addClass("d-none");
+            $('.class_late_grace').removeClass("d-none");
+        }
+        $('.onboarding-modal .onboarding-slider-w').slick('setPosition');
+    });
+
+    $(document).on('change', '.general_name', function () {
+        $('.class_fee_name').text("the " + $('#payments_name').val());
+    });
+    $(document).on('change', '.general_fees', function () {
+        var late_fee_type = $('#late_fee_type').val();
+        var late_fee_amount = $('#late_fee_amount').val();
+        var late_fee_grace = $('#late_fee_grace').val();
+        var array_late_fee = ["one_time_fixed", "one_time_percent_unpaid", "one_time_percent_entire",
+            "daily_time_fixed",
+            "daily_time_percent_unpaid", "daily_time_percent_entire"
+        ];
+        if (array_late_fee.includes(late_fee_type)) {
+            if (late_fee_type == 'one_time_fixed' || late_fee_type == 'one_time_percent_unpaid' ||
+                late_fee_type ==
+                'one_time_percent_entire') {
+                var late_fee_max = $('#late_fee_amount').val();
+            } else {
+                var late_fee_max = $('#late_fee_max').val();
+            }
+            if ($('#late_fee_type').val() && $('#late_fee_amount').val() && $('#late_fee_grace').val() &&
+                late_fee_max) {
+
+                if (late_fee_type == "one_time_fixed") {
+                    var description = "a one time late fee of " + late_fee_amount + " will be invoiced. "
+                }
+                if (late_fee_type == "one_time_percent_unpaid") {
+                    var description = "a one time late fee of " + late_fee_amount +
+                        "% of the total unpaid invoice will be invoiced."
+                }
+                if (late_fee_type == "one_time_percent_entire") {
+                    var description = "a one time late fee of " + late_fee_amount +
+                        "% of the entire invoice (both paid and not paid)will be invoiced."
+                }
+                if (late_fee_type == "daily_time_fixed") {
+                    var description = "a daily late fee of " + late_fee_amount +
+                        " will be invoiced until the tenant’s balance for this invoice is positive.However,if the total late fees charged for this invoice amounts to " +
+                        late_fee_max + ", thelate fees won't be posted"
+                }
+                if (late_fee_type == "daily_time_percent_unpaid") {
+                    var description = "a daily late fee of " + late_fee_amount +
+                        " % of the total unpaid invoice will be invoiced untilthe tenant’ s balance for this invoice is positive.However, if the total late fees chargedfor this invoice amounts to " +
+                        late_fee_max + ", the late fees won 't be posted"
+                }
+                if (late_fee_type == "daily_time_percent_entire") {
+                    var description = "a daily late fee of " + late_fee_amount +
+                        " % of the entire invoice (both paid and not paid) will be invoiced until the tenant’ s balance for this invoice is positive.However, if the total late fees charged for this invoice amounts to " +
+                        late_fee_max + ", the late fees won 't be posted"
+                }
+                $('#late_fee_payment_type').val("generic");
+
+                $('.class_fee_days').text(late_fee_grace + " days");
+                $('.class_fee_type').text(description);
+                $('.no_late_fee').addClass("d-none");
+                $('.has_late_fee').removeClass("d-none");
+                $('.has_empty_late_fee').addClass("d-none");
+            } else {
+                $('.no_late_fee').addClass("d-none");
+                $('.has_late_fee').addClass("d-none");
+                $('.has_empty_late_fee').removeClass("d-none");
+            }
+        } else {
+            if ($('#late_fee_type').val() && $('#late_fee_grace').val()) {
+                var description = "Your customized late fee will be invoiced. ";
+                $('#late_fee_payment_type').val("custom");
+                $('.class_fee_days').text(late_fee_grace + " days");
+                $('.class_fee_type').text(description);
+                $('.no_late_fee').addClass("d-none");
+                $('.has_late_fee').removeClass("d-none");
+                $('.has_empty_late_fee').addClass("d-none");
+            } else {
+                $('.no_late_fee').addClass("d-none");
+                $('.has_late_fee').addClass("d-none");
+                $('.has_empty_late_fee').removeClass("d-none");
+            }
+
+        }
+    });
+
+    $(document).on('submit', '#invoice_form', function (event) {
+
+        var method = 'POST';
+        var url = '{% url "finance:invoice-listcreate" %}';
+
+
+        var form_data = new FormData(this);
+        event.preventDefault();
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#submit_invoice').attr('disabled', 'disabled');
+                $("#submit_invoice").html("Please wait");
+            },
+            success: function (data) {
+                $('#submit_invoice').attr('disabled', false);
+                $("#submit_invoice").html("Upload records");
+                if (data.success) {
+                    invoice_table();
+                    $('#invoice_modal').modal('hide');
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#submit_invoice').attr('disabled', false);
+                $("#submit_invoice").html("Upload records");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#invoice_modal').modal('hide');
+            }
+
+        });
+    });
+    $(document).on('click', '.edit_invoice_button', function (event) {
+        var invoice = $(this).attr("id");
+
+        $.ajax({
+            method: 'GET',
+            url: '{% url "finance:invoice-details" %}',
+            data: {
+                "invoice": invoice
+            },
+            // contentType: false,
+            // processData: false,
+            dataType: "json",
+            success: function (data) {
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+
+                } else {
+
+                    $('#edit_invoice_table').css('width', '695px');
+                    $('#edit_invoice_table').DataTable({
+
+                        "destroy": true,
+                        'paging': false,
+
+                        "oLanguage": {
+                            "sEmptyTable": "No invoice data found"
+                        },
+
+                        "bPaginate": false,
+                        "bInfo": false,
+                        "language": {
+                            search: ""
+                        },
+                        "columnDefs": [{
+                            "width": 30,
+                            "targets": 0
+                        }, ],
+
+                        "bAutoWidth": false,
+                        "responsive": true,
+                        "scrollCollapse": true,
+                        "fixedColumns": true,
+                        "ordering": false,
+                        "data": data.aaData,
+                        "bPaginate": true,
+                        "bProcessing": true,
+                        "pageLength": 10,
+                        //"scrollX": true,
+                        "scrollY": "200px",
+
+                        "paging": false,
+
+                    });
+
+
+                    $('#details_amount').val(data.details_amount);
+                    $('#details_id').val(data.details_id);
+                    $('#details_communication').val(data.details_communication);
+                    $('#details_created_on').val(data.details_created_on);
+                    $('#details_description').val(data.details_description);
+
+                    $('#edit_invoice_modal').modal('show');
+                    $('#edit_invoice_table').css('wdith', '100%');
+                }
+            },
+            error: function (jqXhr) {
+
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+            }
+        });
+
+    });
+    $(document).on('click', '.view_payments_button', function (event) {
+        var invoice = $(this).attr("id");
+
+        $.ajax({
+            method: 'GET',
+            url: '{% url "finance:payments-made" %}',
+            data: {
+                "invoice": invoice
+            },
+            // contentType: false,
+            // processData: false,
+            dataType: "json",
+            success: function (data) {
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+
+                } else {
+
+                    $('#view_payments_table').css('width', '695px');
+                    $('#view_payments_table').DataTable({
+
+                        "destroy": true,
+                        'paging': false,
+
+                        "oLanguage": {
+                            "sEmptyTable": "No payments made"
+                        },
+
+                        "bPaginate": false,
+                        "bInfo": false,
+                        "language": {
+                            search: ""
+                        },
+                    
+
+                        "bAutoWidth": false,
+                        "responsive": true,
+                        "ordering": false,
+                        "data": data.aaData,
+                        "bPaginate": true,
+                        "bProcessing": true,
+                        "pageLength": 10,
+                        "paging": false,
+
+                    });
+
+
+                    $('#view_payments_modal').modal('show');
+                    $('#view_payments_table').css('wdith', '100%');
+                }
+            },
+            error: function (jqXhr) {
+
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+            }
+        });
+
+    });
+
+
+    function invoice_table() {
+
+        $(".fcp-group-contents").addClass('d-none');
+        $(".create_invoice_record").removeClass('d-none');
+        $(".third-floated-btn").removeClass('d-none');
+        $(".filter_label").text('Invoices');
+        var url = "{% url 'finance:invoice-listcreate' %}";
+        $('#invoice_table').DataTable({
+            processing: true,
+            serverSide: true,
+            "destroy": true,
+            "bAutoWidth": false,
+            "responsive": true,
+            // "bLengthChange": false,
+            "ordering": false,
+            "oLanguage": {
+                "sEmptyTable": "No invoices added",
+                "sStripClasses": "",
+                "sSearch": "",
+                "sSearchPlaceholder": "search...",
+                "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+                    '<option value="10">10</option>' +
+                    '<option value="20">20</option>' +
+                    '<option value="30">30</option>' +
+                    '<option value="40">40</option>' +
+                    '<option value="50">50</option>' +
+                    '<option value="50">100</option>' +
+
+                    '</select></div>'
+            },
+            initComplete: function () {
+                var btns = $('.dt-button');
+                btns.removeClass('dt-button');
+            },
+            "ajax": {
+                "url": url,
+
+
+            },
+
+            "bPaginate": true,
+            "bProcessing": true,
+            "pageLength": 10,
+
+
+            "fnDrawCallback": function () {
+                $('.total_invoices').html(this.fnSettings().fnRecordsTotal());
+            },
+
+        });
+
+
+
+    }
+</script>
+{% endblock scripts %}
+
+
+
+{% endblock content %}
+
+
+<!--**********************************
+    Content body end
+***********************************-->

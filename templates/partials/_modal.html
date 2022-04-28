@@ -1,0 +1,214 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/vendor/slick.css' %}">
+
+
+
+
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="property_modal" role="dialog" tabindex="-1">
+	<div class="modal-dialog modal-centered modal-lg" role="document">
+		<div class="modal-content">
+			<button aria-label="Close" class="close" data-dismiss="modal" type="button"><span class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+			<form method="POST" id='begin_units_details_form'>
+				<div class="onboarding-slider-w">
+					<!-- <div class="onboarding-slide">
+						<div class="onboarding-media"><img alt="" src="{% static 'img/images/keys.webp' %}  " width="105px">
+						</div>
+						<div class="onboarding-content with-gradient">
+							<h4 class="onboarding-title display-4 text-center fancy_text5">Good job so far</h4>
+							<hr>
+							<div class="font-desc text-secondary1 display-7 fancy_text3 text-center " stsyle="line-height:28px;color:#797D7F ;">This is the final step, you just need to set your ameneties and recurring charges(i.e. rent). After that you will be done and ready to rent out your units</div>
+						</div>
+					</div> -->
+					<div class="onboarding-slide">
+						<div class="onboarding-content with-gradient">
+							<h4 class="onboarding-title1 text-black1 display-10 font-w600 fancy_text5 text-left mb-0">Add property</h4>
+							<hr>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group">
+										<label for="">Select the unit category</label>
+										<select class="form-control" name="details_unit_category" id="details_unit_category">
+											<option selected="" value="Residential">Residential (People live here)</option>
+											<option value="Commercial">Commercial (People work here)</option>
+
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group">
+										<label for="">Unit type</label>
+										<select class="form-control hey" name="details_unit_type" id="details_unit_type">
+											<option selected="" disabled="">Select unit type</option>
+											<option class="residential" value="studio">Studio/bedsitters</option>
+											<option class="residential" value="single rooms">Single rooms</option>
+											<option class="residential" value="one-bedroom">One-bedroom </option>
+											<option class="residential" value="two-bedroom">Two-bed room </option>
+											<option class="residential" value="three-bedroom">Three-bed room </option>
+											<option class="residential" value="four-bedroom">Four-bed room apartments</option>
+											<option class="residential" value="five-bedroom">Five-bed room apartments</option>
+											<option class="residential" value="six-bedroom">Six-bed room apartments</option>
+											<option class="residential" value="seven-bedroom">Seven-bed room apartments</option>
+											<option class="residential" value="other">Other</option>
+											<option class="commercial" value="shops">Shops</option>
+											<option class="commercial" value="stalls">Stalls</option>
+											<option class="commercial" value="rooms">Rooms</option>
+											<option class="commercial" value="spaces(sections of a floor)">Spaces(sections of a floor)</option>
+											<option class="commercial" value="floor(an entire floor)">Floor(an entire floor)</option>
+											<option class="commercial" value="Parking space">Parking space</option>
+											<!-- <option class="commercial" value="other">Other</option> -->
+
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label for="">Unit size</label>
+										<input class="form-control editable" placeholder="Example: 5600" type="number" name="details_unit_size" id="details_unit_size">
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label for="">Are the units furnished?</label>
+										<select class="form-control " name="details_unit_furnished" id="details_unit_furnished">
+											<option value="yes">Yes</option>
+											<option value="no">No</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group">
+										<label for="">Bathrooms</label>
+										<select class="form-control " name="details_unit_baths" id="details_unit_baths">
+											<option value="communal">communal</option>
+											<option value="1">1</option>
+											<option value="1.5">1.5</option>
+											<option value="2">2</option>
+											<option value="2.5">2.5</option>
+											<option value="3">3</option>
+											<option value="3.5">3.5</option>
+											<option value="4">4</option>
+											<option value="4.5">4.5</option>
+											<option value="5">5+</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="onboarding-slide">
+						<div class="onboarding-content with-gradient">
+							<h4 class="onboarding-title display-7 fancy_text4 text-left mb-0">Unit description</h4>
+							<hr>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group"><label class="control-label">We are currently working on a free listing website for our clients (including you). Now, renters usually read this first, so highlight any upgrades and desirable features.</label><textarea class="form-control editable" placeholder="Example: Freshly painted home with new appliances and carpeting. Easy walking to public transit and a great neighborhood." rows="4" id="details_unit_details" name="details_unit_details"></textarea></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="onboarding-slide">
+						<div class="onboarding-content with-gradient">
+							<h4 class="onboarding-title display-7 fancy_text4 lead text-left">Features and amaneties</h4>
+							<hr>
+							<div class="row mb-2">
+								<div class="d-flex justify-content-between mb-5">
+									<button class="btn btn-primary justify-content-end px-5 py-3 mr-sm-4 text-white general_features_button" type='button'><span>Click to add</span></button>
+									<div class="cancel-process  lead justify-content-start fancy_text4"><a class='clear_features'>Clear the table</a></div>
+								</div>
+							</div>
+							<div class="table-responsive" style="cursor: pointer;">
+								<table id='property_features_table' class="table table-lightborder table_needed table-heading display responsive nowrap">
+									<thead>
+										<tr>
+											<th class="text-left">Ignore me</th>
+											<th class="text-left">Feature</th>
+											<th class="text-left">Cost</th>
+											<!-- <th class="text-left"></th> -->
+										</tr>
+									</thead>
+									<tbody class="text-left">
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="onboarding-slide">
+						<div class="onboarding-content with-gradient">
+							<h4 class="onboarding-title display-7 fancy_text4 lead text-left">Rent and other charges</h4>
+							<hr>
+							<div class="row mb-2">
+								<div class="d-flex justify-content-between mb-5">
+									<button class="btn btn-primary justify-content-end px-5 py-3 mr-sm-4 text-white general_charges_button" type='button'><span>Click to add</span></button>
+									<div class="cancel-process  lead justify-content-start fancy_text4"><a class='clear_charges'>Clear the table</a></div>
+								</div>
+							</div>
+							<div class="table-responsive" style="cursor: pointer;">
+								<table id='property_charges_table' class="table table-lightborder table_needed table-heading display responsive nowrap">
+									<thead>
+										<tr>
+											<th class="text-left">duration</th>
+											<th class="text-left">once</th>
+											<th class="text-left">week</th>
+											<th class="text-left">month</th>
+											<th class="text-left">year</th>
+											<th class="text-left">general_type</th>
+											<th class="text-left">category</th>
+											<th class="text-left">deadline</th>
+											<th class="text-left">taxable</th>
+											<th class="text-left">type</th>
+											<th class="text-left">fee_amount</th>
+											<th class="text-left">grace</th>
+											<th class="text-left">max</th>
+											<th class="text-left">late_fee_payment_type</th>
+
+											<th class="text-left"></th>
+											<th class="text-left">Charge</th>
+											<th class="text-left">Amount</th>
+											<th class="text-left">Notify the tenant with</th>
+											<!-- <th class="text-left"></th> -->
+										</tr>
+									</thead>
+									<tbody class="text-left">
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+					<div class="onboarding-slide">
+						{% comment %} <div class="onboarding-media"><img alt="" src="{% static 'img/images/keys.webp' %}  " width="80px">
+						</div> {% endcomment %}
+						<div class="onboarding-content with-gradient">
+							<input type="hidden1" name="details_building_type" id="details_building_type">
+							<input type="hidden1" name="details_building_id" id="details_building_id">
+							<input type="hidden1" name="unit_building_name" id="details_building_name">
+							<h4 class="onboarding-title lead display-8 text-center">Are you done?</h4>
+							<div class="form-buttons-w d-flex flex-row justify-content-end">
+								<button class="btn btn-primary px-5 py-3 " type="buttom" id="submit_unit_details">Click to upload
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script src="{% static 'js/slick.min.js' %}" ></script>
+
+<script>
+
+	
+
+
+
+</script>

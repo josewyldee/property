@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{request.path}} {% endblock title %}
+
+{% block modal %}
+
+
+
+<div aria-hidden="true" data-backdrop="static" class="onboarding-modal modal fade animated" id="debitnote_modal"
+    role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered" role="document">
+        <form method="POST" id='debitnote_form'>
+            <div class="modal-content text-left">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                        class="close-label">Close</span><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-content with-gradient">
+                    <h4 class="onboarding-title lead display-8 fancy_text5 mb-5 text-left">Debit note
+                    </h4>
+                    {% comment %} <input type="hidden" class="select_all okanga" name="select_all"> {% endcomment %}
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group select_payment">
+                                <label for="">Select a receipt</label>
+                                <select class="form-control selectpicker" data-live-search="true" name="select_payment"
+                                    title="Choose an receipt..." id='select_payment'>
+                                    <option selected="" disabled="">Choose an receipt</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="debitnote_notice">
+                        <div class="p-4 mb-1 border col-12" style="background-color: #FFFFE0;">
+                            <div class="text-secondary">
+                                <div class=" px-3 form-desc f2-30 fancy_text3 p-2" style="line-height: 150%;">
+                                    Please note that that receipt No. <span id="invoice_text">-------</span> of amount
+                                    <span id="amount_text">-------</span> will be cancelled by
+                                    this debit note.<br><br>Click the button below to confirm the cancel
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-buttons-w d-flex flex-row justify-content-between mx-0">
+                        <div class="cancel-process steps p-2 lead justify-content-start debitnote_cancel d-none"><a
+                                href="#" aria-label="Close" data-dismiss="modal">Cancel the process</a></div>
+                        <button
+                            class="btn btn-danger light px-5 py-2 step-button justify-content-end debitnote_submit d-none"
+                            type="submit">Click to create</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+{% endblock modal %}
+{% block content %}
+
+<div class="content-body" style="min-height: 828px;">
+    <!-- row -->
+    <div class="container-fluid">
+
+
+        <div class="card mx-3">
+            <div class="card-header d-block mx-3 text-center">
+                <h5 class="card-titles display-4 custom-card-title text-danger">Payments cancelled</h5>
+
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-xl-12">
+                <div class="col-12">
+                    <div class="card px-3">
+                        {% include 'partials/_table_extra.html' with button_class="start_payments_button btn-danger" button_id="start_payments_button" button_text="Cancel a payment" total_class="total_payments" total_text="payments"  %}
+
+                        {% comment %} <div class="table-extra my-2">
+                            <div class="row my-4 mx-3 pt-47 d-flex justify-content-end">
+
+                                <button class="btn btn-primary  py-2 px-5 btn-rounded start_payments_button"
+                                    type="button" id="start_payments_button"><span>Collect payments</span></button>
+                            </div>
+                            <div class="row my-3 mx-4 pt-47 d-flex justify-content-start">
+                                <h4 class="card-title"><span class="display-4 total_payments"> Please wait</span>
+                                    records</h4>
+                            </div>
+                        </div> {% endcomment %}
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="debitnote_table" class="display min-w850">
+                                   <thead>
+                                       <tr>
+                                           <th>Receipt no.</th>
+                                           <th>Amount</th>
+                                           <th>Paid through</th>
+                                           <th>Created on</th>
+                                           <th>Tenant</th>
+                                           <th></th>
+                                   </thead>
+                                    <tbody>
+                                    </tbody>
+
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% block scripts %}
+{% include 'partials/_select_options.html' %}
+{% include 'partials/_date.html' %}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.1.1/css/rowGroup.dataTables.min.css">
+<script src="https://cdn.datatables.net/rowgroup/1.1.1/js/dataTables.rowGroup.min.js"></script>
+<script>
+    $(document).ready(function () {
+        debitnote_table();
+    });
+
+
+    $(document).on('click', '.start_payments_button', function () {
+        $('.select_all').val('tenant');
+        $('#debitnote_form')[0].reset();
+        $(".debitnote_notice").addClass("d-none");
+        $(".lease_option").addClass("d-none");
+        $('.debitnote_submit').addClass("d-none");
+        $('.debitnote_cancel').addClass("d-none");
+        select_option.select_payment('#select_payment');
+        $('.action_type').val("Add");
+        $('#select_paid_through').val("cash").change();
+        $('#debitnote_modal').modal('show');
+    });
+
+
+
+    // ----------------------------------------------------------------------------------------------
+
+    $(document).on('change', '#select_payment', function () {
+
+        $(".debitnote_notice").addClass("d-none");
+        var select_payment = $(this).val();
+        if (select_payment != null) {
+            var data = $('#select_payment').val();
+            var data_split = data.split(",");
+            var invoice = data_split[0];
+            var amount = data_split[1];
+            $('#invoice_text').text(invoice);
+            $('#amount_text').text(amount);
+
+            $(".debitnote_notice").removeClass("d-none");
+            $('.debitnote_submit').removeClass("d-none");
+            $('.debitnote_cancel').removeClass("d-none");
+        }
+    });
+
+
+
+
+
+
+
+
+
+
+
+    $(document).on('submit', '#debitnote_form', function (event) {
+
+
+        var method = 'POST';
+        var url = '{% url "finance:debitnote-listcreate" %}';
+
+
+        var form_data = new FormData(this);
+        event.preventDefault();
+        $.ajax({
+            method: method,
+            url: url,
+            data: form_data,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                $('#debitnote_submit').attr('disabled', 'disabled');
+                $("#debitnote_submit").html("Please wait");
+            },
+            success: function (data) {
+                $('#debitnote_submit').attr('disabled', false);
+                $("#debitnote_submit").html("Upload records");
+                if (data.success) {
+                    debitnote_table();
+                    $('#debitnote_modal').modal('hide');
+                    $('#success_text').text(data.success);
+                    $('#success_alert').modal('show');
+                }
+                if (data.error) {
+                    $('#oops_text').text(data.error);
+                    $('#oops_alert').modal('show');
+                }
+            },
+            error: function (jqXhr) {
+                $('#debitnote_submit').attr('disabled', false);
+                $("#debitnote_submit").html("Upload records");
+                $('#oops_text').text("Something went wrong, try again later");
+                $('#oops_alert').modal('show');
+                $('#debitnote_modal').modal('hide');
+            }
+
+        });
+    });
+
+    function debitnote_table() {
+
+        $(".fcp-group-contents").addClass('d-none');
+        $(".create_invoice_record").removeClass('d-none');
+        $(".third-floated-btn").removeClass('d-none');
+        $(".filter_label").text('receipts');
+        var url = "{% url 'finance:debitnote-listcreate' %}";
+        $('#debitnote_table').DataTable({
+            processing: true,
+            serverSide: true,
+            "destroy": true,
+            "bAutoWidth": false,
+            "responsive": true,
+            // "bLengthChange": false,
+            "ordering": false,
+            "oLanguage": {
+                "sEmptyTable": "No payment has been cancelled",
+                "sStripClasses": "",
+                "sSearch": "",
+                "sSearchPlaceholder": "search...",
+                "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
+                    '<option value="10">10</option>' +
+                    '<option value="20">20</option>' +
+                    '<option value="30">30</option>' +
+                    '<option value="40">40</option>' +
+                    '<option value="50">50</option>' +
+                    '<option value="50">100</option>' +
+
+                    '</select></div>'
+            },
+            initComplete: function () {
+                var btns = $('.dt-button');
+                btns.removeClass('dt-button');
+            },
+            "ajax": {
+                "url": url,
+
+
+            },
+
+            "bPaginate": true,
+            "bProcessing": true,
+            "pageLength": 10,
+
+
+            "fnDrawCallback": function () {
+                $('.total_payments').html(this.fnSettings().fnRecordsTotal());
+            },
+
+        });
+
+
+
+    }
+</script>
+{% endblock scripts %}
+
+
+
+{% endblock content %}
+
+
+<!--**********************************
+    Content body end
+***********************************-->

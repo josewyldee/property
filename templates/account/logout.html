@@ -1,0 +1,43 @@
+{% extends "account_base.html" %} {% load i18n %} {% load account %} 
+{% block title %}{% trans "Sign Out" %}{% endblock %} 
+
+{% block content %}
+
+{% if form.errors %}
+<div class="row">
+  <h3 class="display-8 text-center text-danger fancy_text5 col-12">error</h3>
+  <div class="border border-danger border-right-0 border-left-0 p-4 col-10 mx-auto">
+    {% for field in form %} {% for error in field.errors %}
+    <h5 class="text-center fancy_text3">{{ error|escape }}</h5>
+    {% endfor %} {% endfor %}
+  </div>
+</div>
+{% else %}
+{% comment %} <div class="el-tablo bigger highlight bold-label text-center">
+   <div class="display-4 mb-4 text-primary fancy_text4 my-3">
+    {% trans "Sign out" %}
+  </div> 
+</div> {% endcomment %}
+
+<br>
+<h5 class=" display-8 mb-4 text-primary text-center px-3" style="font-family: 'poppins', sans-serif;">
+  {% trans "Are you sure you want to sign out?" %}
+</h5>
+<br>
+{% endif %} 
+
+<form method="POST" action="{% url 'account_logout' %}" >
+   {% csrf_token %}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+  {% endif %}
+
+ <div class="buttons-w d-flex justify-content-between">
+    <div class="buttons-w1 col-sm-6">
+      <a style="border 1px solid blue" href="{% url 'account_email' %}"><span class="fancy_text3 display-7sm">{% trans "Change E-mail" %}</span></a>
+    </div>
+    <button class="btn btn-warning light btn-rounded px-4 py-2 col-sm-6" type="submit">{% trans "Sign Out" %}</button>
+  </div>
+</form>
+
+{% endblock %}

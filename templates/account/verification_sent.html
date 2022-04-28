@@ -1,0 +1,16 @@
+
+{% extends "account_base.html" %}
+{% block title %}Verify Your E-mail Address {% endblock title %} 
+{% load i18n %}
+
+
+{% block content %}
+<div class="el-tablo bigger highlight bold-label text-center">
+  <div class="display-9 mb-4 text-primary fancy_text4 mt-3">{% trans " Verify your email" %}</div>
+</div>
+<div class="pt-21 pb-5 px-5">
+     <p  class="text-center fancy_text3 display-6 " style="color:grey;line-height:165%">{% blocktrans %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes.{% endblocktrans %}</p>
+</div>
+
+
+{% endblock %}
